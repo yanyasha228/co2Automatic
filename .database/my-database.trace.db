@@ -1,0 +1,24 @@
+2018-05-23 11:33:20 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Синтаксическая ошибка в выражении SQL "ALTER TABLE MY-[*]DATABASE.PUBLIC.CLIENTS ADD COLUMN WHOLESALER BOOLEAN "; ожидалось "., ADD, SET, RENAME, DROP, CHANGE, MODIFY, ALTER"
+Syntax error in SQL statement "ALTER TABLE MY-[*]DATABASE.PUBLIC.CLIENTS ADD COLUMN WHOLESALER BOOLEAN "; expected "., ADD, SET, RENAME, DROP, CHANGE, MODIFY, ALTER"; SQL statement:
+alter table MY-DATABASE.PUBLIC.CLIENTS add column wholesaler boolean [42001-197]
+2018-05-23 11:33:20 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Синтаксическая ошибка в выражении SQL "ALTER TABLE MY-[*]DATABASE.PUBLIC.PRODUCT ADD COLUMN WHOLESALE_PRICE INTEGER "; ожидалось "., ADD, SET, RENAME, DROP, CHANGE, MODIFY, ALTER"
+Syntax error in SQL statement "ALTER TABLE MY-[*]DATABASE.PUBLIC.PRODUCT ADD COLUMN WHOLESALE_PRICE INTEGER "; expected "., ADD, SET, RENAME, DROP, CHANGE, MODIFY, ALTER"; SQL statement:
+alter table MY-DATABASE.PUBLIC.PRODUCT add column wholesale_price integer [42001-197]
+2018-05-23 11:33:20 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Синтаксическая ошибка в выражении SQL "ALTER TABLE MY-[*]DATABASE.PUBLIC.USERS ADD COLUMN ACTIVE BOOLEAN NOT NULL "; ожидалось "., ADD, SET, RENAME, DROP, CHANGE, MODIFY, ALTER"
+Syntax error in SQL statement "ALTER TABLE MY-[*]DATABASE.PUBLIC.USERS ADD COLUMN ACTIVE BOOLEAN NOT NULL "; expected "., ADD, SET, RENAME, DROP, CHANGE, MODIFY, ALTER"; SQL statement:
+alter table MY-DATABASE.PUBLIC.USERS add column active boolean not null [42001-197]
+2018-05-23 11:35:06 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Синтаксическая ошибка в выражении SQL "ALTER TABLE MY-[*]DATABASE.PUBLIC.CLIENTS ADD COLUMN WHOLESALER BOOLEAN "; ожидалось "., ADD, SET, RENAME, DROP, CHANGE, MODIFY, ALTER"
+Syntax error in SQL statement "ALTER TABLE MY-[*]DATABASE.PUBLIC.CLIENTS ADD COLUMN WHOLESALER BOOLEAN "; expected "., ADD, SET, RENAME, DROP, CHANGE, MODIFY, ALTER"; SQL statement:
+alter table MY-DATABASE.PUBLIC.CLIENTS add column wholesaler boolean [42001-197]
+2018-05-23 11:35:06 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Синтаксическая ошибка в выражении SQL "ALTER TABLE MY-[*]DATABASE.PUBLIC.PRODUCT ADD COLUMN WHOLESALE_PRICE INTEGER "; ожидалось "., ADD, SET, RENAME, DROP, CHANGE, MODIFY, ALTER"
+Syntax error in SQL statement "ALTER TABLE MY-[*]DATABASE.PUBLIC.PRODUCT ADD COLUMN WHOLESALE_PRICE INTEGER "; expected "., ADD, SET, RENAME, DROP, CHANGE, MODIFY, ALTER"; SQL statement:
+alter table MY-DATABASE.PUBLIC.PRODUCT add column wholesale_price integer [42001-197]
+2018-05-23 11:35:06 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Синтаксическая ошибка в выражении SQL "ALTER TABLE MY-[*]DATABASE.PUBLIC.USERS ADD COLUMN ACTIVE BOOLEAN NOT NULL "; ожидалось "., ADD, SET, RENAME, DROP, CHANGE, MODIFY, ALTER"
+Syntax error in SQL statement "ALTER TABLE MY-[*]DATABASE.PUBLIC.USERS ADD COLUMN ACTIVE BOOLEAN NOT NULL "; expected "., ADD, SET, RENAME, DROP, CHANGE, MODIFY, ALTER"; SQL statement:
+alter table MY-DATABASE.PUBLIC.USERS add column active boolean not null [42001-197]

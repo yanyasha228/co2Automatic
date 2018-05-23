@@ -20,6 +20,8 @@ public class Product {
 
     @Column(name = "description")
     private String description;
+    @Column(name = "wholesale_price")
+    private int wholesalePrice;
     @ManyToMany(mappedBy = "products")
     private List<Order> ordersList;
 
@@ -58,21 +60,5 @@ public class Product {
         this.description = description;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Product product = (Product) o;
-        return id == product.id &&
-                quantity == product.quantity &&
-                Objects.equals(name, product.name) &&
-                Objects.equals(description, product.description) &&
-                Objects.equals(ordersList, product.ordersList);
-    }
 
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(id, name, quantity, description, ordersList);
-    }
 }

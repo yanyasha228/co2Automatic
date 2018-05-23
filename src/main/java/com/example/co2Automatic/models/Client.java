@@ -10,9 +10,12 @@ public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
     @Column(name = "name")
     private String name;
 
+    @Column(name = "wholesaler")
+    private boolean wholesaler;
 
     @OneToMany( mappedBy = "client",fetch = FetchType.EAGER)
     private List<Order> clientsOrders;
@@ -44,19 +47,11 @@ public class Client {
         this.clientsOrders = clientsOrders;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Client client = (Client) o;
-        return id == client.id &&
-                Objects.equals(name, client.name) &&
-                Objects.equals(clientsOrders, client.clientsOrders);
+    public boolean isWholesaler() {
+        return wholesaler;
     }
 
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(id, name, clientsOrders);
+    public void setWholesaler(boolean wholesaler) {
+        this.wholesaler = wholesaler;
     }
 }
