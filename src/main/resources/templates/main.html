@@ -42,10 +42,10 @@
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="/blog">Статьи</a></li>
-                <li><a href="/blog/editor">Добавить свою</a></li>
+                <li><a href="/editor">Добавить свою</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/blog/login"><span class="glyphicon glyphicon-log-in"></span> Залогироваться</a></li>
+                <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Залогироваться</a></li>
             </ul>
         </div>
     </div>
@@ -66,9 +66,9 @@
                 </div>
             </div>
 
-            <div th:each="article : ${articles}">
-                <h3 th:text="${article.title}"/>
-                <p th:text="${article.content}"/>
+            <div th:each="order : ${orders}">
+                <h3 th:text="${order.client.name}"/>
+                <p th:text="${order.content}"/>
                 <hr/>
             </div>
         </div>
