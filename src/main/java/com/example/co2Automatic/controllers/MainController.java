@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/")
@@ -22,16 +23,18 @@ public class MainController {
         model.addAttribute("orders", service.getAllOrders());
         return "main";
     }
-///////
+
+    ///////
     @RequestMapping(value = "/editor")
     public String editorPage(Model model) {
         model.addAttribute("order", new Order());
         return "editor";
     }
 
-    @RequestMapping(value = "/editor/submit", method = RequestMethod.POST)
-    public String submitArticle(@ModelAttribute Order order) {
-        service.save(order);
+    @RequestMapping(value = "/editor/submit", method = RequestMethod.GET)
+    public String submitArticle(@RequestParam("field") String[] name,@RequestParam("qua") int[] quantity) {
+        String[] fields = name;
+        int[] fqua = quantity;
         return "redirect:../";
     }
 

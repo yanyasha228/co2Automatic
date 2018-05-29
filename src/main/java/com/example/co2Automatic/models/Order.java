@@ -19,9 +19,9 @@ public class Order {
     @Column(name = "manager_Id")
     private int ManagerId;
 
-    @Column(name = "payment_method")
-    @Enumerated(EnumType.STRING)
-    private PaymentMethod paymentMethod;
+    //@Column(name = "payment_method")
+    //@Enumerated(EnumType.STRING)
+    //private PaymentMethod paymentMethod;
 
     @ManyToMany
     @JoinTable(
