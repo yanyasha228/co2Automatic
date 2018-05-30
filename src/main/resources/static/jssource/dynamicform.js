@@ -1,7 +1,5 @@
-$(function()
-{
-    $(document).on('click', '.btn-add', function(e)
-    {
+$(function () {
+    $(document).on('click', '.btn-add', function (e) {
         e.preventDefault();
 
         var controlForm = $('.controls form:first'),
@@ -14,8 +12,7 @@ $(function()
             .removeClass('btn-add').addClass('btn-remove')
             .removeClass('btn-success').addClass('btn-danger')
             .html('<span class="glyphicon glyphicon-minus"></span>');
-    }).on('click', '.btn-remove', function(e)
-    {
+    }).on('click', '.btn-remove', function (e) {
         $(this).parents('.entry:first').remove();
 
         e.preventDefault();
@@ -23,12 +20,23 @@ $(function()
     });
 });
 
-function numValid(text){
-    var testText;
-    text.onkeyup          =  function testKey(){
-        var testText       =  text.value;
-        if(testText*1 + 0  !=  text.value){
-            text.value      = testText.substring(0, testText.length - 1)
+
+function numValid(input) {
+    $(input).keydown(function (event) {
+        // Разрешаем: backspace, delete, tab и escape
+        if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 ||
+            // Разрешаем: Ctrl+A
+            (event.keyCode == 65 && event.ctrlKey === true) ||
+            // Разрешаем: home, end, влево, вправо
+            (event.keyCode >= 35 && event.keyCode <= 39)) {
+            // Ничего не делаем
+            return;
         }
-    }
+        else {
+            // Обеждаемся, что это цифра, и останавливаем событие keypress
+            if ((event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
+                event.preventDefault();
+            }
+        }
+    });
 };

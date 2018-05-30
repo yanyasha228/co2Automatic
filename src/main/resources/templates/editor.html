@@ -54,8 +54,8 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
-                <li><a href="/">Статьи</a></li>
-                <li><a href="//editor" class="active">Добавить свою</a></li>
+                <li><a href="/">Orders</a></li>
+                <li><a href="//editor" class="active">Add Order</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="//login"><span class="glyphicon glyphicon-log-in"></span> Залогироваться</a></li>
@@ -89,25 +89,38 @@
         <div class="control-group" id="fields">
             <div class="controls">
                 <form th:action="@{/editor/submit}" method="get" role="form" autocomplete="off">
-                    <div>
-                        <button type="submit" class="btn btn-success">Add</button>
-                    </div>
-                    <div class="entry">
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                            <label for="field">Product</label>
-                            <input class="form-control" name="field" id= "field" type="text" placeholder="Type something"/>
+                    <div class="form-row align-items-center">
+                        <div class="form-inline">
+                        <div>
+                            <button type="submit" class="btn btn-success">Add</button>
                         </div>
-                            <div class="form-group col-md-2">
-                                <label for="qua">Quantity</label>
-                            <input class="form-control" name="qua" id="qua" type="text" placeholder="0" onkeyup="numValid(this)"/>
+                            <label class="mr-sm-2" for="paymentMethod">Preference</label>
+                            <select class="custom-select mr-sm-2" id="paymentMethod">
+                                <option selected>Choose...</option>
+                                <option value="1">C.O.D</option>
+                                <option value="2">Bank Transfer</option>
+                                <option value="3">Pickup</option>
+                            </select>
+                            </div>
+                        <div class="entry">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="field">Product</label>
+                                    <input class="form-control" name="field" id="field" type="text"
+                                           placeholder="Type something"/>
                                 </div>
-                        </div>
-                        <span class="input-group-btn">
+                                <div class="form-group col-md-2">
+                                    <label for="qua">Quantity</label>
+                                    <input class="form-control" name="qua" id="qua" type="text" placeholder="0"
+                                           pattern="^[ 0-9]+$" onclick="numValid(this)"/>
+                                </div>
+                            </div>
+                            <span class="input-group-btn">
                             <button class="btn btn-success btn-add" type="button">
                                 <span class="glyphicon glyphicon-plus"></span>
                             </button>
                         </span>
+                        </div>
                     </div>
                 </form>
                 <br>
