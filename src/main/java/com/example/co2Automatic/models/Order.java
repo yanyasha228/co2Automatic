@@ -13,15 +13,25 @@ public class Order {
     private long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "client_id",referencedColumnName="id",nullable=false)
+    @JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false)
     private Client client;
 
-    @Column(name = "manager_Id")
-    private int ManagerId;
+    @Column(name = "order_comment")
+    private String orderComment;
 
-    //@Column(name = "payment_method")
-    //@Enumerated(EnumType.STRING)
-    //private PaymentMethod paymentMethod;
+    @Column(name = "delivery_place")
+    private String deliveryPlace;
+
+    @Column(name = "delivery_date")
+    private Date deliveryDate;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "manager", referencedColumnName = "id", nullable = false)
+    private User manager;
+
+    @Column(name = "payment_method")
+    @Enumerated(EnumType.STRING)
+    private PaymentMethod paymentMethod;
 
     @ManyToMany
     @JoinTable(
@@ -54,22 +64,6 @@ public class Order {
         this.client = client;
     }
 
-    public int getManagerId() {
-        return ManagerId;
-    }
-
-    public void setManagerId(int managerId) {
-        ManagerId = managerId;
-    }
-
-    public List<Product> getProduct() {
-        return products;
-    }
-
-    public void setProduct(List<Product> product) {
-        this.products = product;
-    }
-
     public Date getOrdersDate() {
         return ordersDate;
     }
@@ -78,21 +72,19 @@ public class Order {
         this.ordersDate = ordersDate;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Order order = (Order) o;
-        return id == order.id &&
-                ManagerId == order.ManagerId &&
-                Objects.equals(client, order.client) &&
-                Objects.equals(products, order.products) &&
-                Objects.equals(ordersDate, order.ordersDate);
+    public String getOrderComment() {
+        return orderComment;
     }
 
-    @Override
-    public int hashCode() {
+    public void setOrderComment(String orderComment) {
+        this.orderComment = orderComment;
+    }
 
-        return Objects.hash(id, client, ManagerId, products, ordersDate);
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 }

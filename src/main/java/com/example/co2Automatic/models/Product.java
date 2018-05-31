@@ -20,8 +20,13 @@ public class Product {
 
     @Column(name = "description")
     private String description;
+
+    @Column(name = "price")
+    private int price;
+
     @Column(name = "wholesale_price")
     private int wholesalePrice;
+
     @ManyToMany(mappedBy = "products")
     private List<Order> ordersList;
 
@@ -60,5 +65,27 @@ public class Product {
         this.description = description;
     }
 
+    public int getPrice() {
+        return price;
+    }
 
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public int getWholesalePrice() {
+        return wholesalePrice;
+    }
+
+    public void setWholesalePrice(int wholesalePrice) {
+        this.wholesalePrice = wholesalePrice;
+    }
+
+    public List<Order> getOrdersList() {
+        return ordersList;
+    }
+
+    public void setOrdersList(List<Order> ordersList) {
+        this.ordersList = ordersList;
+    }
 }

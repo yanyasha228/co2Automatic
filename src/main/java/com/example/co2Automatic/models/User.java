@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -33,6 +34,9 @@ public class User implements UserDetails {
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
+
+    @OneToMany( mappedBy = "manager",fetch = FetchType.EAGER)
+    private List<Order> managerOrders;
 
     private boolean active;
 
@@ -101,21 +105,19 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(id, user.id) &&
-                Objects.equals(username, user.username) &&
-                Objects.equals(password, user.password) &&
-                Objects.equals(confirmPassword, user.confirmPassword) &&
-                Objects.equals(roles, user.roles);
+    public List<Order> getManagerOrders() {
+        return managerOrders;
     }
 
-    @Override
-    public int hashCode() {
+    public void setManagerOrders(List<Order> managerOrders) {
+        this.managerOrders = managerOrders;
+    }
 
-        return Objects.hash(id, username, password, confirmPassword, roles);
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

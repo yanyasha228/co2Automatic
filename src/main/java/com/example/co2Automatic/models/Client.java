@@ -14,10 +14,13 @@ public class Client {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
     @Column(name = "wholesaler")
     private boolean wholesaler;
 
-    @OneToMany( mappedBy = "client",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
     private List<Order> clientsOrders;
 
     public Client() {
