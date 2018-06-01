@@ -3,132 +3,125 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+          integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
+            integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+            crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
     <script th:src="@{jssource/dynamicform.js}"></script>
-    <style>
-        .navbar {
-            margin-bottom: 0;
-            border-radius: 0;
-        }
 
-        .row.content {
-            height: 450px
-        }
-
-        footer {
-            background-color: #555;
-            color: white;
-            padding: 15px;
-        }
-
-        @media screen and (max-width: 767px) {
-            .row.content {
-                height: auto;
-            }
-        }
-
-        .entry:not(:first-of-type) {
-            margin-top: 10px;
-        }
-
-        .glyphicon {
-            font-size: 12px;
-        }
-    </style>
     <title>Страница редактора</title>
 </head>
 <body>
-
-
-<nav class="navbar navbar-inverse">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-        </div>
-        <div class="collapse navbar-collapse" id="myNavbar">
-            <ul class="nav navbar-nav">
-                <li><a href="/">Orders</a></li>
-                <li><a href="//editor" class="active">Add Order</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="//login"><span class="glyphicon glyphicon-log-in"></span> Залогироваться</a></li>
-            </ul>
-        </div>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Features</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Pricing</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                    Dropdown link
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+            </li>
+        </ul>
+        <form class="form-inline">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
     </div>
 </nav>
 
-<!--<div class="container-fluid text-center">-->
-<!--<div class="row content">-->
-<!--<div class="col-sm-8 text-left">-->
-<!--<form action="#" th:action="@{/blog/editor/submit}" th:object="${order}" method="post">-->
-<!--<h1>Создание статьи</h1>-->
-<!--<div class="form-group">-->
-<!--<label for="usr">Название</label>-->
-<!--<input type="text" class="form-control" id="usr" th:field="*{managerId}"/>-->
-<!--</div>-->
-<!--<div class="form-group">-->
-<!--<label for="comment">Текст</label>-->
-<!--<textarea class="form-control" rows="20" id="comment" th:field="*{product}"></textarea>-->
-<!--</div>-->
-
-<!--<button type="submit" class="btn btn-success">Сохранить</button>-->
-<!--</form>-->
-<!--<hr/>-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
 <div class="container">
     <div class="row">
         <div class="control-group" id="fields">
             <div class="controls">
                 <form th:action="@{/editor/submit}" method="get" role="form" autocomplete="off">
-                    <div class="form-row align-items-center">
-                        <div class="form-inline">
-                        <div>
-                            <button type="submit" class="btn btn-success">Add</button>
+                    <div class="form-row">
+                        <div class="form-group col-md-6"><label for="inputEmail4">Email</label> <input type="email"
+                                                                                                       class="form-control"
+                                                                                                       id="inputEmail4"
+                                                                                                       placeholder="Email">
                         </div>
-                            <div class="form-group">
-                                <label for="comment">Текст</label>
-                                <textarea class="form-control" rows="20" id="comment" name="comment"></textarea>
-                                </div>
-                            <label class="mr-sm-2" for="paymentMethod">Preference</label>
-                            <select class="custom-select mr-sm-2" id="paymentMethod">
-                                <option selected>Choose...</option>
-                                <option value="1">C.O.D</option>
-                                <option value="2">Bank Transfer</option>
-                                <option value="3">Pickup</option>
-                            </select>
+                        <div class="form-group col-md-6"><label for="inputPassword4">Password</label> <input
+                                type="password" class="form-control" id="inputPassword4" placeholder="Password"></div>
+                    </div>
+                    <div class="form-group"><label for="inputAddress">Address</label> <input type="text"
+                                                                                             class="form-control"
+                                                                                             id="inputAddress"
+                                                                                             placeholder="1234 Main St">
+                    </div>
+                    <div class="form-group"><label for="inputAddress2">Address 2</label> <input type="text"
+                                                                                                class="form-control"
+                                                                                                id="inputAddress2"
+                                                                                                placeholder="Apartment, studio, or floor">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6"><label for="inputCity">City</label> <input type="text"
+                                                                                                    class="form-control"
+                                                                                                    id="inputCity">
+                        </div>
+                        <div class="form-group col-md-4"><label for="inputState">State</label> <select id="inputState"
+                                                                                                       class="form-control">
+                            <option selected>Choose...</option>
+                            <option>...</option>
+                        </select></div>
+                        <div class="form-group col-md-2">
+                            <label for="inputZip">Zip</label>
+                            <input type="text" class="form-control" id="inputZip"></div>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-success btn-add" type="button">Add Order</button>
+                    </div>
+                    <div class="entry">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="field">Product</label>
+                                <input class="form-control" name="field" id="field" type="text"
+                                       placeholder="Type something"/>
                             </div>
-                        <div class="entry">
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label for="field">Product</label>
-                                    <input class="form-control" name="field" id="field" type="text"
-                                           placeholder="Type something"/>
-                                </div>
-                                <div class="form-group col-md-2">
-                                    <label for="qua">Quantity</label>
-                                    <input class="form-control" name="qua" id="qua" type="text" placeholder="0"
-                                           pattern="^[ 0-9]+$" onclick="numValid(this)"/>
-                                </div>
+                            <div class="form-group col-md-2">
+                                <label for="qua">Quantity</label>
+                                <input class="form-control" name="qua" id="qua" type="text" placeholder="0"
+                                       pattern="^[ 0-9]+$" onclick="numValid(this)"/>
                             </div>
+
+                            <div class="form-group col-md-1">
                             <span class="input-group-btn">
                             <button class="btn btn-success btn-add" type="button">
                                 <span class="glyphicon glyphicon-plus"></span>
                             </button>
                         </span>
+                            </div>
                         </div>
                     </div>
                 </form>
                 <br>
-                <small>Press <span class="glyphicon glyphicon-plus gs"></span> to add another form field :)</small>
             </div>
         </div>
     </div>
