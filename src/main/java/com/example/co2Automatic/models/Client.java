@@ -14,8 +14,9 @@ public class Client {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "phone_number")
-    private String phoneNumber;
+    @OneToOne(cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private PhoneNumber phoneNumber;
 
     @Column(name = "wholesaler")
     private boolean wholesaler;
