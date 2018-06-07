@@ -32,10 +32,10 @@ public class MainController {
     }
 
     @RequestMapping(value = "/editor/submit", method = RequestMethod.GET)
-    public String submitArticle(@RequestParam() String[] field,@RequestParam() int[] qua, @RequestParam("comment") String comment) {
-        String[] fields = field;
-        int[] fqua = qua;
-        String com = comment;
+    public String submitArticle() {
+//        String[] fields = field;
+//        int[] fqua = qua;
+//        String com = comment;
         return "redirect:../";
     }
 

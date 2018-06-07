@@ -1,3 +1,4 @@
+
 $(function () {
     $(document).on('click', '.btn-add', function (e) {
         e.preventDefault();
@@ -19,6 +20,7 @@ $(function () {
         return false;
     });
 });
+
 
 
 function numValid(input) {

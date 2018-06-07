@@ -14,6 +14,9 @@ public class Client {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "surname")
+    private String surname;
+
     @OneToOne(cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private PhoneNumber phoneNumber;
@@ -57,5 +60,21 @@ public class Client {
 
     public void setWholesaler(boolean wholesaler) {
         this.wholesaler = wholesaler;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public PhoneNumber getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(PhoneNumber phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }
