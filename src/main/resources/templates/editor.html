@@ -68,17 +68,20 @@
                                 type="tel"
                                 class="form-control"
                                 id="inputPhoneNumber"
+                                name="inputPhoneNumber"
                                 onclick="numValid(this)">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6"><label for="inputDeliveryDate">Дата отправки</label> <input
-                                type="datetime-local"
+                                type="date"
                                 class="form-control"
-                                id="inputDeliveryDate">
+                                id="inputDeliveryDate"
+                                name="inputDeliveryDate">
                         </div>
                         <div class="form-group col-md-6"><label for="inputPaymentMethod">Способ оплаты</label> <select
                                 id="inputPaymentMethod"
+                                name="inputPaymentMethod"
                                 class="form-control">
                             <option selected>Наложка</option>
                             <option>Оценка</option>
@@ -90,10 +93,11 @@
                         <div class="form-group col-md-6"><label for="inputName">Имя</label> <input type="text"
                                                                                                    class="form-control"
                                                                                                    id="inputName"
+                                                                                                   name="inputName"
                                                                                                    placeholder="Имя">
                         </div>
                         <div class="form-group col-md-6"><label for="inputSurname">Фамилия</label> <input
-                                type="text" class="form-control" id="inputSurname" placeholder="Фамилия"></div>
+                                type="text" class="form-control" id="inputSurname" name="inputSurname" placeholder="Фамилия"></div>
                     </div>
 
 
@@ -101,12 +105,13 @@
                         <div class="form-group col-md-10"><label for="inputCity">Населенный пункт</label> <input
                                 type="text"
                                 class="form-control"
-                                id="inputCity">
+                                id="inputCity"
+                                name="inputCity">
                         </div>
 
                         <div class="form-group col-md-2">
                             <label for="inputWarehouseNumber">№</label>
-                            <input type="number" class="form-control" id="inputWarehouseNumber"
+                            <input type="number" class="form-control" id="inputWarehouseNumber" name="inputWarehouseNumber"
                                    onclick="numValid(this)">
                         </div>
                     </div>
@@ -115,12 +120,13 @@
                             <input
                                     type="text"
                                     class="form-control"
-                                    id="inputOrderComment">
+                                    id="inputOrderComment"
+                                    name="inputOrderComment">
                         </div>
 
                     </div>
                     <div class="form-group">
-                        <button class="btn btn-success btn-add" type="button">Добавить</button>
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Добавить</button>
                     </div>
                     <div class="entry">
                         <div class="form-row">
