@@ -87,4 +87,36 @@ public class Order {
     public void setProducts(List<Product> products) {
         this.products = products;
     }
+
+    public String getDeliveryPlace() {
+        return deliveryPlace;
+    }
+
+    public void setDeliveryPlace(String deliveryPlace) {
+        this.deliveryPlace = deliveryPlace;
+    }
+
+    public Date getDeliveryDate() {
+        return deliveryDate;
+    }
+
+    public void setDeliveryDate(Date deliveryDate) {
+        this.deliveryDate = deliveryDate;
+    }
+
+    public User getManager() {
+        return manager;
+    }
+
+    public void setManager(User manager) {
+        this.manager = manager;
+    }
+
+    public PaymentMethod getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
 }

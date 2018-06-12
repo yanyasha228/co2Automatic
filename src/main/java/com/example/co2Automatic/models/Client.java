@@ -21,8 +21,8 @@ public class Client {
     @PrimaryKeyJoinColumn
     private PhoneNumber phoneNumber;
 
-    @Column(name = "wholesaler")
-    private boolean wholesaler;
+//    @Column(name = "wholesaler")
+//    private boolean wholesaler;
 
     @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
     private List<Order> clientsOrders;
@@ -52,14 +52,6 @@ public class Client {
 
     public void setClientsOrders(List<Order> clientsOrders) {
         this.clientsOrders = clientsOrders;
-    }
-
-    public boolean isWholesaler() {
-        return wholesaler;
-    }
-
-    public void setWholesaler(boolean wholesaler) {
-        this.wholesaler = wholesaler;
     }
 
     public String getSurname() {

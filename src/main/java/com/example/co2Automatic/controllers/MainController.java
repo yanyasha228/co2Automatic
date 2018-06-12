@@ -24,21 +24,6 @@ public class MainController {
         return "main";
     }
 
-    ///////
-    @RequestMapping(value = "/editor")
-    public String editorPage(Model model) {
-        model.addAttribute("order", new Order());
-        return "editor";
-    }
-
-    @RequestMapping(value = "/editor/submit", method = RequestMethod.GET)
-    public String submitArticle() {
-//        String[] fields = field;
-//        int[] fqua = qua;
-//        String com = comment;
-        return "redirect:../";
-    }
-
     @RequestMapping(value = "/login")
     public String loginPage() {
         return "login";

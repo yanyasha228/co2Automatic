@@ -15,6 +15,10 @@ public class PhoneNumber {
     public PhoneNumber() {
     }
 
+    public PhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     public long getId() {
         return id;
     }
