@@ -29,7 +29,7 @@ public class EditorController {
 
     @RequestMapping(value = "/submit", method = RequestMethod.GET)
     public String submitOrder(@RequestParam String inputPhoneNumber,
-                                @RequestParam Date inputDeliveryDate,
+                                @RequestParam String inputDeliveryDate,
                                 @RequestParam String inputPaymentMethod,
                                 @RequestParam String inputName,
                                 @RequestParam String inputSurname,
@@ -44,8 +44,8 @@ public class EditorController {
         newClient.setSurname(inputSurname);
         Order newOrder = new Order();
         newOrder.setClient(newClient);
-        newOrder.setOrdersDate(inputDeliveryDate);
-        newOrder.setDeliveryDate(inputDeliveryDate);
+//        newOrder.setOrdersDate(inputDeliveryDate);
+//        newOrder.setDeliveryDate(inputDeliveryDate);
         newOrder.setOrderComment(inputOrderComment);
         newOrder.setDeliveryPlace(inputCity);
         newOrder.setManager(new User());

@@ -69,4 +69,6 @@ public class Client {
     public void setPhoneNumber(PhoneNumber phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+
 }

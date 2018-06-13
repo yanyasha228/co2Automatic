@@ -1,5 +1,7 @@
 package com.example.co2Automatic.models;
 
+import org.hibernate.criterion.Order;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
@@ -22,13 +24,16 @@ public class Product {
     private String description;
 
     @Column(name = "price")
-    private int price;
+    private double price;
 
     @Column(name = "wholesale_price")
     private int wholesalePrice;
 
-    @ManyToMany(mappedBy = "products")
-    private List<Order> ordersList;
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
+    private List<OrderLine> orderLines;
+
+//    @ManyToMany(mappedBy = "products")
+//    private List<Order> ordersList;
 
     public Product() {
     }
@@ -65,7 +70,7 @@ public class Product {
         this.description = description;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
@@ -81,11 +86,24 @@ public class Product {
         this.wholesalePrice = wholesalePrice;
     }
 
-    public List<Order> getOrdersList() {
-        return ordersList;
+//    public List<Order> getOrdersList() {
+//        return ordersList;
+//    }
+//
+//    public void setOrdersList(List<Order> ordersList) {
+//        this.ordersList = ordersList;
+//    }
+
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 
-    public void setOrdersList(List<Order> ordersList) {
-        this.ordersList = ordersList;
+    public List<OrderLine> getOrderLines() {
+        return orderLines;
+    }
+
+    public void setOrderLines(List<OrderLine> orderLines) {
+        this.orderLines = orderLines;
     }
 }

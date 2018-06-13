@@ -29,17 +29,26 @@ public class Order {
     @JoinColumn(name = "manager", referencedColumnName = "id", nullable = false)
     private User manager;
 
+    @Column(name = "order_volume_general")
+    private double OrderVolumeGeneral;
+
+    @Column(name = "order_weight")
+    private double OrderWeight;
+
     @Column(name = "payment_method")
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
 
-    @ManyToMany
-    @JoinTable(
-            name = "products_in_order",
-            joinColumns = {@JoinColumn(name = "order_id")},
-            inverseJoinColumns = {@JoinColumn(name = "product_id")}
-    )
-    private List<Product> products;
+//    @ManyToMany
+//    @JoinTable(
+//            name = "products_in_order",
+//            joinColumns = {@JoinColumn(name = "order_id")},
+//            inverseJoinColumns = {@JoinColumn(name = "product_id")}
+//    )
+//    private List<Product> products;
+
+    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
+    private List<OrderLine> orderLines;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "ordersDate")
@@ -80,13 +89,13 @@ public class Order {
         this.orderComment = orderComment;
     }
 
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
+//    public List<Product> getProducts() {
+//        return products;
+//    }
+//
+//    public void setProducts(List<Product> products) {
+//        this.products = products;
+//    }
 
     public String getDeliveryPlace() {
         return deliveryPlace;
@@ -118,5 +127,29 @@ public class Order {
 
     public void setPaymentMethod(PaymentMethod paymentMethod) {
         this.paymentMethod = paymentMethod;
+    }
+
+    public double getOrderVolumeGeneral() {
+        return OrderVolumeGeneral;
+    }
+
+    public void setOrderVolumeGeneral(double orderVolumeGeneral) {
+        OrderVolumeGeneral = orderVolumeGeneral;
+    }
+
+    public double getOrderWeight() {
+        return OrderWeight;
+    }
+
+    public void setOrderWeight(double orderWeight) {
+        OrderWeight = orderWeight;
+    }
+
+    public List<OrderLine> getOrderLines() {
+        return orderLines;
+    }
+
+    public void setOrderLines(List<OrderLine> orderLines) {
+        this.orderLines = orderLines;
     }
 }
