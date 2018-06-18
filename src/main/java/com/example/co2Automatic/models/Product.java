@@ -27,7 +27,7 @@ public class Product {
     private double price;
 
     @Column(name = "wholesale_price")
-    private int wholesalePrice;
+    private double wholesalePrice;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     private List<OrderLine> orderLines;
@@ -74,15 +74,11 @@ public class Product {
         return price;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public int getWholesalePrice() {
+    public double getWholesalePrice() {
         return wholesalePrice;
     }
 
-    public void setWholesalePrice(int wholesalePrice) {
+    public void setWholesalePrice(double wholesalePrice) {
         this.wholesalePrice = wholesalePrice;
     }
 

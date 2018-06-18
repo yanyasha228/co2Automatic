@@ -1,7 +1,9 @@
 package com.example.co2Automatic.controllers;
 
 import com.example.co2Automatic.models.Order;
+import com.example.co2Automatic.models.User;
 import com.example.co2Automatic.services.OrderService;
+import com.example.co2Automatic.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/")
 public class MainController {
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private OrderService service;
@@ -21,6 +25,7 @@ public class MainController {
     @RequestMapping
     public String mainPage(Model model) {
         model.addAttribute("orders", service.getAllOrders());
+
         return "main";
     }
 

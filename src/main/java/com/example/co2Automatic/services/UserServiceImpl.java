@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserSevice implements UserDetailsService {
+public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
 
@@ -22,5 +22,15 @@ public class UserSevice implements UserDetailsService {
         }
 
         return user;
+    }
+
+    @Override
+    public void save(User user) {
+        userDao.save(user);
+    }
+
+    @Override
+    public void delete(User user){
+        userDao.delete(user);
     }
 }
