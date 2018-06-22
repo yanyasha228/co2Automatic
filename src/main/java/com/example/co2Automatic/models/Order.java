@@ -1,6 +1,7 @@
 package com.example.co2Automatic.models;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -48,7 +49,7 @@ public class Order {
 //    private List<Product> products;
 
     @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
-    private List<OrderLine> orderLines;
+    private List<OrderLine> orderLines = new ArrayList<>();
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "ordersDate")

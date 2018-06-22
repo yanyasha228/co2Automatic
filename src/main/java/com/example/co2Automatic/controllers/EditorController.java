@@ -7,12 +7,15 @@ import com.example.co2Automatic.models.PhoneNumber;
 import com.example.co2Automatic.models.User;
 import com.example.co2Automatic.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 @Controller
@@ -24,33 +27,26 @@ public class EditorController {
 
     @RequestMapping
     public String editorPage(Model model) {
+
+        model.addAttribute("nowDate", new Date());
+
         return "editor";
     }
 
     @RequestMapping(value = "/submit", method = RequestMethod.GET)
-    public String submitOrder(@RequestParam String inputPhoneNumber,
-                                @RequestParam String inputDeliveryDate,
-                                @RequestParam String inputPaymentMethod,
-                                @RequestParam String inputName,
-                                @RequestParam String inputSurname,
-                                @RequestParam String inputCity,
-                                @RequestParam int inputWarehouseNumber,
-                                @RequestParam String inputOrderComment,
-                                @RequestParam String[] field,
-                                @RequestParam int[] qua) {
-        Client newClient = new Client();
-        newClient.setPhoneNumber(new PhoneNumber(inputPhoneNumber));
-        newClient.setName(inputName);
-        newClient.setSurname(inputSurname);
-        Order newOrder = new Order();
-        newOrder.setClient(newClient);
-//        newOrder.setOrdersDate(inputDeliveryDate);
-//        newOrder.setDeliveryDate(inputDeliveryDate);
-        newOrder.setOrderComment(inputOrderComment);
-        newOrder.setDeliveryPlace(inputCity);
-        newOrder.setManager(new User());
-
-        orderService.save(newOrder);
+    public String submitOrder(@AuthenticationPrincipal User user,
+                              @RequestParam long inputPhoneNumber,
+                              @RequestParam String inputDeliveryDate,
+                              @RequestParam String inputPaymentMethod,
+                              @RequestParam String inputName,
+                              @RequestParam String inputSurname,
+                              @RequestParam String inputCity,
+                              @RequestParam int inputWarehouseNumber,
+                              @RequestParam String inputOrderComment,
+                              @RequestParam String[] field,
+                              @RequestParam int[] qua,
+                              @RequestParam Double inputWeight,
+                              @RequestParam Double inputVolume) {
 
 
         return "redirect:../";

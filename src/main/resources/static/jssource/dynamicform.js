@@ -20,7 +20,12 @@ $(function () {
         return false;
     });
 });
-
+// function sumDouble(input) {
+//
+//
+//     })
+//
+// }
 function numValidDouble(input) {
     $(input).keydown(function (event) {
         // Разрешаем: backspace, delete, tab, escape , "."
@@ -31,6 +36,7 @@ function numValidDouble(input) {
             // Разрешаем: home, end, влево, вправо
             (event.keyCode >= 35 && event.keyCode <= 39)) {
             // Ничего не делаем
+
             return;
         }
         else {
@@ -40,6 +46,7 @@ function numValidDouble(input) {
             }
         }
     });
+
 };
 
 function numValid(input) {

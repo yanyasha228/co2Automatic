@@ -1,6 +1,7 @@
 package com.example.co2Automatic.models;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -18,14 +19,14 @@ public class Client {
     private String surname;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
+    @JoinColumn(name="phoneNumber_id")
     private PhoneNumber phoneNumber;
 
 //    @Column(name = "wholesaler")
 //    private boolean wholesaler;
 
     @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
-    private List<Order> clientsOrders;
+    private List<Order> clientsOrders = new ArrayList<>();
 
     public Client() {
     }

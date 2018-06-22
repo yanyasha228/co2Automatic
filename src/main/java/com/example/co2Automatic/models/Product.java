@@ -3,6 +3,7 @@ package com.example.co2Automatic.models;
 import org.hibernate.criterion.Order;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -30,7 +31,7 @@ public class Product {
     private double wholesalePrice;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
-    private List<OrderLine> orderLines;
+    private List<OrderLine> orderLines = new ArrayList<>();
 
 //    @ManyToMany(mappedBy = "products")
 //    private List<Order> ordersList;

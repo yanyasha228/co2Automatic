@@ -6,32 +6,32 @@ import javax.persistence.*;
 @Table(name = "phone_numbers")
 public class PhoneNumber {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-
     @Column(name = "phone_number")
-    private String phoneNumber;
+    private long phoneNumber;
+
+    @OneToOne(mappedBy = "phoneNumber")
+    private Client client;
 
     public PhoneNumber() {
     }
 
-    public PhoneNumber(String phoneNumber) {
+    public PhoneNumber(long phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getPhoneNumber() {
+    public long getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
+    public void setPhoneNumber(long phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 }
