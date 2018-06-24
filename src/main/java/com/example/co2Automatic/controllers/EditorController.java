@@ -34,8 +34,7 @@ public class EditorController {
     }
 
     @RequestMapping(value = "/submit", method = RequestMethod.GET)
-    public String submitOrder(@AuthenticationPrincipal User user,
-                              @RequestParam long inputPhoneNumber,
+    public String submitOrder(@RequestParam String inputPhoneNumber,
                               @RequestParam String inputDeliveryDate,
                               @RequestParam String inputPaymentMethod,
                               @RequestParam String inputName,
@@ -47,7 +46,19 @@ public class EditorController {
                               @RequestParam int[] qua,
                               @RequestParam Double inputWeight,
                               @RequestParam Double inputVolume) {
-
+        String zal = field[0];
+orderService.addOrder(inputPhoneNumber,
+        inputDeliveryDate,
+        inputPaymentMethod,
+        inputName,
+        inputSurname,
+        inputCity,
+        inputWarehouseNumber,
+        inputOrderComment,
+        field,
+        qua,
+        inputWeight,
+        inputVolume);
 
         return "redirect:../";
     }

@@ -1,10 +1,13 @@
 package com.example.co2Automatic.models;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@Data
 @Entity
 @Table(name = "clients")
 public class Client {
@@ -18,58 +21,14 @@ public class Client {
     @Column(name = "surname")
     private String surname;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="phoneNumber_id")
+    @OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
     private PhoneNumber phoneNumber;
 
 //    @Column(name = "wholesaler")
 //    private boolean wholesaler;
 
-    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
-    private List<Order> clientsOrders = new ArrayList<>();
-
-    public Client() {
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Order> getClientsOrders() {
-        return clientsOrders;
-    }
-
-    public void setClientsOrders(List<Order> clientsOrders) {
-        this.clientsOrders = clientsOrders;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public PhoneNumber getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(PhoneNumber phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
+    @OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Order> clientsOrders = new ArrayList<Order>();
 
 
 }

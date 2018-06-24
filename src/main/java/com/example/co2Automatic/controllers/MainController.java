@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/")
 public class MainController {
@@ -20,11 +22,12 @@ public class MainController {
     private UserService userService;
 
     @Autowired
-    private OrderService service;
+    private OrderService orderService;
 
     @RequestMapping
     public String mainPage(Model model) {
-        model.addAttribute("orders", service.getAllOrders());
+        List<Order> orderList = orderService.getAllOrders();
+        model.addAttribute("orders", orderList);
 
         return "main";
     }

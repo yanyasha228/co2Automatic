@@ -1,37 +1,30 @@
 package com.example.co2Automatic.models;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
+@Data
 @Entity
 @Table(name = "phone_numbers")
 public class PhoneNumber {
-    @Id
-    @Column(name = "phone_number")
-    private long phoneNumber;
-
-    @OneToOne(mappedBy = "phoneNumber")
-    private Client client;
 
     public PhoneNumber() {
     }
 
-    public PhoneNumber(long phoneNumber) {
+    public PhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
-    public long getPhoneNumber() {
-        return phoneNumber;
-    }
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
 
-    public void setPhoneNumber(long phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
+    @Column(name = "phone_number")
+    private String phoneNumber;
 
-    public Client getClient() {
-        return client;
-    }
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "client_id")
+    private Client client;
 
-    public void setClient(Client client) {
-        this.client = client;
-    }
 }

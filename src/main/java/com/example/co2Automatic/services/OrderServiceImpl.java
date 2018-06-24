@@ -22,7 +22,8 @@ public class OrderServiceImpl implements OrderService {
     private OrderDao orderDao;
     @Autowired
     private PhoneNumberService phoneNumberService;
-
+    @Autowired
+    private ProductService productService;
     @Autowired
     ClientService clientService;
 
@@ -31,8 +32,8 @@ public class OrderServiceImpl implements OrderService {
         orderDao.save(order);
     }
 
-    public void addOrder(User user,
-                         long inputPhoneNumber,
+    @Override
+    public void addOrder(String inputPhoneNumber,
                          String inputDeliveryDate,
                          String inputPaymentMethod,
                          String inputName,
@@ -55,41 +56,61 @@ public class OrderServiceImpl implements OrderService {
         }
 
 
-        if (phoneNumberService.getPhoneNumber(inputPhoneNumber) == null) {
+        if (!phoneNumberService.getPhoneNumberByPhoneNumber(inputPhoneNumber).isPresent()) {
             newPhoneNumber = new PhoneNumber(inputPhoneNumber);
             newClient = new Client();
             newClient.setPhoneNumber(newPhoneNumber);
             newClient.setName(inputName);
             newClient.setSurname(inputSurname);
             newPhoneNumber.setClient(newClient);
-            phoneNumberService.save(newPhoneNumber);
-            clientService.save(newClient);
+        } else {
+            newPhoneNumber = phoneNumberService.getPhoneNumberByPhoneNumber(inputPhoneNumber).get();
+            newClient = newPhoneNumber.getClient();
         }
 
         Order newOrder = new Order();
-
+        newOrder.setClient(newClient);
         newOrder.setDeliveryDate(orderDate);
         newOrder.setOrdersDate(new Date());
 
-        switch (inputPaymentMethod) {
-            case "Наложка":
-                newOrder.setPaymentMethod(PaymentMethod.COD);
-            case "Оценка":
-                newOrder.setPaymentMethod(PaymentMethod.BANK_TRANSFER);
-            case "Самовывоз":
-                newOrder.setPaymentMethod(PaymentMethod.PICKUP);
+        if (inputPaymentMethod.equalsIgnoreCase("наложка")) newOrder.setPaymentMethod(PaymentMethod.COD);
+        if (inputPaymentMethod.equalsIgnoreCase("оценка")) newOrder.setPaymentMethod(PaymentMethod.BANK_TRANSFER);
+        if (inputPaymentMethod.equalsIgnoreCase("самовывоз")) newOrder.setPaymentMethod(PaymentMethod.PICKUP);
+
+        if (inputOrderComment != null) newOrder.setOrderComment(inputOrderComment);
+
+        newOrder.setDeliveryPlace(inputCity);
+
+        newOrder.setDeliveryPlaceWarehouseNumber(inputWarehouseNumber);
+
+        newOrder.setOrderWeight(inputWeight);
+
+        newOrder.setOrderVolumeGeneral(inputVolume);
+
+        for (int i = 0; i < field.length; i++) {
+            OrderLine newOrderLine = new OrderLine();
+            Product prodForOrderLine = productService.findByProductName(field[i]).orElse(null);
+            if (prodForOrderLine != null) {
+                newOrderLine.setProduct(prodForOrderLine);
+                newOrderLine.setAmount(qua[i]);
+                newOrderLine.setPurchasePrice(newOrderLine.getProduct().getPrice() * newOrderLine.getAmount());
+                newOrderLine.setOrder(newOrder);
+                newOrder.getOrderLines().add(newOrderLine);
+            }
+
+
         }
 
-
-
+        save(newOrder);
     }
 
     @Override
     public List<Order> getAllOrders() {
-        return StreamSupport
-                .stream(
-                        Spliterators.spliteratorUnknownSize(orderDao.findAll().iterator(), Spliterator.NONNULL),
-                        false)
-                .collect(Collectors.toList());
+        return orderDao.findAll();
+//        return StreamSupport
+//                .stream(
+//                        Spliterators.spliteratorUnknownSize(orderDao.findAll().iterator(), Spliterator.NONNULL),
+//                        false)
+//                .collect(Collectors.toList());
     }
 }

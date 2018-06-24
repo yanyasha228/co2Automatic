@@ -61,20 +61,22 @@
         <div class="col-sm-8 text-left">
             <div>
                 <div class="well">
-                    </div>
                 </div>
             </div>
+        </div>
 
-            <div th:each="order : ${orders}">
-                <h3 th:text="${order.getClient().getName()}"/>
+        <div th:each="order : ${orders}">
+            <h3 th:text="${order.getClient().getName()}"/>
 
-                <div th:each="product : ${order.getProducts()}">
-                <h3 th:text="${product.getName()}"/>
-                </div>
-                <h3 th:text = "${order.getOrderComment()}"/>
-                </div>
+            <div th:each="orderLine : ${order.getOrderLines()}">
+                <h3 th:text="${orderLine.getProduct().getName()}"/>
+                <h3 th:text="${orderLine.getAmount()}"/>
+            </div>
+
+            <h3 th:text="${order.getOrderComment()}"/>
         </div>
     </div>
+</div>
 </div>
 </body>
 </html>

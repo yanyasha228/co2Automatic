@@ -5,6 +5,8 @@ import com.example.co2Automatic.models.PhoneNumber;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class PhoneNumberServiceImpl implements PhoneNumberService {
     @Autowired
@@ -16,7 +18,7 @@ public class PhoneNumberServiceImpl implements PhoneNumberService {
     }
 
     @Override
-    public PhoneNumber getPhoneNumber(long phoneNumber) {
-        return phoneNumberDao.getOne(phoneNumber);
+    public Optional<PhoneNumber> getPhoneNumberByPhoneNumber(String phoneNumber) {
+        return phoneNumberDao.findPhoneNumberByPhoneNumber(phoneNumber);
     }
 }

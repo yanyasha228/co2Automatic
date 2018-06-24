@@ -1,31 +1,34 @@
 package com.example.co2Automatic;
 
 import com.example.co2Automatic.models.*;
-import com.example.co2Automatic.services.OrderService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.co2Automatic.services.ProductService;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import java.util.*;
-
 @SpringBootApplication
 public class Co2AutomaticApplication {
-    @Autowired
-    private static OrderService orderService;
-
-
+    private static final Logger log = LoggerFactory.getLogger(Co2AutomaticApplication.class);
     public static void main(String[] args) {
+
         SpringApplication.run(Co2AutomaticApplication.class, args);
+
+
 //
 ////Test Products
 //
+
 //        Product product = new Product();
 //        product.setPrice(25.67);
 //        product.setDescription("Pnevmaticheskaya Vintowka");
 //        product.setName("Hatsan 125 TH");
 //        product.setQuantity(67);
 //        product.setWholesalePrice(21.01);
+//        product.getOrderLines().add(new OrderLine());
 //
 //        Product product1 = new Product();
 //        product1.setPrice(100.26);
@@ -33,6 +36,7 @@ public class Co2AutomaticApplication {
 //        product1.setName("KM44");
 //        product1.setQuantity(12);
 //        product1.setWholesalePrice(75.89);
+//        product1.getOrderLines().add(new OrderLine());
 //
 //        Product product2 = new Product();
 //        product2.setPrice(57.33);
@@ -40,7 +44,12 @@ public class Co2AutomaticApplication {
 //        product2.setName("Osevoy Vint Hatsan Striker Edge");
 //        product2.setQuantity(53);
 //        product2.setWholesalePrice(7.67);
+//        product2.getOrderLines().add(new OrderLine());
 //
+//        productService.save(product);
+//        productService.save(product1);
+//        productService.save(product2);
+
 ////Test OrderLines
 //
 //        OrderLine orderLine = new OrderLine();
@@ -173,6 +182,68 @@ public class Co2AutomaticApplication {
 //}catch (NullPointerException e){
 //    e.printStackTrace();
 //}
+    }
+    @Bean
+    public CommandLineRunner testDataProd(ProductService productService) {
+        return (args) -> {
+            // save a couple of customers
+
+            Product product = new Product();
+            product.setPrice(25.67);
+            product.setDescription("Pnevmaticheskaya Vintowka");
+            product.setName("Hatsan 125 TH");
+            product.setQuantity(67);
+            product.setWholesalePrice(21.01);
+
+
+            Product product1 = new Product();
+            product1.setPrice(100.26);
+            product1.setDescription("CO2 Pistolet");
+            product1.setName("KM44");
+            product1.setQuantity(12);
+            product1.setWholesalePrice(75.89);
+
+
+            Product product2 = new Product();
+            product2.setPrice(57.33);
+            product2.setDescription("CO2 Pistolet");
+            product2.setName("Osevoy Vint Hatsan Striker Edge");
+            product2.setQuantity(53);
+            product2.setWholesalePrice(7.67);
+
+
+            productService.save(product);
+            productService.save(product1);
+            productService.save(product2);
+
+            // fetch all customers
+            log.info("Customers found with findAll():");
+            log.info("-------------------------------");
+            for (Product cProd : productService.findAll()) {
+                log.info(cProd.toString());
+            }
+            log.info("");
+
+            // fetch an individual customer by ID
+            productService.findById(1L)
+                    .ifPresent(cProd -> {
+                        log.info("Customer found with findById(1L):");
+                        log.info("--------------------------------");
+                        log.info(cProd.toString());
+                        log.info("");
+                    });
+
+            // fetch customers by last name
+            log.info("Customer found with findByLastName('Bauer'):");
+            log.info("--------------------------------------------");
+            productService.findByProductName("Hatsan 125 TH").ifPresent(prodBN -> {
+                log.info(prodBN.toString());
+            });
+            // for (Customer bauer : repository.findByLastName("Bauer")) {
+            // 	log.info(bauer.toString());
+            // }
+            log.info("");
+        };
     }
 
 }
