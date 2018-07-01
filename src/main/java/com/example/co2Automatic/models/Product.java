@@ -31,6 +31,10 @@ public class Product {
     @Column(name = "wholesale_price")
     private double wholesalePrice;
 
+    @Column(name = "product_category")
+    @Enumerated(EnumType.STRING)
+    private ProductCategory productCategory;
+
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<OrderLine> orderLines = new ArrayList<OrderLine>();
 

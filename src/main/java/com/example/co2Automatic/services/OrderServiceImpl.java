@@ -66,6 +66,10 @@ public class OrderServiceImpl implements OrderService {
         } else {
             newPhoneNumber = phoneNumberService.getPhoneNumberByPhoneNumber(inputPhoneNumber).get();
             newClient = newPhoneNumber.getClient();
+            if (!newClient.getUsualDeliveryPlace().equalsIgnoreCase(inputCity))
+                newClient.setUsualDeliveryPlace(inputCity);
+            if (newClient.getUsualWarehouseNumber() == inputWarehouseNumber) {
+            } else newClient.setUsualWarehouseNumber(inputWarehouseNumber);
         }
 
         Order newOrder = new Order();

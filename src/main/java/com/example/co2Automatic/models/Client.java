@@ -21,6 +21,12 @@ public class Client {
     @Column(name = "surname")
     private String surname;
 
+    @Column(name = "usual_delivery_place")
+    private String usualDeliveryPlace;
+
+    @Column(name = "usual_warehouse_number")
+    private int usualWarehouseNumber;
+
     @OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
     private PhoneNumber phoneNumber;
 

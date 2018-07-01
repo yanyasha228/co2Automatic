@@ -19,7 +19,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 @Controller
-@RequestMapping("/editor")
+@RequestMapping("/editOrder")
 public class EditorController {
 
     @Autowired
