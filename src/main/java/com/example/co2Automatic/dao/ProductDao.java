@@ -12,7 +12,6 @@ import java.util.Optional;
 public interface ProductDao extends JpaRepository<Product, Long> {
 
     Optional<Product> findProductByName(String name);
-    List<Product> findAll();
     Product findProductByNameLike(String nonFullProductName);
     Optional<Product> findById(long id);
 

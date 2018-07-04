@@ -191,6 +191,7 @@ public class Co2AutomaticApplication {
             Product product = new Product();
             product.setPrice(25.67);
             product.setDescription("Pnevmaticheskaya Vintowka");
+            product.setImageUrl("http://co2.biz.ua/wp-content/uploads/2015/12/1664.jpg");
             product.setName("Hatsan 125 TH");
             product.setQuantity(67);
             product.setWholesalePrice(21.01);
@@ -199,6 +200,7 @@ public class Co2AutomaticApplication {
             Product product1 = new Product();
             product1.setPrice(100.26);
             product1.setDescription("CO2 Pistolet");
+            product.setImageUrl("http://co2.biz.ua/wp-content/uploads/2015/12/1664.jpg");
             product1.setName("KM44");
             product1.setQuantity(12);
             product1.setWholesalePrice(75.89);
@@ -208,6 +210,7 @@ public class Co2AutomaticApplication {
             product2.setPrice(57.33);
             product2.setDescription("CO2 Pistolet");
             product2.setName("Osevoy Vint Hatsan Striker Edge");
+            product.setImageUrl("http://co2.biz.ua/wp-content/uploads/2015/12/1664.jpg");
             product2.setQuantity(53);
             product2.setWholesalePrice(7.67);
 

@@ -29,6 +29,7 @@ public class Order {
     private int deliveryPlaceWarehouseNumber;
 
     @Column(name = "delivery_date")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date deliveryDate;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -56,8 +57,12 @@ public class Order {
     @OneToMany(mappedBy = "order", fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     private List<OrderLine> orderLines = new ArrayList<OrderLine>();
 
+    @Column(name = "order_creation_ate")
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "ordersDate")
-    private Date ordersDate;
+    private Date orderCreationDate;
 
+    @PrePersist
+    protected void onCreate(){
+        orderCreationDate = new Date();
+    }
 }

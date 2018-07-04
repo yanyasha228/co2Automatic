@@ -5,8 +5,10 @@ import org.hibernate.criterion.Order;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+
 @Data
 @Entity
 @Table(name = "product")
@@ -35,19 +37,31 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private ProductCategory productCategory;
 
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @Column(name = "creation_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date creationDate;
+
+    @Column(name = "image_url")
+    private String imageUrl;
+
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<OrderLine> orderLines = new ArrayList<OrderLine>();
 
-//    @ManyToMany(mappedBy = "products")
+    //    @ManyToMany(mappedBy = "products")
 //    private List<Order> ordersList;
 
+    @PrePersist
+    protected void onCreate() {
+        creationDate = new Date();
+    }
 
     @Override
     public String toString() {
         return "Product{" +
                 "name='" + name + '\'' +
                 ", quantity=" + quantity +
+                ", addingDate=" + creationDate +
+                ", imageUrl='" + imageUrl + '\'' +
                 '}';
     }
-
 }

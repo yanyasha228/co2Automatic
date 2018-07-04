@@ -1,21 +1,13 @@
 package com.example.co2Automatic.controllers;
 
-import com.example.co2Automatic.dao.OrderDao;
-import com.example.co2Automatic.models.Client;
-import com.example.co2Automatic.models.Order;
-import com.example.co2Automatic.models.PhoneNumber;
-import com.example.co2Automatic.models.User;
 import com.example.co2Automatic.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 @Controller
@@ -30,7 +22,7 @@ public class EditorController {
 
         model.addAttribute("nowDate", new Date());
 
-        return "editor";
+        return "editOrder";
     }
 
     @RequestMapping(value = "/submit", method = RequestMethod.GET)
@@ -46,7 +38,7 @@ public class EditorController {
                               @RequestParam int[] qua,
                               @RequestParam Double inputWeight,
                               @RequestParam Double inputVolume) {
-        String zal = field[0];
+
 orderService.addOrder(inputPhoneNumber,
         inputDeliveryDate,
         inputPaymentMethod,

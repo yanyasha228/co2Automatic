@@ -75,7 +75,6 @@ public class OrderServiceImpl implements OrderService {
         Order newOrder = new Order();
         newOrder.setClient(newClient);
         newOrder.setDeliveryDate(orderDate);
-        newOrder.setOrdersDate(new Date());
 
         if (inputPaymentMethod.equalsIgnoreCase("наложка")) newOrder.setPaymentMethod(PaymentMethod.COD);
         if (inputPaymentMethod.equalsIgnoreCase("оценка")) newOrder.setPaymentMethod(PaymentMethod.BANK_TRANSFER);
