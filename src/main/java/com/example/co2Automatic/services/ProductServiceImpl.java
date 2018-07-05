@@ -3,6 +3,8 @@ package com.example.co2Automatic.services;
 import com.example.co2Automatic.dao.ProductDao;
 import com.example.co2Automatic.models.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,9 +21,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Page<Product> findAllWithPagination(PageRequest pageRequest) {
+        return productDao.findAll(pageRequest);
+    }
+
+    @Override
     public List<Product> findAll() {
         return productDao.findAll();
     }
+
+
 
     @Override
     public Optional<Product> findByProductName(String productName) {
