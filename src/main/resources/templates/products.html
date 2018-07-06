@@ -34,16 +34,16 @@
                         <span>Кол-во</span>
                         <select id="selectPage" class="form-control" onchange="location = this.value;">
                             <option th:value="${#httpServletRequest.requestURI} + '?productsPageSize=5'"
-                                    th:selected="${currentProductsPageSize == 5}">5
+                                    th:selected="${productListPageHelper.getPageSize() == 5}">5
                             </option>
                             <option th:value="${#httpServletRequest.requestURI} + '?productsPageSize=10'"
-                                    th:selected="${currentProductsPageSize == 10}">10
+                                    th:selected="${productListPageHelper.getPageSize() == 10}">10
                             </option>
                             <option th:value="${#httpServletRequest.requestURI} + '?productsPageSize=15'"
-                                    th:selected="${currentProductsPageSize == 15}">15
+                                    th:selected="${productListPageHelper.getPageSize() == 15}">15
                             </option>
                             <option th:value="${#httpServletRequest.requestURI} + '?productsPageSize=20'"
-                                    th:selected="${currentProductsPageSize == 20}">20
+                                    th:selected="${productListPageHelper.getPageSize() == 20}">20
                             </option>
                         </select>
                         <span>страниц</span>
@@ -115,11 +115,11 @@
         <div class="clearfix">
             <div class="hint-text">Показано <b>5</b> из <b>25</b> заказов</div>
             <ul class="pagination">
-                <li class="page-item disabled"><a th:href="@{${#httpServletRequest.requestURI}(productsPageNumber=${currentPage - 1})}">Previous</a></li>
+                <li class="page-item disabled"><a th:href="@{${#httpServletRequest.requestURI}(productsPageNumber=${productListPageHelper.getCurrentPageNumber() - 1})}">Previous</a></li>
                 <ul class="pagination" th:each="pageNum : ${#numbers.sequence(0,productsList.totalPages - 1)}">
-                <li class="page-item"  th:classappend="${currentPage} == ${pageNum}?'active':''"><a class="page-link" th:text="${pageNum}" th:href="@{${#httpServletRequest.requestURI}(productsPageNumber=${pageNum})}" ></a></li>
+                <li class="page-item"  th:classappend="${productListPageHelper.getCurrentPageNumber()} == ${pageNum}?'active':''"><a class="page-link" th:text="${pageNum}" th:href="@{${#httpServletRequest.requestURI}(productsPageNumber=${pageNum})}" ></a></li>
                 </ul>
-                <li class="page-item"><a th:href="@{${#httpServletRequest.requestURI} + (productsPageNumber=${currentPage + 1})}" class="page-link">Next</a></li>
+                <li class="page-item"><a th:href="@{${#httpServletRequest.requestURI} + (productsPageNumber=${productListPageHelper.getCurrentPageNumber() + 1})}" class="page-link">Next</a></li>
             </ul>
         </div>
     </div>
