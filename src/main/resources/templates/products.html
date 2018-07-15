@@ -119,7 +119,7 @@
                 <ul class="pagination" th:each="pageNum : ${#numbers.sequence(0,productsList.totalPages - 1)}">
                 <li class="page-item"  th:classappend="${productListPageHelper.getCurrentPageNumber()} == ${pageNum}?'active':''"><a class="page-link" th:text="${pageNum}" th:href="@{${#httpServletRequest.requestURI}(productsPageNumber=${pageNum})}" ></a></li>
                 </ul>
-                <li class="page-item"><a th:href="@{${#httpServletRequest.requestURI} + (productsPageNumber=${productListPageHelper.getCurrentPageNumber() + 1})}" class="page-link">Next</a></li>
+                <li class="page-item"><a th:href="@{${#httpServletRequest.requestURI}(productsPageNumber=${productListPageHelper.getCurrentPageNumber() + 1})}" class="page-link">Next</a></li>
             </ul>
         </div>
     </div>

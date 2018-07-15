@@ -37,6 +37,10 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private ProductCategory productCategory;
 
+    @Column(name = "product_stock")
+    @Enumerated(EnumType.STRING)
+    private ProductStock productStock;
+
     @Column(name = "creation_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;

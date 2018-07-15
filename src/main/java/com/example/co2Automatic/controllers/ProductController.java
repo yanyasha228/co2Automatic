@@ -18,33 +18,24 @@ import java.util.List;
 
 @Controller
 @RequestMapping("products")
-@SessionAttributes("productListPageHelper")
 public class ProductController {
 
+     ProductListPageHelper productListPageHelper = new ProductListPageHelper(0,5);
     @Autowired
     private ProductService productService;
 
-    @ModelAttribute("productListPageHelper")
-    public ProductListPageHelper createProductListPageHelper() {
-        return new ProductListPageHelper(0, 5);
-    }
 
     @RequestMapping
-    public String productsList(Model model, @ModelAttribute ProductListPageHelper productListPageHelper) {
+    public String productsList(Model model, @RequestParam(required = false) Integer productsPageNumber , @RequestParam(required = false) Integer productsPageSize ) {
+
+        if(productsPageNumber!=null && productsPageNumber >= 0)productListPageHelper.setCurrentPageNumber(productsPageNumber);
+
+        if(productsPageSize!=null)productListPageHelper.setPageSize(productsPageSize);
+
         model.addAttribute("productsList", productService.findAllWithPagination(PageRequest.of(productListPageHelper.getCurrentPageNumber(), productListPageHelper.getPageSize(), Sort.Direction.ASC, "creationDate")));
 
+        model.addAttribute("productListPageHelper", productListPageHelper);
         return "products";
     }
 
-    @RequestMapping
-    public String setProductListPageNumber(Model model, @ModelAttribute ProductListPageHelper productListPageHelper, @RequestParam int productsPageNumber) {
-        productListPageHelper.setCurrentPageNumber(productsPageNumber);
-        return productsList(model, productListPageHelper);
-    }
-
-    @RequestMapping
-    public String setProductListPageSize(Model model, @ModelAttribute ProductListPageHelper productListPageHelper, @RequestParam int productsPageSize) {
-        productListPageHelper.setPageSize(productsPageSize);
-        return productsList(model, productListPageHelper);
-    }
 }
