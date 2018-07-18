@@ -16,7 +16,7 @@
         <div class="table-title">
             <div class="row">
                 <div class="col-sm-4">
-                    <h2>Мои <b>Заказы</b></h2>
+                    <h2>Co2 <b>Товары</b></h2>
                 </div>
                 <div class="col-sm-8">
                     <a href="/editOrder" class="btn btn-add"><i class="material-icons">&#xe147;</i>
@@ -32,7 +32,7 @@
                 <div class="col-sm-3">
                     <div class="show-entries">
                         <span>Кол-во</span>
-                        <select id="selectPage" class="form-control" onchange="location = this.value;">
+                        <select id="selectPageSize" class="form-control" onchange="location = this.value;">
                             <option th:value="${#httpServletRequest.requestURI} + '?productsPageSize=5'"
                                     th:selected="${productListPageHelper.getPageSize() == 5}">5
                             </option>
@@ -57,25 +57,38 @@
                     </div>
 
                     <div class="filter-group">
-                        <label>Location</label>
-                        <select class="form-control">
-                            <option>All</option>
-                            <option>Berlin</option>
-                            <option>London</option>
-                            <option>Madrid</option>
-                            <option>New York</option>
-                            <option>Paris</option>
+                        <label>Категория</label>
+                        <select id="selectProductsCategory" class="form-control" onchange="location = this.value;">
+                            <option
+                                    th:value="${#httpServletRequest.requestURI} + '?productsCategory=1'">Все</option>
+                            <option
+                                    th:value="${#httpServletRequest.requestURI} + '?productsCategory=2'">СO2 Пистолеты</option>
+                            <option
+                                    th:value="${#httpServletRequest.requestURI} + '?productsCategory=3'">Пневматические винтовки</option>
+                            <option
+                                    th:value="${#httpServletRequest.requestURI} + '?productsCategory=4'">СO2 Пистолеты</option>
+                            <option
+                                    th:value="${#httpServletRequest.requestURI} + '?productsCategory=5'">Запчасти</option>
+                            <option
+                                    th:value="${#httpServletRequest.requestURI} + '?productsCategory=6'">Оптика</option>
+                            <option
+                                    th:value="${#httpServletRequest.requestURI} + '?productsCategory=7'">PCP-Винтовки</option>
+                            <option
+                                    th:value="${#httpServletRequest.requestURI} + '?productsCategory=8'">Патроны</option>
+                            <option
+                                    th:value="${#httpServletRequest.requestURI} + '?productsCategory=9'">Оружие Флобера</option>
                         </select>
                     </div>
 
                     <div class="filter-group">
-                        <label>Статус</label>
-                        <select class="form-control">
-                            <option>Все</option>
-                            <option>Выполнен</option>
-                            <option>Упакован</option>
-                            <option>Ждет оплаты</option>
-                            <option>Подтвержден/option>
+                        <label>Склад</label>
+                        <select id = "selectProductStockSorting" class="form-control" onchange="location = this.value;">
+                            <option th:value="${#httpServletRequest.requestURI} + '?productsStockSorting=1'"
+                                    th:selected="${productListPageHelper.getProductsStockSorting() == null}">Все</option>
+                            <option th:value="${#httpServletRequest.requestURI} + '?productsStockSorting=2'"
+                                    th:selected="${productListPageHelper.getProductsStockSorting() == T(com.example.co2Automatic.models.ProductStock).CO2_STOCK}">Co2</option>
+                            <option th:value="${#httpServletRequest.requestURI} + '?productsStockSorting=3'"
+                                    th:selected="${productListPageHelper.getProductsStockSorting() == T(com.example.co2Automatic.models.ProductStock).B_STOCK}">Барабан</option>
                         </select>
                     </div>
                     <span class="filter-icon"><i class="fa fa-filter"></i></span>
@@ -88,7 +101,7 @@
                 <th>ID</th>
                 <th>Товар</th>
                 <th>Кол-во</th>
-                <th>Дата доб.</th>
+                <th>Дата обнов.</th>
                 <th>Цена</th>
                 <th>Опт. Цена</th>
                 <th>Детально</th>
@@ -101,7 +114,7 @@
                 <td><img th:src="@{${product.getImageUrl()}}" width="70" height="70" class="avatar" alt="Avatar"><br><a
                         href="#" th:text="${product.getName()}"></a></td>
                 <td th:text="${product.getQuantity()}">-</td>
-                <td th:text="${#dates.format(product.getCreationDate(), 'yyyy-MM-dd')}"></td>
+                <td th:text="${#dates.format(product.getLastUpdatingDate(), 'yyyy-MM-dd')}"></td>
                 <td th:text="${product.getPrice() + '$'}">-</td>
                 <td th:text="${product.getWholesalePrice() + '$'}">-</td>
                 <td><a href="#" class="view" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE5C8;</i></a>

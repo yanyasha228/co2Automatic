@@ -1,13 +1,15 @@
 package com.example.co2Automatic.models;
 
 public enum ProductCategory {
+
     AIR_RIFLES,
-    GAS_PISTOLS,
+    STARTING_WEAPON,
+    GAS_GUNS,
     SPARES,
     OPTICS,
-    PCP_AIR_RIFLES,
     CARE_PRODUCTS,
     BULLETS,
-    FLAUBERTS_WEAPON
+    FLAUBERTS_WEAPON,
+    SOUVENIRS
 
 }

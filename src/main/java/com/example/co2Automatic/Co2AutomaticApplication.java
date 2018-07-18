@@ -199,7 +199,8 @@ public class Co2AutomaticApplication {
             product.setName("Hatsan 125 TH");
             product.setQuantity(67);
             product.setWholesalePrice(21.01);
-           productList.add(product);
+            product.setProductStock(ProductStock.CO2_STOCK);
+            productList.add(product);
 
             Product product1 = new Product();
             product1.setPrice(100.26);
@@ -208,6 +209,7 @@ public class Co2AutomaticApplication {
             product1.setName("KM44");
             product1.setQuantity(12);
             product1.setWholesalePrice(75.89);
+            product1.setProductStock(ProductStock.B_STOCK);
             productList.add(product1);
 
             Product product2 = new Product();
@@ -217,6 +219,7 @@ public class Co2AutomaticApplication {
             product2.setImageUrl("http://co2.biz.ua/wp-content/uploads/2015/10/828.jpg");
             product2.setQuantity(53);
             product2.setWholesalePrice(7.67);
+            product2.setProductStock(ProductStock.B_STOCK);
             productList.add(product2);
 
             Product product3 = new Product();
@@ -226,6 +229,7 @@ public class Co2AutomaticApplication {
             product3.setImageUrl("http://co2.biz.ua/wp-content/uploads/2015/10/828.jpg");
             product3.setQuantity(533);
             product3.setWholesalePrice(56.78);
+            product3.setProductStock(ProductStock.CO2_STOCK);
             productList.add(product3);
 
             Product product4 = new Product();
@@ -235,6 +239,7 @@ public class Co2AutomaticApplication {
             product4.setImageUrl("http://co2.biz.ua/wp-content/uploads/2015/10/828.jpg");
             product4.setQuantity(76);
             product4.setWholesalePrice(7.67);
+            product4.setProductStock(ProductStock.B_STOCK);
             productList.add(product4);
 
             Product product5 = new Product();
@@ -244,6 +249,7 @@ public class Co2AutomaticApplication {
             product5.setImageUrl("http://co2.biz.ua/wp-content/uploads/2015/10/828.jpg");
             product5.setQuantity(53);
             product5.setWholesalePrice(7.67);
+            product5.setProductStock(ProductStock.CO2_STOCK);
             productList.add(product5);
 
             Product product6 = new Product();
@@ -253,6 +259,7 @@ public class Co2AutomaticApplication {
             product6.setImageUrl("http://co2.biz.ua/wp-content/uploads/2015/10/828.jpg");
             product6.setQuantity(53);
             product6.setWholesalePrice(7.67);
+            product6.setProductStock(ProductStock.B_STOCK);
             productList.add(product6);
 
             Product product7 = new Product();
@@ -262,6 +269,7 @@ public class Co2AutomaticApplication {
             product7.setImageUrl("http://co2.biz.ua/wp-content/uploads/2015/10/828.jpg");
             product7.setQuantity(53);
             product7.setWholesalePrice(7.67);
+            product7.setProductStock(ProductStock.CO2_STOCK);
             productList.add(product7);
 
             Product product8 = new Product();
@@ -271,6 +279,7 @@ public class Co2AutomaticApplication {
             product8.setImageUrl("http://co2.biz.ua/wp-content/uploads/2015/10/828.jpg");
             product8.setQuantity(53);
             product8.setWholesalePrice(7.67);
+            product8.setProductStock(ProductStock.B_STOCK);
             productList.add(product8);
 
             Product product9 = new Product();
@@ -280,6 +289,7 @@ public class Co2AutomaticApplication {
             product9.setImageUrl("http://co2.biz.ua/wp-content/uploads/2015/10/828.jpg");
             product9.setQuantity(53);
             product9.setWholesalePrice(7.67);
+            product9.setProductStock(ProductStock.CO2_STOCK);
             productList.add(product9);
 
             Product product10 = new Product();
@@ -289,6 +299,7 @@ public class Co2AutomaticApplication {
             product10.setImageUrl("http://co2.biz.ua/wp-content/uploads/2015/10/828.jpg");
             product10.setQuantity(53);
             product10.setWholesalePrice(7.67);
+            product10.setProductStock(ProductStock.B_STOCK);
             productList.add(product10);
 
             Product product11 = new Product();
@@ -298,6 +309,7 @@ public class Co2AutomaticApplication {
             product11.setImageUrl("http://co2.biz.ua/wp-content/uploads/2015/10/828.jpg");
             product11.setQuantity(53);
             product11.setWholesalePrice(7.67);
+            product11.setProductStock(ProductStock.CO2_STOCK);
             productList.add(product11);
 
             Product product12 = new Product();
@@ -307,6 +319,7 @@ public class Co2AutomaticApplication {
             product12.setImageUrl("http://co2.biz.ua/wp-content/uploads/2015/10/828.jpg");
             product12.setQuantity(53);
             product12.setWholesalePrice(7.67);
+            product12.setProductStock(ProductStock.B_STOCK);
             productList.add(product12);
 
             for (Product prodForPersit: productList) productService.save(prodForPersit);

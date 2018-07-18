@@ -2,6 +2,8 @@ package com.example.co2Automatic.services;
 
 import com.example.co2Automatic.dao.ProductDao;
 import com.example.co2Automatic.models.Product;
+import com.example.co2Automatic.models.ProductCategory;
+import com.example.co2Automatic.models.ProductStock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,6 +28,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Page<Product> findProductsByStockWithPagination(ProductStock productStock, PageRequest pageRequest) {
+        return productDao.findProductsByProductStock(productStock, pageRequest);
+    }
+
+    @Override
     public List<Product> findAll() {
         return productDao.findAll();
     }
@@ -42,6 +49,12 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Optional<Product> findById(long id) {
         return productDao.findById(id);
+    }
+
+    @Override
+    public Page<Product> findProductsWithFilteringAndPagination(int currentPageNumber, int pageSize, ProductStock productsStockSorting, ProductCategory productCategory) {
+
+        return null;
     }
 
 }

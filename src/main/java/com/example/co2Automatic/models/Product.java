@@ -14,6 +14,10 @@ import java.util.Objects;
 @Table(name = "product")
 public class Product {
 
+    public Product(){
+        creationDate = new Date();
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -45,6 +49,10 @@ public class Product {
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
 
+    @Column(name = "last_updating_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastUpdatingDate;
+
     @Column(name = "image_url")
     private String imageUrl;
 
@@ -53,11 +61,12 @@ public class Product {
 
     //    @ManyToMany(mappedBy = "products")
 //    private List<Order> ordersList;
-
-    @PrePersist
-    protected void onCreate() {
-        creationDate = new Date();
-    }
+ @PreUpdate
+ @PrePersist
+ protected void modifyLastUpdatingDate()
+ {
+     lastUpdatingDate = new Date();
+ }
 
     @Override
     public String toString() {
