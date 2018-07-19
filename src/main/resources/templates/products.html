@@ -21,7 +21,7 @@
                 <div class="col-sm-8">
                     <a href="/editOrder" class="btn btn-add"><i class="material-icons">&#xe147;</i>
                         <span>Добавить</span></a>
-                    <a href="#" class="btn btn-primary"><i class="material-icons">&#xE863;</i> <span>Обновить</span></a>
+                    <a th:href="@{${#httpServletRequest.requestURI}}" class="btn btn-primary"><i class="material-icons">&#xE863;</i> <span>Обновить</span></a>
                     <a href="#" class="btn btn-info"><i class="material-icons">&#xE24D;</i>
                         <span>Excel Импорт </span></a>
                 </div>
@@ -60,35 +60,67 @@
                         <label>Категория</label>
                         <select id="selectProductsCategory" class="form-control" onchange="location = this.value;">
                             <option
-                                    th:value="${#httpServletRequest.requestURI} + '?productsCategory=1'">Все</option>
+                                    th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=1'"
+                                    th:selected="${productListPageHelper.getProductsCategorySorting() == null}">Все
+                            </option>
                             <option
-                                    th:value="${#httpServletRequest.requestURI} + '?productsCategory=2'">СO2 Пистолеты</option>
+                                    th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=2'"
+                                    th:selected="${productListPageHelper.getProductsCategorySorting() == T(com.example.co2Automatic.models.ProductCategory).AIR_RIFLES}">СO2
+                                Пистолеты
+                            </option>
                             <option
-                                    th:value="${#httpServletRequest.requestURI} + '?productsCategory=3'">Пневматические винтовки</option>
+                                    th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=3'"
+                                    th:selected="${productListPageHelper.getProductsCategorySorting() == T(com.example.co2Automatic.models.ProductCategory).STARTING_WEAPON}">
+                                Пневматические винтовки
+                            </option>
                             <option
-                                    th:value="${#httpServletRequest.requestURI} + '?productsCategory=4'">СO2 Пистолеты</option>
+                                    th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=4'"
+                                    th:selected="${productListPageHelper.getProductsCategorySorting() == T(com.example.co2Automatic.models.ProductCategory).GAS_GUNS}">СO2
+                                Пистолеты
+                            </option>
                             <option
-                                    th:value="${#httpServletRequest.requestURI} + '?productsCategory=5'">Запчасти</option>
+                                    th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=5'"
+                                    th:selected="${productListPageHelper.getProductsCategorySorting() == T(com.example.co2Automatic.models.ProductCategory).SPARES}">Запчасти
+                            </option>
                             <option
-                                    th:value="${#httpServletRequest.requestURI} + '?productsCategory=6'">Оптика</option>
+                                    th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=6'"
+                                    th:selected="${productListPageHelper.getProductsCategorySorting() == T(com.example.co2Automatic.models.ProductCategory).OPTICS}">Оптика
+                            </option>
                             <option
-                                    th:value="${#httpServletRequest.requestURI} + '?productsCategory=7'">PCP-Винтовки</option>
+                                    th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=7'"
+                                    th:selected="${productListPageHelper.getProductsCategorySorting() == T(com.example.co2Automatic.models.ProductCategory).CARE_PRODUCTS}">
+                                Уход и чистка
+                            </option>
                             <option
-                                    th:value="${#httpServletRequest.requestURI} + '?productsCategory=8'">Патроны</option>
+                                    th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=8'"
+                                    th:selected="${productListPageHelper.getProductsCategorySorting() == T(com.example.co2Automatic.models.ProductCategory).BULLETS}">Патроны
+                            </option>
                             <option
-                                    th:value="${#httpServletRequest.requestURI} + '?productsCategory=9'">Оружие Флобера</option>
+                                    th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=9'"
+                                    th:selected="${productListPageHelper.getProductsCategorySorting() == T(com.example.co2Automatic.models.ProductCategory).FLAUBERTS_WEAPON}">Оружие
+                                Флобера
+                            </option>
+                            <option
+                                    th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=10'"
+                                    th:selected="${productListPageHelper.getProductsCategorySorting() == T(com.example.co2Automatic.models.ProductCategory).SOUVENIRS}">Сувениры
+                            </option>
                         </select>
                     </div>
 
                     <div class="filter-group">
                         <label>Склад</label>
-                        <select id = "selectProductStockSorting" class="form-control" onchange="location = this.value;">
+                        <select id="selectProductStockSorting" class="form-control" onchange="location = this.value;">
                             <option th:value="${#httpServletRequest.requestURI} + '?productsStockSorting=1'"
-                                    th:selected="${productListPageHelper.getProductsStockSorting() == null}">Все</option>
+                                    th:selected="${productListPageHelper.getProductsStockSorting() == null}">Все
+                            </option>
                             <option th:value="${#httpServletRequest.requestURI} + '?productsStockSorting=2'"
-                                    th:selected="${productListPageHelper.getProductsStockSorting() == T(com.example.co2Automatic.models.ProductStock).CO2_STOCK}">Co2</option>
+                                    th:selected="${productListPageHelper.getProductsStockSorting() == T(com.example.co2Automatic.models.ProductStock).CO2_STOCK}">
+                                Co2
+                            </option>
                             <option th:value="${#httpServletRequest.requestURI} + '?productsStockSorting=3'"
-                                    th:selected="${productListPageHelper.getProductsStockSorting() == T(com.example.co2Automatic.models.ProductStock).B_STOCK}">Барабан</option>
+                                    th:selected="${productListPageHelper.getProductsStockSorting() == T(com.example.co2Automatic.models.ProductStock).B_STOCK}">
+                                Барабан
+                            </option>
                         </select>
                     </div>
                     <span class="filter-icon"><i class="fa fa-filter"></i></span>
@@ -108,7 +140,7 @@
                 <th>Удалить</th>
             </tr>
             </thead>
-            <tbody th:each="product : ${productsList}">
+            <tbody th:each="product : ${productList}">
             <tr>
                 <td th:text="${product.getId()}"></td>
                 <td><img th:src="@{${product.getImageUrl()}}" width="70" height="70" class="avatar" alt="Avatar"><br><a
@@ -128,11 +160,23 @@
         <div class="clearfix">
             <div class="hint-text">Показано <b>5</b> из <b>25</b> заказов</div>
             <ul class="pagination">
-                <li class="page-item disabled"><a th:href="@{${#httpServletRequest.requestURI}(productsPageNumber=${productListPageHelper.getCurrentPageNumber() - 1})}">Previous</a></li>
-                <ul class="pagination" th:each="pageNum : ${#numbers.sequence(0,productsList.totalPages - 1)}">
-                <li class="page-item"  th:classappend="${productListPageHelper.getCurrentPageNumber()} == ${pageNum}?'active':''"><a class="page-link" th:text="${pageNum}" th:href="@{${#httpServletRequest.requestURI}(productsPageNumber=${pageNum})}" ></a></li>
-                </ul>
-                <li class="page-item"><a th:href="@{${#httpServletRequest.requestURI}(productsPageNumber=${productListPageHelper.getCurrentPageNumber() + 1})}" class="page-link">Next</a></li>
+                <li class="page-item"><a
+                        th:href="@{${#httpServletRequest.requestURI}(productsPageNumber = '0')}"
+                        class="page-link"> << </a></li>
+                <li class="page-item"><a
+                        th:href="@{${#httpServletRequest.requestURI}(productsPageNumber=${productListPageHelper.getCurrentPageNumber() - 1})}"
+                        th:if="${productListPageHelper.getCurrentPageNumber() > 0}"
+                        class="page-link"> < </a></li>
+                <li class="page-item active"><a class="page-link"
+                                                th:text="${productListPageHelper.getCurrentPageNumber()}"></a></li>
+                <li class="page-item"><a
+                        th:href="@{${#httpServletRequest.requestURI}(productsPageNumber=${productListPageHelper.getCurrentPageNumber() + 1})}"
+                        th:if="${(productListPageHelper.getCurrentPageNumber() + 1) < productListPageHelper.getTotalPagesAmount()}"
+                        class="page-link"> > </a></li>
+
+                <li class="page-item"><a
+                        th:href="@{${#httpServletRequest.requestURI}(productsPageNumber=${productListPageHelper.getTotalPagesAmount() - 1})}"
+                        class="page-link"> >> </a></li>
             </ul>
         </div>
     </div>

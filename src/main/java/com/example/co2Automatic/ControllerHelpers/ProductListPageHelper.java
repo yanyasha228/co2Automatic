@@ -9,7 +9,7 @@ import org.springframework.web.context.annotation.SessionScope;
 @Component
 @SessionScope
 @Data
-public class ProductListPageHelper{
+public class ProductListPageHelper {
 
     //Category sorting constants
     static final int ALL_CATEGORY_SORTING = 1;
@@ -31,8 +31,8 @@ public class ProductListPageHelper{
 
 
     public ProductListPageHelper() {
-        this.currentPageNumber = 0 ;
-        this.pageSize = 5 ;
+        this.currentPageNumber = 0;
+        this.pageSize = 5;
     }
 
 //    public ProductListPageHelper(int currentPageNumber, int pageSize ) {
@@ -41,19 +41,34 @@ public class ProductListPageHelper{
 //    }
 
 
-
     private int currentPageNumber;
 
     private int pageSize;
 
+    private int totalPagesAmount;
+
     private ProductStock productsStockSorting;
 
-    private ProductCategory productCategory;
+    private ProductCategory productsCategorySorting;
 
+    private void refreshParams() {
+        this.currentPageNumber = 0;
+        this.pageSize = 5;
+        this.productsStockSorting = null;
+        this.productsCategorySorting = null;
+    }
 
     public void validatePageShowingState(Integer productsPageNumber, Integer productsPageSize, Integer productsStockSorting, Integer productsCategory) {
-        if (productsPageNumber != null && productsPageNumber >= 0)
-            this.setCurrentPageNumber(productsPageNumber);
+
+        if (productsPageNumber == null &&
+                productsPageSize == null &&
+                productsStockSorting == null &&
+                productsCategory == null) refreshParams();
+
+
+        if (productsPageNumber != null && productsPageNumber >= 0 && !((productsPageNumber+1)>totalPagesAmount)) {
+                this.setCurrentPageNumber(productsPageNumber);
+        }
 
         if (productsPageSize != null) {
             this.setCurrentPageNumber(0);
@@ -82,42 +97,42 @@ public class ProductListPageHelper{
             switch (productsCategory) {
 
                 case ALL_CATEGORY_SORTING:
-                    this.setProductCategory(null);
+                    this.setProductsCategorySorting(null);
                     break;
                 case AIR_RIFLES_CATEGORY_SORTING:
-                    this.setProductCategory(ProductCategory.AIR_RIFLES);
+                    this.setProductsCategorySorting(ProductCategory.AIR_RIFLES);
                     break;
 
                 case STARTING_WEAPON_CATEGORY_SORTING:
-                    this.setProductCategory(ProductCategory.STARTING_WEAPON);
+                    this.setProductsCategorySorting(ProductCategory.STARTING_WEAPON);
                     break;
 
                 case GAS_GUNS_CATEGORY_SORTING:
-                    this.setProductCategory(ProductCategory.GAS_GUNS);
+                    this.setProductsCategorySorting(ProductCategory.GAS_GUNS);
                     break;
 
                 case SPARES_CATEGORY_SORTING:
-                    this.setProductCategory(ProductCategory.SPARES);
+                    this.setProductsCategorySorting(ProductCategory.SPARES);
                     break;
 
                 case OPTICS_CATEGORY_SORTING:
-                    this.setProductCategory(ProductCategory.OPTICS);
+                    this.setProductsCategorySorting(ProductCategory.OPTICS);
                     break;
 
                 case CARE_PRODUCTS_CATEGORY_SORTING:
-                    this.setProductCategory(ProductCategory.CARE_PRODUCTS);
+                    this.setProductsCategorySorting(ProductCategory.CARE_PRODUCTS);
                     break;
 
                 case BULLETS_CATEGORY_SORTING:
-                    this.setProductCategory(ProductCategory.BULLETS);
+                    this.setProductsCategorySorting(ProductCategory.BULLETS);
                     break;
 
                 case FLAUBERTS_WEAPON_CATEGORY_SORTING:
-                    this.setProductCategory(ProductCategory.FLAUBERTS_WEAPON);
+                    this.setProductsCategorySorting(ProductCategory.FLAUBERTS_WEAPON);
                     break;
 
                 case SOUVENIRS_CATEGORY_SORTING:
-                    this.setProductCategory(ProductCategory.SOUVENIRS);
+                    this.setProductsCategorySorting(ProductCategory.SOUVENIRS);
                     break;
 
             }

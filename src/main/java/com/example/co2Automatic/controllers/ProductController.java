@@ -28,21 +28,18 @@ public class ProductController {
                                @RequestParam(required = false) Integer productsPageNumber,
                                @RequestParam(required = false) Integer productsPageSize,
                                @RequestParam(required = false) Integer productsStockSorting,
-                               @RequestParam(required = false) Integer productsCategory) {
+                               @RequestParam(required = false) Integer productsCategorySorting) {
 
 
         /**
          * Delegate showing product list logic into the {@link ProductListPageHelper}
          */
-        productListPageHelper.validatePageShowingState(productsPageNumber, productsPageSize, productsStockSorting, productsCategory);
+        productListPageHelper.validatePageShowingState(productsPageNumber, productsPageSize, productsStockSorting, productsCategorySorting);
 
         model.addAttribute("productList",
-                productService.findProductsWithFilteringAndPagination(productListPageHelper.getCurrentPageNumber(),
-                productListPageHelper.getPageSize(),
-                        productListPageHelper.getProductsStockSorting(),
-                        productListPageHelper.getProductCategory()));
+                productService.findProductsWithFilteringAndPagination(productListPageHelper));
 //            model.addAttribute("productsList",
-//                    productService.findProductsByStockWithPagination(productListPageHelper.getProductsStockSorting(), PageRequest.of(productListPageHelper.getCurrentPageNumber(),
+//                    productService.findProductsByProductStockWithPagination(productListPageHelper.getProductsStockSorting(), PageRequest.of(productListPageHelper.getCurrentPageNumber(),
 //                            productListPageHelper.getPageSize(),
 //                            Sort.Direction.ASC,
 //                            "id")));

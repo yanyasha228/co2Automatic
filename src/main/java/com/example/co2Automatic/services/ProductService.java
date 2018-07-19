@@ -1,5 +1,6 @@
 package com.example.co2Automatic.services;
 
+import com.example.co2Automatic.ControllerHelpers.ProductListPageHelper;
 import com.example.co2Automatic.models.Product;
 import com.example.co2Automatic.models.ProductCategory;
 import com.example.co2Automatic.models.ProductStock;
@@ -12,9 +13,16 @@ import java.util.Optional;
 
 public interface ProductService {
     void save(Product product);
-    Page<Product> findAllWithPagination(PageRequest pageRequest);
 
-    Page<Product> findProductsByStockWithPagination(ProductStock productStock, PageRequest pageRequest);
+    Page<Product> findAllWithPagination(ProductListPageHelper productListPageHelper,
+                                        PageRequest pageRequest);
+
+    Page<Product> findProductsByProductStockWithPagination(ProductListPageHelper productListPageHelper,
+                                                           PageRequest pageRequest
+                                                           );
+
+    Page<Product> findProductsByProductStockAndProductCategoryWithPagination(ProductListPageHelper productListPageHelper,
+                                                                             PageRequest pageRequest);
 
     List<Product> findAll();
 
@@ -22,5 +30,8 @@ public interface ProductService {
 
     Optional<Product> findById(long id);
 
-    Page<Product> findProductsWithFilteringAndPagination(int currentPageNumber, int pageSize, ProductStock productsStockSorting, ProductCategory productCategory);
+    Page<Product> findProductsWithFilteringAndPagination(ProductListPageHelper productListPageHelper);
+
+    Page<Product> findProductsByCategoryWithPagination(ProductListPageHelper productListPageHelper,
+                                                       PageRequest pageRequest);
 }

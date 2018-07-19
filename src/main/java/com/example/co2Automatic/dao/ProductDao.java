@@ -18,6 +18,8 @@ public interface ProductDao extends JpaRepository<Product, Long> {
     Page<Product> findProductsByProductStock(ProductStock productStock ,
                                              Pageable pageable);
 
+    Page<Product> findProductsByProductCategory(ProductCategory productCategory,Pageable pageable);
+
     Page<Product> findProductsByProductStockAndProductCategory(ProductStock productStock,
                                                                ProductCategory productCategory,
                                                                Pageable pageable);
