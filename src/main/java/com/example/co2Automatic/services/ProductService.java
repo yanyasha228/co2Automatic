@@ -14,15 +14,34 @@ import java.util.Optional;
 public interface ProductService {
     void save(Product product);
 
+    //methods with filtering without search
+
     Page<Product> findAllWithPagination(ProductListPageHelper productListPageHelper,
                                         PageRequest pageRequest);
 
     Page<Product> findProductsByProductStockWithPagination(ProductListPageHelper productListPageHelper,
                                                            PageRequest pageRequest
-                                                           );
+    );
 
     Page<Product> findProductsByProductStockAndProductCategoryWithPagination(ProductListPageHelper productListPageHelper,
                                                                              PageRequest pageRequest);
+
+    Page<Product> findProductsWithPagination(ProductListPageHelper productListPageHelper);
+
+    Page<Product> findProductsByCategoryWithPagination(ProductListPageHelper productListPageHelper,
+                                                       PageRequest pageRequest);
+    // Search methods with filtering
+
+    Page<Product> findProductsByNameLikeAndProductStockAndProductCategoryWithPagination(ProductListPageHelper productListPageHelper,
+                                                                                        PageRequest pageRequest);
+
+    Page<Product> findProductsByNameLikeWithPagination(ProductListPageHelper productListPageHelper, PageRequest pageRequest);
+
+    Page<Product> findProductsByNameLikeAndProductStockWithPagination(ProductListPageHelper productListPageHelper,
+                                                                      PageRequest pageRequest);
+
+    Page<Product> findProductsByNameLikeAndProductCategoryWithPagination(ProductListPageHelper productListPageHelper,
+                                                                         PageRequest pageRequest);
 
     List<Product> findAll();
 
@@ -30,8 +49,5 @@ public interface ProductService {
 
     Optional<Product> findById(long id);
 
-    Page<Product> findProductsWithFilteringAndPagination(ProductListPageHelper productListPageHelper);
 
-    Page<Product> findProductsByCategoryWithPagination(ProductListPageHelper productListPageHelper,
-                                                       PageRequest pageRequest);
 }

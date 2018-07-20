@@ -51,19 +51,22 @@ public class ProductListPageHelper {
 
     private ProductCategory productsCategorySorting;
 
+    private String productListSearchParam;
+
     private void refreshParams() {
         this.currentPageNumber = 0;
         this.pageSize = 5;
         this.productsStockSorting = null;
         this.productsCategorySorting = null;
+        this.productListSearchParam =null;
     }
 
-    public void validatePageShowingState(Integer productsPageNumber, Integer productsPageSize, Integer productsStockSorting, Integer productsCategory) {
-
+    public void validatePageShowingState(Integer productsPageNumber, Integer productsPageSize, Integer productsStockSorting, Integer productsCategory , String searchParam) {
         if (productsPageNumber == null &&
                 productsPageSize == null &&
                 productsStockSorting == null &&
-                productsCategory == null) refreshParams();
+                productsCategory == null &&
+                searchParam ==null) refreshParams();
 
 
         if (productsPageNumber != null && productsPageNumber >= 0 && !((productsPageNumber+1)>totalPagesAmount)) {
@@ -75,6 +78,10 @@ public class ProductListPageHelper {
             this.setPageSize(productsPageSize);
         }
 
+        if (searchParam!=null){
+            if(productListSearchParam==null) refreshParams();
+            this.setProductListSearchParam(searchParam);
+        }
 /**
  * Change sorting param {@link ProductListPageHelper}
  */

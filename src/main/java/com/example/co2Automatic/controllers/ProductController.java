@@ -28,16 +28,17 @@ public class ProductController {
                                @RequestParam(required = false) Integer productsPageNumber,
                                @RequestParam(required = false) Integer productsPageSize,
                                @RequestParam(required = false) Integer productsStockSorting,
-                               @RequestParam(required = false) Integer productsCategorySorting) {
+                               @RequestParam(required = false) Integer productsCategorySorting,
+                               @RequestParam(required = false) String searchParam) {
 
 
         /**
          * Delegate showing product list logic into the {@link ProductListPageHelper}
          */
-        productListPageHelper.validatePageShowingState(productsPageNumber, productsPageSize, productsStockSorting, productsCategorySorting);
+        productListPageHelper.validatePageShowingState(productsPageNumber, productsPageSize, productsStockSorting, productsCategorySorting , searchParam);
 
         model.addAttribute("productList",
-                productService.findProductsWithFilteringAndPagination(productListPageHelper));
+                productService.findProductsWithPagination(productListPageHelper));
 //            model.addAttribute("productsList",
 //                    productService.findProductsByProductStockWithPagination(productListPageHelper.getProductsStockSorting(), PageRequest.of(productListPageHelper.getCurrentPageNumber(),
 //                            productListPageHelper.getPageSize(),

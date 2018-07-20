@@ -10,8 +10,19 @@ $(document).ready(function () {
             }
         });
     });
-});
+
+//     $("#searchButton").on("click" ,function () {
+//         var searchParamInput = $("#searchParamInput").value;
+//         if(searchParamInput!=null){
+//             var xhr = new XMLHttpRequest();
+//             xhr.open('GET', document.URL + "?searchParam=" + searchParamInput, false);
+//             xhr.send(true);
+//         }
+//     });
+// });
 
 $(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip();
 });
+
+

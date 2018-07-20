@@ -30,6 +30,8 @@ public class ProductServiceImpl implements ProductService {
         productListPageHelper.setTotalPagesAmount(resultPage.getTotalPages());
         return resultPage;
     }
+    //////////////////////////////////////////////////////////
+//Filtering methods without search
 
     @Override
     public Page<Product> findProductsByProductStockWithPagination(ProductListPageHelper productListPageHelper, PageRequest pageRequest) {
@@ -54,6 +56,45 @@ public class ProductServiceImpl implements ProductService {
         return resultPage;
     }
 
+    //////////////////////////////////////////////////////////
+//Filtering methods with search//////////////////////////////////
+    @Override
+    public Page<Product> findProductsByNameLikeAndProductStockAndProductCategoryWithPagination(ProductListPageHelper productListPageHelper, PageRequest pageRequest) {
+        Page<Product> resultPage = productDao.findProductsByNameIgnoreCaseContainingAndProductStockAndProductCategory(productListPageHelper.getProductListSearchParam(),
+                productListPageHelper.getProductsStockSorting(),
+                productListPageHelper.getProductsCategorySorting(),
+                pageRequest);
+        productListPageHelper.setTotalPagesAmount(resultPage.getTotalPages());
+        return resultPage;
+    }
+
+    @Override
+    public Page<Product> findProductsByNameLikeWithPagination(ProductListPageHelper productListPageHelper, PageRequest pageRequest) {
+        Page<Product> resultPage = productDao.findProductsByNameIgnoreCaseContaining(productListPageHelper.getProductListSearchParam(),
+                pageRequest);
+        productListPageHelper.setTotalPagesAmount(resultPage.getTotalPages());
+        return resultPage;
+
+    }
+
+    @Override
+    public Page<Product> findProductsByNameLikeAndProductStockWithPagination(ProductListPageHelper productListPageHelper, PageRequest pageRequest) {
+        Page<Product> resultPage = productDao.findProductsByNameIgnoreCaseContainingAndProductStock(productListPageHelper.getProductListSearchParam(),
+                productListPageHelper.getProductsStockSorting(),
+                pageRequest);
+        productListPageHelper.setTotalPagesAmount(resultPage.getTotalPages());
+        return resultPage;
+    }
+
+    @Override
+    public Page<Product> findProductsByNameLikeAndProductCategoryWithPagination(ProductListPageHelper productListPageHelper, PageRequest pageRequest) {
+        Page<Product> resultPage = productDao.findProductsByNameIgnoreCaseContainingAndProductCategory(productListPageHelper.getProductListSearchParam(),
+                productListPageHelper.getProductsCategorySorting(),
+                pageRequest);
+        productListPageHelper.setTotalPagesAmount(resultPage.getTotalPages());
+        return resultPage;
+    }
+////////////////////////////////////////////////////////
 
     @Override
     public List<Product> findAll() {
@@ -74,30 +115,61 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> findProductsWithFilteringAndPagination(ProductListPageHelper productListPageHelper) {
+    public Page<Product> findProductsWithPagination(ProductListPageHelper productListPageHelper) {
 
+        if (productListPageHelper.getProductListSearchParam() == null) {
 
-        if (productListPageHelper.getProductsCategorySorting() == null && productListPageHelper.getProductsStockSorting() != null) {
+            if (productListPageHelper.getProductsCategorySorting() == null && productListPageHelper.getProductsStockSorting() != null) {
 
-            return findProductsByProductStockWithPagination(productListPageHelper, PageRequest.of(productListPageHelper.getCurrentPageNumber(),
+                return findProductsByProductStockWithPagination(productListPageHelper, PageRequest.of(productListPageHelper.getCurrentPageNumber(),
+                        productListPageHelper.getPageSize(),
+                        Sort.Direction.ASC,
+                        "id"));
+            }
+
+            if (productListPageHelper.getProductsCategorySorting() != null && productListPageHelper.getProductsStockSorting() == null) {
+
+                return findProductsByCategoryWithPagination(productListPageHelper, PageRequest.of(productListPageHelper.getCurrentPageNumber(),
+                        productListPageHelper.getPageSize(),
+                        Sort.Direction.ASC,
+                        "id"));
+            }
+            if (productListPageHelper.getProductsCategorySorting() != null && productListPageHelper.getProductsStockSorting() != null) {
+                return findProductsByProductStockAndProductCategoryWithPagination(productListPageHelper,
+                        PageRequest.of(productListPageHelper.getCurrentPageNumber(),
+                                productListPageHelper.getPageSize(),
+                                Sort.Direction.ASC,
+                                "id"));
+            }
+        } else {
+
+            if (productListPageHelper.getProductsCategorySorting() == null && productListPageHelper.getProductsStockSorting() != null) {
+
+                return findProductsByNameLikeAndProductStockWithPagination(productListPageHelper, PageRequest.of(productListPageHelper.getCurrentPageNumber(),
+                        productListPageHelper.getPageSize(),
+                        Sort.Direction.ASC,
+                        "id"));
+            }
+
+            if (productListPageHelper.getProductsCategorySorting() != null && productListPageHelper.getProductsStockSorting() == null) {
+
+                return findProductsByNameLikeAndProductCategoryWithPagination(productListPageHelper, PageRequest.of(productListPageHelper.getCurrentPageNumber(),
+                        productListPageHelper.getPageSize(),
+                        Sort.Direction.ASC,
+                        "id"));
+            }
+            if (productListPageHelper.getProductsCategorySorting() != null && productListPageHelper.getProductsStockSorting() != null) {
+                return findProductsByNameLikeAndProductStockAndProductCategoryWithPagination(productListPageHelper,
+                        PageRequest.of(productListPageHelper.getCurrentPageNumber(),
+                                productListPageHelper.getPageSize(),
+                                Sort.Direction.ASC,
+                                "id"));
+            }
+
+            return findProductsByNameLikeWithPagination(productListPageHelper, PageRequest.of(productListPageHelper.getCurrentPageNumber(),
                     productListPageHelper.getPageSize(),
                     Sort.Direction.ASC,
                     "id"));
-        }
-
-        if (productListPageHelper.getProductsCategorySorting() != null && productListPageHelper.getProductsStockSorting() == null) {
-
-            return findProductsByCategoryWithPagination(productListPageHelper, PageRequest.of(productListPageHelper.getCurrentPageNumber(),
-                    productListPageHelper.getPageSize(),
-                    Sort.Direction.ASC,
-                    "id"));
-        }
-        if (productListPageHelper.getProductsCategorySorting() != null && productListPageHelper.getProductsStockSorting() != null) {
-            return findProductsByProductStockAndProductCategoryWithPagination(productListPageHelper,
-                    PageRequest.of(productListPageHelper.getCurrentPageNumber(),
-                            productListPageHelper.getPageSize(),
-                            Sort.Direction.ASC,
-                            "id"));
         }
 
         return findAllWithPagination(productListPageHelper, PageRequest.of(productListPageHelper.getCurrentPageNumber(),

@@ -15,15 +15,30 @@ public interface ProductDao extends JpaRepository<Product, Long> {
 
     Optional<Product> findProductByName(String name);
 
-    Page<Product> findProductsByProductStock(ProductStock productStock ,
+    Page<Product> findProductsByProductStock(ProductStock productStock,
                                              Pageable pageable);
 
-    Page<Product> findProductsByProductCategory(ProductCategory productCategory,Pageable pageable);
+    Page<Product> findProductsByProductCategory(ProductCategory productCategory, Pageable pageable);
 
     Page<Product> findProductsByProductStockAndProductCategory(ProductStock productStock,
                                                                ProductCategory productCategory,
                                                                Pageable pageable);
-    Product findProductByNameLike(String nonFullProductName);
+
+    Page<Product> findProductsByNameIgnoreCaseContaining(String name, Pageable pageable);
+
+    Page<Product> findProductsByNameIgnoreCaseContainingAndProductStock(String name,
+                                                        ProductStock productStock,
+                                                        Pageable pageable);
+
+    Page<Product> findProductsByNameIgnoreCaseContainingAndProductCategory(String name,
+                                                           ProductCategory productCategory,
+                                                           Pageable pageable);
+
+    Page<Product> findProductsByNameIgnoreCaseContainingAndProductStockAndProductCategory(String name,
+                                                                          ProductStock productStock,
+                                                                          ProductCategory productCategory,
+                                                                          Pageable pageable);
+
 
     Optional<Product> findById(long id);
 

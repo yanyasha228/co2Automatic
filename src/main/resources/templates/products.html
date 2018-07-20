@@ -21,7 +21,8 @@
                 <div class="col-sm-8">
                     <a href="/editOrder" class="btn btn-add"><i class="material-icons">&#xe147;</i>
                         <span>Добавить</span></a>
-                    <a th:href="@{${#httpServletRequest.requestURI}}" class="btn btn-primary"><i class="material-icons">&#xE863;</i> <span>Обновить</span></a>
+                    <a th:href="@{${#httpServletRequest.requestURI}}" class="btn btn-primary"><i class="material-icons">&#xE863;</i>
+                        <span>Обновить</span></a>
                     <a href="#" class="btn btn-info"><i class="material-icons">&#xE24D;</i>
                         <span>Excel Импорт </span></a>
                 </div>
@@ -50,80 +51,91 @@
                     </div>
                 </div>
                 <div class="col-sm-9">
-                    <button type="button" class="btn btn-primary"><i class="fa fa-search"></i></button>
-                    <div class="filter-group">
-                        <label>Имя</label>
-                        <input type="text" class="form-control" id="searchOrder">
-                    </div>
+                    <form th:action="@{/products}" method="get" role="form" autocomplete="off">
+                        <button type="submit" class="btn btn-primary" ><i class="fa fa-search"></i>
+                        </button>
+                        <div class="filter-group">
+                            <label>Имя</label>
+                            <input th:value="${productListPageHelper.getProductListSearchParam()}" type="text" name="searchParam" class="form-control" id="searchParam">
+                        </div>
+                    </form>
 
-                    <div class="filter-group">
-                        <label>Категория</label>
-                        <select id="selectProductsCategory" class="form-control" onchange="location = this.value;">
-                            <option
-                                    th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=1'"
-                                    th:selected="${productListPageHelper.getProductsCategorySorting() == null}">Все
-                            </option>
-                            <option
-                                    th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=2'"
-                                    th:selected="${productListPageHelper.getProductsCategorySorting() == T(com.example.co2Automatic.models.ProductCategory).AIR_RIFLES}">СO2
-                                Пистолеты
-                            </option>
-                            <option
-                                    th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=3'"
-                                    th:selected="${productListPageHelper.getProductsCategorySorting() == T(com.example.co2Automatic.models.ProductCategory).STARTING_WEAPON}">
-                                Пневматические винтовки
-                            </option>
-                            <option
-                                    th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=4'"
-                                    th:selected="${productListPageHelper.getProductsCategorySorting() == T(com.example.co2Automatic.models.ProductCategory).GAS_GUNS}">СO2
-                                Пистолеты
-                            </option>
-                            <option
-                                    th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=5'"
-                                    th:selected="${productListPageHelper.getProductsCategorySorting() == T(com.example.co2Automatic.models.ProductCategory).SPARES}">Запчасти
-                            </option>
-                            <option
-                                    th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=6'"
-                                    th:selected="${productListPageHelper.getProductsCategorySorting() == T(com.example.co2Automatic.models.ProductCategory).OPTICS}">Оптика
-                            </option>
-                            <option
-                                    th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=7'"
-                                    th:selected="${productListPageHelper.getProductsCategorySorting() == T(com.example.co2Automatic.models.ProductCategory).CARE_PRODUCTS}">
-                                Уход и чистка
-                            </option>
-                            <option
-                                    th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=8'"
-                                    th:selected="${productListPageHelper.getProductsCategorySorting() == T(com.example.co2Automatic.models.ProductCategory).BULLETS}">Патроны
-                            </option>
-                            <option
-                                    th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=9'"
-                                    th:selected="${productListPageHelper.getProductsCategorySorting() == T(com.example.co2Automatic.models.ProductCategory).FLAUBERTS_WEAPON}">Оружие
-                                Флобера
-                            </option>
-                            <option
-                                    th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=10'"
-                                    th:selected="${productListPageHelper.getProductsCategorySorting() == T(com.example.co2Automatic.models.ProductCategory).SOUVENIRS}">Сувениры
-                            </option>
-                        </select>
-                    </div>
+                        <div class="filter-group">
+                            <label>Категория</label>
+                            <select id="selectProductsCategory" class="form-control" onchange="location = this.value;">
+                                <option
+                                        th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=1'"
+                                        th:selected="${productListPageHelper.getProductsCategorySorting() == null}">Все
+                                </option>
+                                <option
+                                        th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=2'"
+                                        th:selected="${productListPageHelper.getProductsCategorySorting() == T(com.example.co2Automatic.models.ProductCategory).AIR_RIFLES}">
+                                    СO2
+                                    Пистолеты
+                                </option>
+                                <option
+                                        th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=3'"
+                                        th:selected="${productListPageHelper.getProductsCategorySorting() == T(com.example.co2Automatic.models.ProductCategory).STARTING_WEAPON}">
+                                    Пневматические винтовки
+                                </option>
+                                <option
+                                        th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=4'"
+                                        th:selected="${productListPageHelper.getProductsCategorySorting() == T(com.example.co2Automatic.models.ProductCategory).GAS_GUNS}">
+                                    СO2
+                                    Пистолеты
+                                </option>
+                                <option
+                                        th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=5'"
+                                        th:selected="${productListPageHelper.getProductsCategorySorting() == T(com.example.co2Automatic.models.ProductCategory).SPARES}">
+                                    Запчасти
+                                </option>
+                                <option
+                                        th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=6'"
+                                        th:selected="${productListPageHelper.getProductsCategorySorting() == T(com.example.co2Automatic.models.ProductCategory).OPTICS}">
+                                    Оптика
+                                </option>
+                                <option
+                                        th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=7'"
+                                        th:selected="${productListPageHelper.getProductsCategorySorting() == T(com.example.co2Automatic.models.ProductCategory).CARE_PRODUCTS}">
+                                    Уход и чистка
+                                </option>
+                                <option
+                                        th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=8'"
+                                        th:selected="${productListPageHelper.getProductsCategorySorting() == T(com.example.co2Automatic.models.ProductCategory).BULLETS}">
+                                    Патроны
+                                </option>
+                                <option
+                                        th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=9'"
+                                        th:selected="${productListPageHelper.getProductsCategorySorting() == T(com.example.co2Automatic.models.ProductCategory).FLAUBERTS_WEAPON}">
+                                    Оружие
+                                    Флобера
+                                </option>
+                                <option
+                                        th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=10'"
+                                        th:selected="${productListPageHelper.getProductsCategorySorting() == T(com.example.co2Automatic.models.ProductCategory).SOUVENIRS}">
+                                    Сувениры
+                                </option>
+                            </select>
+                        </div>
 
-                    <div class="filter-group">
-                        <label>Склад</label>
-                        <select id="selectProductStockSorting" class="form-control" onchange="location = this.value;">
-                            <option th:value="${#httpServletRequest.requestURI} + '?productsStockSorting=1'"
-                                    th:selected="${productListPageHelper.getProductsStockSorting() == null}">Все
-                            </option>
-                            <option th:value="${#httpServletRequest.requestURI} + '?productsStockSorting=2'"
-                                    th:selected="${productListPageHelper.getProductsStockSorting() == T(com.example.co2Automatic.models.ProductStock).CO2_STOCK}">
-                                Co2
-                            </option>
-                            <option th:value="${#httpServletRequest.requestURI} + '?productsStockSorting=3'"
-                                    th:selected="${productListPageHelper.getProductsStockSorting() == T(com.example.co2Automatic.models.ProductStock).B_STOCK}">
-                                Барабан
-                            </option>
-                        </select>
-                    </div>
-                    <span class="filter-icon"><i class="fa fa-filter"></i></span>
+                        <div class="filter-group">
+                            <label>Склад</label>
+                            <select id="selectProductStockSorting" class="form-control"
+                                    onchange="location = this.value;">
+                                <option th:value="${#httpServletRequest.requestURI} + '?productsStockSorting=1'"
+                                        th:selected="${productListPageHelper.getProductsStockSorting() == null}">Все
+                                </option>
+                                <option th:value="${#httpServletRequest.requestURI} + '?productsStockSorting=2'"
+                                        th:selected="${productListPageHelper.getProductsStockSorting() == T(com.example.co2Automatic.models.ProductStock).CO2_STOCK}">
+                                    Co2
+                                </option>
+                                <option th:value="${#httpServletRequest.requestURI} + '?productsStockSorting=3'"
+                                        th:selected="${productListPageHelper.getProductsStockSorting() == T(com.example.co2Automatic.models.ProductStock).B_STOCK}">
+                                    Барабан
+                                </option>
+                            </select>
+                        </div>
+                        <span class="filter-icon"><i class="fa fa-filter"></i></span>
                 </div>
             </div>
         </div>
