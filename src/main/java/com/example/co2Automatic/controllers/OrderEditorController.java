@@ -12,7 +12,7 @@ import java.util.Date;
 
 @Controller
 @RequestMapping("/editOrder")
-public class EditorController {
+public class OrderEditorController {
 
     @Autowired
     OrderService orderService;

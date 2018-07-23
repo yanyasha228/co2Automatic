@@ -56,21 +56,22 @@ public class ProductListPageHelper {
     private void refreshParams() {
         this.currentPageNumber = 0;
         this.pageSize = 5;
+        this.totalPagesAmount = 0;
         this.productsStockSorting = null;
         this.productsCategorySorting = null;
-        this.productListSearchParam =null;
+        this.productListSearchParam = null;
     }
 
-    public void validatePageShowingState(Integer productsPageNumber, Integer productsPageSize, Integer productsStockSorting, Integer productsCategory , String searchParam) {
+    public void validatePageShowingState(Integer productsPageNumber, Integer productsPageSize, Integer productsStockSorting, Integer productsCategory, String searchParam) {
         if (productsPageNumber == null &&
                 productsPageSize == null &&
                 productsStockSorting == null &&
                 productsCategory == null &&
-                searchParam ==null) refreshParams();
+                searchParam == null) refreshParams();
 
 
-        if (productsPageNumber != null && productsPageNumber >= 0 && !((productsPageNumber+1)>totalPagesAmount)) {
-                this.setCurrentPageNumber(productsPageNumber);
+        if (productsPageNumber != null && productsPageNumber >= 0 && !((productsPageNumber + 1) > totalPagesAmount)) {
+            this.setCurrentPageNumber(productsPageNumber);
         }
 
         if (productsPageSize != null) {
@@ -78,10 +79,12 @@ public class ProductListPageHelper {
             this.setPageSize(productsPageSize);
         }
 
-        if (searchParam!=null){
-            if(productListSearchParam==null) refreshParams();
+        if (searchParam != null) {
+            if (productListSearchParam == null) refreshParams();
             this.setProductListSearchParam(searchParam);
+            if (searchParam.replaceAll(" ","").equalsIgnoreCase("")) refreshParams();
         }
+
 /**
  * Change sorting param {@link ProductListPageHelper}
  */

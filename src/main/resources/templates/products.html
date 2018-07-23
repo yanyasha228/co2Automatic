@@ -3,8 +3,8 @@
 
 <head>
     <div th:replace="allPagesTemplates :: all_pages_head_data"></div>
-    <link rel="stylesheet" th:href="@{csssource/item_list_stylesheet.css}">
-    <script th:src="@{jssource/item_list_js.js}"></script>
+    <link rel="stylesheet" th:href="@{/csssource/item_list_stylesheet.css}">
+    <script th:src="@{/jssource/item_list_js.js}"></script>
 </head>
 
 <body>
@@ -51,7 +51,7 @@
                     </div>
                 </div>
                 <div class="col-sm-9">
-                    <form th:action="@{/products}" method="get" role="form" autocomplete="off">
+                    <form th:action="@{/admin/products}" method="get" role="form" autocomplete="off">
                         <button type="submit" class="btn btn-primary" ><i class="fa fa-search"></i>
                         </button>
                         <div class="filter-group">

@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("products")
-public class ProductController {
+@RequestMapping("/admin/products")
+public class AdminProductController {
 
 
     @Autowired
