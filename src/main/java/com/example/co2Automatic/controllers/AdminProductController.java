@@ -1,6 +1,7 @@
 package com.example.co2Automatic.controllers;
 
 import com.example.co2Automatic.ControllerHelpers.ProductListPageHelper;
+import com.example.co2Automatic.SystemComponents.AdminSettings;
 import com.example.co2Automatic.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +21,9 @@ public class AdminProductController {
     private ProductService productService;
 
     @Autowired
+    AdminSettings adminSettings;
+
+    @Autowired
     private ProductListPageHelper productListPageHelper;
 
     @RequestMapping
@@ -36,6 +40,9 @@ public class AdminProductController {
          * Delegate showing product list logic into the {@link ProductListPageHelper}
          */
         productListPageHelper.validatePageShowingState(productsPageNumber, productsPageSize, productsStockSorting, productsCategorySorting , searchParam);
+
+        Double eurCurrency = adminSettings.getEur_currency();
+        Double usdCurrency = adminSettings.getUsd_currency();
 
         model.addAttribute("productList",
                 productService.findProductsWithPagination(productListPageHelper));

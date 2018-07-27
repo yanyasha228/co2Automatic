@@ -1,6 +1,9 @@
 package com.example.co2Automatic;
 
+import com.example.co2Automatic.SystemComponents.AdminSettings;
 import com.example.co2Automatic.models.*;
+import com.example.co2Automatic.models.SessionModels.AdminModelSettings;
+import com.example.co2Automatic.services.AdminModelSettingsService;
 import com.example.co2Automatic.services.ProductService;
 
 import org.slf4j.Logger;
@@ -8,17 +11,34 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootApplication
 public class Co2AutomaticApplication {
     private static final Logger log = LoggerFactory.getLogger(Co2AutomaticApplication.class);
+
     public static void main(String[] args) {
 
-        SpringApplication.run(Co2AutomaticApplication.class, args);
+        ApplicationContext applicationContext = SpringApplication.run(Co2AutomaticApplication.class, args);
+
+//        AdminModelSettingsService adminModelSettingsService = applicationContext.getBean(AdminModelSettingsService.class);
+//
+//
+//        AdminModelSettings adminModelSettings = adminModelSettingsService.getSettings();
+
+//        AdminSettings adminSettings = applicationContext.getBean(AdminSettings.class);
+//
+////        adminSettings.setEur_currency(adminModelSettings.getEur_currency());
+////        adminSettings.setUsd_currency(adminModelSettings.getUsd_currency());
+//
+//        adminSettings.setEur_currency(31.7);
+//        adminSettings.setUsd_currency(27.2);
+
 
 
 //
@@ -186,11 +206,24 @@ public class Co2AutomaticApplication {
 //    e.printStackTrace();
 //}
     }
-    @Bean
-    public CommandLineRunner testDataProd(ProductService productService) {
+
+    @Bean("CRunner")
+    public CommandLineRunner testDataProd(ProductService productService,
+                                          AdminModelSettingsService adminModelSettingsService,
+                                          AdminSettings adminSettings) {
         return (args) -> {
             // save a couple of customers
             List<Product> productList = new ArrayList<>();
+
+            AdminModelSettings adminModelSettings = new AdminModelSettings();
+
+            adminModelSettings.setEur_currency(31.25);
+            adminModelSettings.setUsd_currency(27.67);
+
+            adminModelSettingsService.updateSettings(adminModelSettings);
+
+            adminSettings.setUsd_currency(adminModelSettingsService.getSettings().getUsd_currency());
+            adminSettings.setEur_currency(adminModelSettingsService.getSettings().getEur_currency());
 
             Product product = new Product();
             product.setPrice(25.67);
@@ -322,7 +355,7 @@ public class Co2AutomaticApplication {
             product12.setProductStock(ProductStock.B_STOCK);
             productList.add(product12);
 
-            for (Product prodForPersit: productList) productService.save(prodForPersit);
+            for (Product prodForPersit : productList) productService.save(prodForPersit);
 
             // fetch all customers
             log.info("Customers found with findAll():");

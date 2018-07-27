@@ -2,6 +2,7 @@ package com.example.co2Automatic.ControllerHelpers;
 
 import com.example.co2Automatic.models.ProductCategory;
 import com.example.co2Automatic.models.ProductStock;
+import com.example.co2Automatic.models.SessionModels.Currency;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
@@ -33,13 +34,13 @@ public class ProductListPageHelper {
     public ProductListPageHelper() {
         this.currentPageNumber = 0;
         this.pageSize = 5;
+        this.currency = Currency.UAH;
     }
 
 //    public ProductListPageHelper(int currentPageNumber, int pageSize ) {
 //        this.currentPageNumber = currentPageNumber;
 //        this.pageSize = pageSize;
 //    }
-
 
     private int currentPageNumber;
 
@@ -52,6 +53,8 @@ public class ProductListPageHelper {
     private ProductCategory productsCategorySorting;
 
     private String productListSearchParam;
+
+    private Currency currency;
 
     private void refreshParams() {
         this.currentPageNumber = 0;
@@ -82,7 +85,7 @@ public class ProductListPageHelper {
         if (searchParam != null) {
             if (productListSearchParam == null) refreshParams();
             this.setProductListSearchParam(searchParam);
-            if (searchParam.replaceAll(" ","").equalsIgnoreCase("")) refreshParams();
+            if (searchParam.replaceAll(" ", "").equalsIgnoreCase("")) refreshParams();
         }
 
 /**

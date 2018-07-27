@@ -10,6 +10,8 @@ public class AdminSettingsController {
 
     @RequestMapping
     public String adminSettings(Model model){
-        return null;
+        return "adminSettings";
     }
+
+
 }
