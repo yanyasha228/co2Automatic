@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
+@Service("adminModelSettingsService")
 @Transactional
 public class AdminModelSettingsServiceImpl implements AdminModelSettingsService {
     @Autowired
@@ -19,5 +19,10 @@ public class AdminModelSettingsServiceImpl implements AdminModelSettingsService 
     @Override
     public AdminModelSettings getSettings(){
        return adminModeSettingsDao.getOne(1L);
+    }
+
+    @Override
+    public boolean exist() {
+        return adminModeSettingsDao.existsById(1L);
     }
 }

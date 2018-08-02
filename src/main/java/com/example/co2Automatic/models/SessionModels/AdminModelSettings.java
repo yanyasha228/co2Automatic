@@ -14,7 +14,7 @@ public class AdminModelSettings {
     }
 
     @Id
-    private long id;
+    private long id = 1;
 
     @Column(name = "USD_CURRENCY")
     private double usd_currency;
