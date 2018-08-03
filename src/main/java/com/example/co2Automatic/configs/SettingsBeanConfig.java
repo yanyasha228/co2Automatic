@@ -32,7 +32,7 @@ if(!adminModelSettingsService.exist()) {
     adminModelSettingsService.updateSettings(adminModelSettings);
 }
 
-        adminSettings.setSettings(adminModelSettingsService.getSettings());
+adminSettings.setSettings(adminModelSettingsService.getSettings());
 
         return adminSettings;
     }

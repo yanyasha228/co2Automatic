@@ -28,8 +28,6 @@ public class Co2AutomaticApplication {
 
         ApplicationContext applicationContext = SpringApplication.run(Co2AutomaticApplication.class, args);
 
-       AdminSettings adminSettings = applicationContext.getBean(AdminSettings.class);
-if(applicationContext!=null) applicationContext=null;
     }
 
     @Bean("CRunner")
