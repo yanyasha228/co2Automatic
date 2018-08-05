@@ -11,7 +11,7 @@
 <div th:replace="allPagesTemplates :: navBar"></div>
 
 </div>
-<div class="container">
+
     <div class="table-wrapper">
         <div class="table-title">
             <div class="row">
@@ -62,58 +62,15 @@
 
                         <div class="filter-group">
                             <label>Категория</label>
-                            <select id="selectProductsCategory" class="form-control" onchange="location = this.value;">
+                            <select id="selectProductsCategory" class="form-control" onchange="location = this.value;" >
                                 <option
-                                        th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=1'"
+                                        th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=0'"
                                         th:selected="${productListPageHelper.getProductsCategorySorting() == null}">Все
                                 </option>
-                                <option
-                                        th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=2'"
-                                        th:selected="${productListPageHelper.getProductsCategorySorting() == T(com.example.co2Automatic.models.ProductCategory).AIR_RIFLES}">
-                                    СO2
-                                    Пистолеты
-                                </option>
-                                <option
-                                        th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=3'"
-                                        th:selected="${productListPageHelper.getProductsCategorySorting() == T(com.example.co2Automatic.models.ProductCategory).STARTING_WEAPON}">
-                                    Пневматические винтовки
-                                </option>
-                                <option
-                                        th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=4'"
-                                        th:selected="${productListPageHelper.getProductsCategorySorting() == T(com.example.co2Automatic.models.ProductCategory).GAS_GUNS}">
-                                    СO2
-                                    Пистолеты
-                                </option>
-                                <option
-                                        th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=5'"
-                                        th:selected="${productListPageHelper.getProductsCategorySorting() == T(com.example.co2Automatic.models.ProductCategory).SPARES}">
-                                    Запчасти
-                                </option>
-                                <option
-                                        th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=6'"
-                                        th:selected="${productListPageHelper.getProductsCategorySorting() == T(com.example.co2Automatic.models.ProductCategory).OPTICS}">
-                                    Оптика
-                                </option>
-                                <option
-                                        th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=7'"
-                                        th:selected="${productListPageHelper.getProductsCategorySorting() == T(com.example.co2Automatic.models.ProductCategory).CARE_PRODUCTS}">
-                                    Уход и чистка
-                                </option>
-                                <option
-                                        th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=8'"
-                                        th:selected="${productListPageHelper.getProductsCategorySorting() == T(com.example.co2Automatic.models.ProductCategory).BULLETS}">
-                                    Патроны
-                                </option>
-                                <option
-                                        th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=9'"
-                                        th:selected="${productListPageHelper.getProductsCategorySorting() == T(com.example.co2Automatic.models.ProductCategory).FLAUBERTS_WEAPON}">
-                                    Оружие
-                                    Флобера
-                                </option>
-                                <option
-                                        th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=10'"
-                                        th:selected="${productListPageHelper.getProductsCategorySorting() == T(com.example.co2Automatic.models.ProductCategory).SOUVENIRS}">
-                                    Сувениры
+                                <option th:each="productCategory : ${productCategories}"
+                                        th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=' + ${productCategory.getId()}"
+                                        th:selected="${productListPageHelper.getProductsCategorySorting().getId() == productCategory.getId() }"
+                                th:text="${}">
                                 </option>
                             </select>
                         </div>
@@ -155,7 +112,7 @@
             <tbody th:each="product : ${productList}">
             <tr>
                 <td th:text="${product.getId()}"></td>
-                <td><img th:src="@{${product.getImageUrl()}}" width="70" height="70" class="avatar" alt="Avatar"><br><a
+                <td><img th:src="@{${product.getImageUrls().get(0)}}" width="70" height="70" class="avatar" alt="Avatar"><br><a
                         href="#" th:text="${product.getName()}"></a></td>
                 <td th:text="${product.getQuantity()}">-</td>
                 <td th:text="${#dates.format(product.getLastUpdatingDate(), 'yyyy-MM-dd')}"></td>
@@ -192,7 +149,7 @@
             </ul>
         </div>
     </div>
-</div>
+
 
 </body>
 </html>

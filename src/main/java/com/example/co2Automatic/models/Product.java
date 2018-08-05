@@ -1,13 +1,9 @@
 package com.example.co2Automatic.models;
 
 import lombok.Data;
-import org.hibernate.criterion.Order;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Data
 @Entity
@@ -25,11 +21,20 @@ public class Product {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "product_url_from_external_resource")
+    private String productUrlFromExternalResource;
+
     @Column(name = "quantity")
     private int quantity;
 
     @Column(name = "description")
     private String description;
+
+    @ElementCollection(targetClass = String.class)
+    @CollectionTable(name = "product_params")
+    @MapKeyColumn(name="product_param_name")
+    @Column(name = "params")
+    private Map<String,String> params;
 
     @Column(name = "price")
     private double price;
@@ -38,8 +43,11 @@ public class Product {
     private double wholesalePrice;
 
     @Column(name = "product_category")
-    @Enumerated(EnumType.STRING)
     private ProductCategory productCategory;
+
+    @Column(name = "country_of_origin")
+    private String countryOfOrigin;
+
 
     @Column(name = "product_stock")
     @Enumerated(EnumType.STRING)
@@ -53,8 +61,13 @@ public class Product {
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastUpdatingDate;
 
-    @Column(name = "image_url")
-    private String imageUrl;
+    @ElementCollection
+    @CollectionTable(name="urls")
+    @Column(name = "image_urls")
+    private List<String> imageUrls;
+
+    @Column(name = "vendor")
+    private String vendor;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<OrderLine> orderLines = new ArrayList<OrderLine>();
@@ -74,7 +87,7 @@ public class Product {
                 "name='" + name + '\'' +
                 ", quantity=" + quantity +
                 ", addingDate=" + creationDate +
-                ", imageUrl='" + imageUrl + '\'' +
+                ", imageUrls='" + imageUrls + '\'' +
                 '}';
     }
 }

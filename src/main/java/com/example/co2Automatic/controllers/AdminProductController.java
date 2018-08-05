@@ -2,6 +2,7 @@ package com.example.co2Automatic.controllers;
 
 import com.example.co2Automatic.ControllerHelpers.ProductListPageHelper;
 import com.example.co2Automatic.SystemComponents.AdminSettings;
+import com.example.co2Automatic.services.ProductCategoryService;
 import com.example.co2Automatic.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,9 @@ public class AdminProductController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private ProductCategoryService productCategoryService;
 
     @Autowired
     AdminSettings adminSettings;
@@ -53,6 +57,7 @@ public class AdminProductController {
 
 
         model.addAttribute("productListPageHelper", productListPageHelper);
+        model.addAttribute("productCategories" , productCategoryService.findAll());
         return "products";
     }
 

@@ -11,6 +11,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "clients")
 public class Client {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;

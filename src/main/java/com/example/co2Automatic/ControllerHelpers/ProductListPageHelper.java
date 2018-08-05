@@ -3,7 +3,9 @@ package com.example.co2Automatic.ControllerHelpers;
 import com.example.co2Automatic.models.ProductCategory;
 import com.example.co2Automatic.models.ProductStock;
 import com.example.co2Automatic.models.SessionModels.Currency;
+import com.example.co2Automatic.services.ProductCategoryService;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
 
@@ -11,25 +13,27 @@ import org.springframework.web.context.annotation.SessionScope;
 @SessionScope
 @Data
 public class ProductListPageHelper {
-
-    //Category sorting constants
-    static final int ALL_CATEGORY_SORTING = 1;
-    static final int AIR_RIFLES_CATEGORY_SORTING = 2;
-    static final int STARTING_WEAPON_CATEGORY_SORTING = 3;
-    static final int GAS_GUNS_CATEGORY_SORTING = 4;
-    static final int SPARES_CATEGORY_SORTING = 5;
-    static final int OPTICS_CATEGORY_SORTING = 6;
-    static final int CARE_PRODUCTS_CATEGORY_SORTING = 7;
-    static final int BULLETS_CATEGORY_SORTING = 8;
-    static final int FLAUBERTS_WEAPON_CATEGORY_SORTING = 9;
-    static final int SOUVENIRS_CATEGORY_SORTING = 10;
-
+//
+//    //Category sorting constants
+//    static final int ALL_CATEGORY_SORTING = 1;
+//    static final int AIR_RIFLES_CATEGORY_SORTING = 2;
+//    static final int STARTING_WEAPON_CATEGORY_SORTING = 3;
+//    static final int GAS_GUNS_CATEGORY_SORTING = 4;
+//    static final int SPARES_CATEGORY_SORTING = 5;
+//    static final int OPTICS_CATEGORY_SORTING = 6;
+//    static final int CARE_PRODUCTS_CATEGORY_SORTING = 7;
+//    static final int BULLETS_CATEGORY_SORTING = 8;
+//    static final int FLAUBERTS_WEAPON_CATEGORY_SORTING = 9;
+//    static final int SOUVENIRS_CATEGORY_SORTING = 10;
+//
     //Stock sorting constants
 
     static final int ALL_STOCK_SORTING = 1;
     static final int CO2_STOCK_SORTING = 2;
     static final int B_STOCK_SORTING = 3;
 
+    @Autowired
+    ProductCategoryService productCategoryService;
 
     public ProductListPageHelper() {
         this.currentPageNumber = 0;
@@ -107,48 +111,54 @@ public class ProductListPageHelper {
         }
         if (productsCategory != null) {
             this.setCurrentPageNumber(0);
-            switch (productsCategory) {
 
-                case ALL_CATEGORY_SORTING:
-                    this.setProductsCategorySorting(null);
-                    break;
-                case AIR_RIFLES_CATEGORY_SORTING:
-                    this.setProductsCategorySorting(ProductCategory.AIR_RIFLES);
-                    break;
-
-                case STARTING_WEAPON_CATEGORY_SORTING:
-                    this.setProductsCategorySorting(ProductCategory.STARTING_WEAPON);
-                    break;
-
-                case GAS_GUNS_CATEGORY_SORTING:
-                    this.setProductsCategorySorting(ProductCategory.GAS_GUNS);
-                    break;
-
-                case SPARES_CATEGORY_SORTING:
-                    this.setProductsCategorySorting(ProductCategory.SPARES);
-                    break;
-
-                case OPTICS_CATEGORY_SORTING:
-                    this.setProductsCategorySorting(ProductCategory.OPTICS);
-                    break;
-
-                case CARE_PRODUCTS_CATEGORY_SORTING:
-                    this.setProductsCategorySorting(ProductCategory.CARE_PRODUCTS);
-                    break;
-
-                case BULLETS_CATEGORY_SORTING:
-                    this.setProductsCategorySorting(ProductCategory.BULLETS);
-                    break;
-
-                case FLAUBERTS_WEAPON_CATEGORY_SORTING:
-                    this.setProductsCategorySorting(ProductCategory.FLAUBERTS_WEAPON);
-                    break;
-
-                case SOUVENIRS_CATEGORY_SORTING:
-                    this.setProductsCategorySorting(ProductCategory.SOUVENIRS);
-                    break;
-
+            if(productsCategory==0){
+                this.setProductsCategorySorting(null);
+            }else if (productCategoryService.existById(productsCategory)){
+                this.setProductsCategorySorting(productCategoryService.getOne(productsCategory));
             }
+//            switch (productsCategory) {
+//
+//                case ALL_CATEGORY_SORTING:
+//                    this.setProductsCategorySorting(null);
+//                    break;
+//                case AIR_RIFLES_CATEGORY_SORTING:
+//                    this.setProductsCategorySorting(ProductCategory.AIR_RIFLES);
+//                    break;
+//
+//                case STARTING_WEAPON_CATEGORY_SORTING:
+//                    this.setProductsCategorySorting(ProductCategory.STARTING_WEAPON);
+//                    break;
+//
+//                case GAS_GUNS_CATEGORY_SORTING:
+//                    this.setProductsCategorySorting(ProductCategory.GAS_GUNS);
+//                    break;
+//
+//                case SPARES_CATEGORY_SORTING:
+//                    this.setProductsCategorySorting(ProductCategory.SPARES);
+//                    break;
+//
+//                case OPTICS_CATEGORY_SORTING:
+//                    this.setProductsCategorySorting(ProductCategory.OPTICS);
+//                    break;
+//
+//                case CARE_PRODUCTS_CATEGORY_SORTING:
+//                    this.setProductsCategorySorting(ProductCategory.CARE_PRODUCTS);
+//                    break;
+//
+//                case BULLETS_CATEGORY_SORTING:
+//                    this.setProductsCategorySorting(ProductCategory.BULLETS);
+//                    break;
+//
+//                case FLAUBERTS_WEAPON_CATEGORY_SORTING:
+//                    this.setProductsCategorySorting(ProductCategory.FLAUBERTS_WEAPON);
+//                    break;
+//
+//                case SOUVENIRS_CATEGORY_SORTING:
+//                    this.setProductsCategorySorting(ProductCategory.SOUVENIRS);
+//                    break;
+//
+//            }
         }
     }
 }

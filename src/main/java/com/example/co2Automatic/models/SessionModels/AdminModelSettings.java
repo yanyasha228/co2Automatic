@@ -10,11 +10,11 @@ import javax.persistence.*;
 public class AdminModelSettings {
 
     public AdminModelSettings() {
-        this.id = 1;
+
     }
 
     @Id
-    private long id = 1;
+    private long id = 1L;
 
     @Column(name = "USD_CURRENCY")
     private double usd_currency;

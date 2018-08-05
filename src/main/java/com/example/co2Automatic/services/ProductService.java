@@ -49,5 +49,9 @@ public interface ProductService {
 
     Optional<Product> findById(long id);
 
+    void saveAll(List<Product> newProductList);
+
+    void deleteById(Long id);
+
 
 }
