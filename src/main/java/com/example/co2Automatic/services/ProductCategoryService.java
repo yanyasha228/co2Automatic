@@ -16,4 +16,6 @@ public interface ProductCategoryService {
     boolean existById(Integer id);
 
     List<ProductCategory> findAll();
+
+    void saveAll(List<ProductCategory> productCategoryList);
 }

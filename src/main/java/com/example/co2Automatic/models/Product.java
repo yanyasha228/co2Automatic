@@ -1,5 +1,6 @@
 package com.example.co2Automatic.models;
 
+import com.example.co2Automatic.models.SessionModels.MoneyCurrency;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -27,8 +28,14 @@ public class Product {
     @Column(name = "quantity")
     private int quantity;
 
+    @Column(name = "moneyCurrency")
+    private MoneyCurrency currency;
+
     @Column(name = "description")
     private String description;
+
+    @Transient
+    private int categorryXmlId;
 
     @ElementCollection(targetClass = String.class)
     @CollectionTable(name = "product_params")
@@ -42,7 +49,8 @@ public class Product {
     @Column(name = "wholesale_price")
     private double wholesalePrice;
 
-    @Column(name = "product_category")
+    @ManyToOne
+    @JoinColumn(name = "category_id")
     private ProductCategory productCategory;
 
     @Column(name = "country_of_origin")
@@ -64,7 +72,7 @@ public class Product {
     @ElementCollection
     @CollectionTable(name="urls")
     @Column(name = "image_urls")
-    private List<String> imageUrls;
+    private List<String> imageUrls = new ArrayList<String>();
 
     @Column(name = "vendor")
     private String vendor;

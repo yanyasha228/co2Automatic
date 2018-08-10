@@ -70,7 +70,7 @@
                                 <option th:each="productCategory : ${productCategories}"
                                         th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=' + ${productCategory.getId()}"
                                         th:selected="${productListPageHelper.getProductsCategorySorting().getId() == productCategory.getId() }"
-                                th:text="${}">
+                                th:text="${productCategory.getName()}">
                                 </option>
                             </select>
                         </div>

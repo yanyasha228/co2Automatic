@@ -1,5 +1,5 @@
 package com.example.co2Automatic.models.SessionModels;
 
-public enum Currency {
+public enum MoneyCurrency {
     UAH, USD, EUR;
 }

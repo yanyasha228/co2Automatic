@@ -36,4 +36,9 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     public List<ProductCategory> findAll() {
         return productCategoryDao.findAll();
     }
+
+    @Override
+    public void saveAll(List<ProductCategory> productCategoryList) {
+        productCategoryDao.saveAll(productCategoryList);
+    }
 }

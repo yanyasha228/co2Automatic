@@ -3,6 +3,7 @@ package com.example.co2Automatic.models;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -21,5 +22,8 @@ public class ProductCategory {
 
     @OneToMany(mappedBy = "parent")
     private Set<ProductCategory> subCategories;
+
+    @OneToMany(mappedBy = "productCategory")
+    private List<Product> productsInCategory;
 
 }
