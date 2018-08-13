@@ -1,12 +1,8 @@
 package com.example.co2Automatic.DataManipulationHelpers;
 
-import com.example.co2Automatic.SystemComponents.AdminSettings;
 import com.example.co2Automatic.models.Product;
 import com.example.co2Automatic.models.ProductCategory;
 import com.example.co2Automatic.models.SessionModels.MoneyCurrency;
-import com.example.co2Automatic.services.ProductCategoryService;
-import org.springframework.context.ApplicationContext;
-import org.springframework.transaction.annotation.Transactional;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 
@@ -14,20 +10,19 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.Currency;
 import java.util.List;
 
-public class UnmarshallingProductsXml {
+public class ProductsXmlUnmarshaller {
 
 
     private String xmlStringToUnmarshalling;
     private Document cDoc;
 
-    public UnmarshallingProductsXml(String xmlStringToUnmarshalling) {
+    public ProductsXmlUnmarshaller(String xmlStringToUnmarshalling) {
         this.xmlStringToUnmarshalling = xmlStringToUnmarshalling;
     }
 
-    private void stringToXml() {
+    public ProductsXmlUnmarshaller buildXml() {
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         try {
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -35,11 +30,11 @@ public class UnmarshallingProductsXml {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        return this;
     }
 
-    private List<ProductCategory> getCategoriesFromXml() {
-        stringToXml();
-
+    public List<ProductCategory> getCategoriesFromXml() {
 
         Element rootElement = cDoc.getDocumentElement();
 

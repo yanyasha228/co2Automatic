@@ -10,6 +10,8 @@
     <a href="#" class="list-group-item list-group-item-action disabled">Оповещения</a>
     <a href="#" class="list-group-item list-group-item-action disabled">Сервисы доставки</a>
     <a href="#" class="list-group-item list-group-item-action disabled">Статистика</a>
+    <a href="/admin/settings/sync" th:classappend="${#httpServletRequest.requestURI.contains('sync')} ? active : ''"
+       class="list-group-item list-group-item-action disabled">Синхронизация</a>
 </div>
 </div>
 </html>

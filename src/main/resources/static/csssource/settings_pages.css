@@ -9,3 +9,7 @@
     width: 240px;
     box-sizing: border-box;
 }
+#settings-content
+{
+    margin-top: 30px;
+}
