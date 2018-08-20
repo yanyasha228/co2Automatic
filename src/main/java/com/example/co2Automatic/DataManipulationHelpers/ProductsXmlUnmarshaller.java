@@ -107,7 +107,7 @@ public class ProductsXmlUnmarshaller {
                         product.setVendor(currentXmlOfferParam.getTextContent());
                         break;
                     case "categoryid":
-                        product.setCategorryXmlId(Integer.valueOf(currentXmlOfferParam.getTextContent()));
+                        product.setCategoryXmlId(Integer.valueOf(currentXmlOfferParam.getTextContent()));
                         for (int c = 0; c < categoriesList.getLength(); c++) {
                             Node category = categoriesList.item(c);
                             NamedNodeMap categoriesAttributes = category.getAttributes();
@@ -115,7 +115,7 @@ public class ProductsXmlUnmarshaller {
                             if (categoriesId.getNodeValue().equalsIgnoreCase(currentXmlOfferParam.getTextContent())) {
                                 Node categoriesParentId = categoriesAttributes.getNamedItem("parentId");
                                 if (categoriesParentId != null) {
-                                    product.setCategorryXmlId(Integer.valueOf(categoriesParentId.getNodeValue()));
+                                    product.setCategoryXmlId(Integer.valueOf(categoriesParentId.getNodeValue()));
                                 }
 
                             }
