@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+
+<head>
+    <div th:replace="allPagesTemplates :: all_pages_head_data"></div>
+
+    <script th:src="@{/jssource/dynamic_editor_form.js}"></script>
+</head>
+<body>
+<div th:replace="allPagesTemplates :: navBar"></div>
+
+<div id="carouselExampleFade" class="carousel slide carousel-fade" data-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item" th:each="prodImg, prodImgStat : ${product.getImageUrls()}"
+             th:classappend="${prodImgStat.first}? 'active' : '' ">
+            <img class="d-block w-100" width="100%" height="750" th:src="${prodImg}">
+        </div>
+    </div>
+    <a class="carousel-control-prev" href="#carouselExampleFade" role="button"
+       data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Предыдущая</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleFade" role="button"
+       data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="control-group" id="fields">
+            <div class="controls">
+                <form th:action="@{/editOrder/submit}" method="get" role="form" autocomplete="off">
+
+                    <div class="form-row">
+                        <div class="form-group col-md-5">
+                    <div class="form-row">
+                        <div class="form-group col-md-8"><label for="inputPhoneNumber">Номер телефона</label> <input
+                                type="tel"
+                                class="form-control"
+                                id="inputPhoneNumber"
+                                name="inputPhoneNumber"
+                                onclick="numValid(this)">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6"><label for="inputDeliveryDate">Дата отправки</label> <input
+                                th:value="${#dates.format(nowDate, 'yyyy-MM-dd')}"
+                                type="date"
+                                class="form-control"
+                                id="inputDeliveryDate"
+                                name="inputDeliveryDate">
+                        </div>
+                        <div class="form-group col-md-6"><label for="inputPaymentMethod">Способ оплаты</label> <select
+                                id="inputPaymentMethod"
+                                name="inputPaymentMethod"
+                                class="form-control">
+                            <option selected>Наложка</option>
+                            <option>Оценка</option>
+                            <option>Самовывоз</option>
+
+                        </select></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6"><label for="inputName">Имя</label> <input
+                                type="text"
+                                class="form-control"
+                                id="inputName"
+                                name="inputName"
+                                placeholder="Имя">
+                        </div>
+                        <div class="form-group col-md-6"><label for="inputSurname">Фамилия</label> <input
+                                type="text" class="form-control" id="inputSurname" name="inputSurname"
+                                placeholder="Фамилия"></div>
+                    </div>
+
+
+                    <div class="form-row">
+                        <div class="form-group col-md-10"><label for="inputCity">Населенный пункт</label> <input
+                                type="text"
+                                class="form-control"
+                                id="inputCity"
+                                name="inputCity">
+                        </div>
+
+                        <div class="form-group col-md-2">
+                            <label for="inputWarehouseNumber">№</label>
+                            <input type="number" class="form-control" id="inputWarehouseNumber"
+                                   name="inputWarehouseNumber"
+                                   onclick="numValid(this)">
+                        </div>
+                    </div>
+                    <div class="form-row">
+
+                        <div class="form-group col-md-3">
+                            <label for="inputWeight">Вес:</label>
+                            <input type="text" class="form-control" name="inputWeight" id="inputWeight"
+                                   onclick="numValidDouble(this)">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="inputVolume">Обьем:</label>
+                            <input type="text" class="form-control" name="inputVolume" id="inputVolume">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12"><label for="inputOrderComment">Коментарий к заказу:</label>
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    id="inputOrderComment"
+                                    name="inputOrderComment">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Добавить заказ</button>
+                    </div>
+                        </div>
+                        <div id="paramsDiv" class="form-group col-md-7">
+                            <label for="params">Параметры:</label>
+                            <div class="controls-1">
+                    <div id="params" class="entry" th:each="productParam : ${product.getParams()}">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="paramName">Параметр</label>
+                                <input th:value="${productParam.getKey()}" class="form-control" name="paramName"
+                                       id="paramName" type="text"
+                                       placeholder="Type something"/>
+                            </div>
+                            <div class="form-group col-md-5">
+                                <label for="paramValue">Значение</label>
+                                <input th:value="${productParam.getValue()}" class="form-control" name="paramValue"
+                                       id="paramValue" type="text" placeholder="0"/>
+                            </div>
+
+                            <div class="form-group col-md-1">
+                            <span class="input-group-btn">
+                            <button class="btn btn-success btn-add" type="button">
+                                <span class="glyphicon glyphicon-plus"></span>
+                            </button>
+                        </span>
+                            </div>
+                        </div>
+                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="delParamQue">
+<div class="modal fade" tabindex="-1" id="delParamQue">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Удаление параметра</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Вы уверены что хотите удалить этот параметр</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="removeParamBtn">Уверен</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+</body>
+</html>

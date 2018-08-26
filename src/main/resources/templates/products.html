@@ -65,7 +65,7 @@
                             <select id="selectProductsCategory" class="form-control" onchange="location = this.value;" >
                                 <option
                                         th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=0'"
-                                        th:selected="${productListPageHelper.getProductsCategorySorting() == null}">Все
+                                        th:selected="${productListPageHelper.getProductsCategorySorting().getId() == 0}">Все
                                 </option>
                                 <option th:each="productCategory : ${productCategories}"
                                         th:value="${#httpServletRequest.requestURI} + '?productsCategorySorting=' + ${productCategory.getId()}"
@@ -112,13 +112,13 @@
             <tbody th:each="product : ${productList}">
             <tr>
                 <td th:text="${product.getId()}"></td>
-                <td><img th:src="@{${product.getImageUrls().get(0)}}" width="70" height="70" class="avatar" alt="Avatar"><br><a
+                <td><img th:src="@{${product.getImageUrls().iterator().next()}}" width="70" height="70" class="avatar" alt="Avatar"><br><a
                         href="#" th:text="${product.getName()}"></a></td>
                 <td th:text="${product.getQuantity()}">-</td>
                 <td th:text="${#dates.format(product.getLastUpdatingDate(), 'yyyy-MM-dd')}"></td>
                 <td th:text="${product.getPrice() + '$'}">-</td>
                 <td th:text="${product.getWholesalePrice() + '$'}">-</td>
-                <td><a href="#" class="view" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE5C8;</i></a>
+                <td><a th:href="@{'/admin/products/editProduct' + '?id=' + ${product.getId()}}" class="view" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE5C8;</i></a>
                 </td>
                 <td><a href="#" class="delete" title="Delete Order" data-toggle="tooltip"><i class="material-icons">&#xe5cd;</i></a>
                 </td>

@@ -54,7 +54,9 @@ public class ProductListPageHelper {
 
     private ProductStock productsStockSorting;
 
-    private ProductCategory productsCategorySorting;
+    private ProductCategory productCategoryAll = new ProductCategory(0, "Все");
+
+    private ProductCategory productsCategorySorting = productCategoryAll;
 
     private String productListSearchParam;
 
@@ -65,7 +67,7 @@ public class ProductListPageHelper {
         this.pageSize = 5;
         this.totalPagesAmount = 0;
         this.productsStockSorting = null;
-        this.productsCategorySorting = null;
+        this.productsCategorySorting = productCategoryAll;
         this.productListSearchParam = null;
     }
 
@@ -113,11 +115,11 @@ public class ProductListPageHelper {
             this.setCurrentPageNumber(0);
 
             if(productsCategory==0){
-                this.setProductsCategorySorting(null);
+                this.setProductsCategorySorting(productCategoryAll);
             }else if (productCategoryService.existById(productsCategory)){
                 this.setProductsCategorySorting(productCategoryService.getOne(productsCategory));
             }else{
-                this.setProductsCategorySorting(null);
+                this.setProductsCategorySorting(productCategoryAll);
             }
 //            switch (productsCategory) {
 //

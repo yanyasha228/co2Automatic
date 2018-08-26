@@ -67,22 +67,43 @@ public class ProductsXmlUnmarshaller {
         Element rootElement = cDoc.getDocumentElement();
         NodeList categoriesList = rootElement.getElementsByTagName("category");
         NodeList xmlOfferList = rootElement.getElementsByTagName("offer");
+        Node currentXmlOffer;
+        NodeList xmlOffer;
+        Node currentXmlOfferParam;
+        String paramTextContent;
+        Node category;
+        NamedNodeMap categoriesAttributes;
+        Node categoriesId;
+        Node categoriesParentId;
+        NamedNodeMap paramAttr;
+        Node nameParam;
 
         for (int i = 0; i < xmlOfferList.getLength(); i++) {
             Product product = new Product();
-            Node currentXmlOffer = xmlOfferList.item(i);
-            NodeList xmlOffer = currentXmlOffer.getChildNodes();
+            currentXmlOffer = xmlOfferList.item(i);
+            xmlOffer = currentXmlOffer.getChildNodes();
             for (int j = 0; j < xmlOffer.getLength(); j++) {
-                Node currentXmlOfferParam = xmlOffer.item(j);
+                currentXmlOfferParam = xmlOffer.item(j);
+                paramTextContent = currentXmlOfferParam.getTextContent();
                 switch (currentXmlOfferParam.getNodeName().toLowerCase()) {
+                    case "param":
+                        paramAttr = currentXmlOfferParam.getAttributes();
+                        nameParam = paramAttr.getNamedItem("name");
+                        product.getParams().put(nameParam.getNodeValue(), paramTextContent);
+                        break;
+
+                    case "picture":
+                        product.getImageUrls().add(paramTextContent);
+                        break;
+
                     case "url":
-                        product.setProductUrlFromExternalResource(currentXmlOfferParam.getTextContent());
+                        product.setProductUrlFromExternalResource(paramTextContent);
                         break;
                     case "price":
-                        product.setPrice(Double.valueOf(currentXmlOfferParam.getTextContent()));
+                        product.setPrice(Double.valueOf(paramTextContent));
                         break;
                     case "currencyid":
-                        switch (currentXmlOffer.getTextContent()) {
+                        switch (paramTextContent) {
                             case "USD":
                                 product.setCurrency(MoneyCurrency.USD);
                                 break;
@@ -94,38 +115,37 @@ public class ProductsXmlUnmarshaller {
                                 break;
                         }
                         break;
-                    case "description":
-                        product.setDescription(currentXmlOfferParam.getTextContent());
-                        break;
-                    case "picture":
-                        product.getImageUrls().add(currentXmlOfferParam.getTextContent());
-                        break;
-                    case "name":
-                        product.setName(currentXmlOfferParam.getTextContent());
-                        break;
-                    case "vendor":
-                        product.setVendor(currentXmlOfferParam.getTextContent());
-                        break;
                     case "categoryid":
-                        product.setCategoryXmlId(Integer.valueOf(currentXmlOfferParam.getTextContent()));
+                        product.setCategoryXmlId(Integer.valueOf(paramTextContent));
                         for (int c = 0; c < categoriesList.getLength(); c++) {
-                            Node category = categoriesList.item(c);
-                            NamedNodeMap categoriesAttributes = category.getAttributes();
-                            Node categoriesId = categoriesAttributes.getNamedItem("id");
-                            if (categoriesId.getNodeValue().equalsIgnoreCase(currentXmlOfferParam.getTextContent())) {
-                                Node categoriesParentId = categoriesAttributes.getNamedItem("parentId");
+                            category = categoriesList.item(c);
+                            categoriesAttributes = category.getAttributes();
+                            categoriesId = categoriesAttributes.getNamedItem("id");
+                            if (categoriesId.getNodeValue().equalsIgnoreCase(paramTextContent)) {
+                                categoriesParentId = categoriesAttributes.getNamedItem("parentId");
                                 if (categoriesParentId != null) {
                                     product.setCategoryXmlId(Integer.valueOf(categoriesParentId.getNodeValue()));
                                 }
 
                             }
                         }
-
+                        break;
+                    case "country_of_origin":
+                        product.setCountryOfOrigin(paramTextContent);
+                    case "description":
+                        product.setDescription(paramTextContent);
+                        break;
+                    case "name":
+                        product.setName(paramTextContent);
+                        break;
+                    case "vendor":
+                        product.setVendor(paramTextContent);
+                        break;
 
                 }
 
             }
-
+            unmarshalledProductList.add(product);
         }
 
         return unmarshalledProductList;

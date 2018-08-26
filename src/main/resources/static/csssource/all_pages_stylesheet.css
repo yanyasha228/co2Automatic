@@ -4,6 +4,9 @@ body {
     font-family: 'Varela Round', sans-serif;
     font-size: 18px;
 }
+#paramsDiv{
+    padding-left: 120px;
+}
 .bg-dark {
     background-color: #4b5366!important;
 }

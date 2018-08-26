@@ -2,7 +2,6 @@ package com.example.co2Automatic.controllers;
 
 import com.example.co2Automatic.DataManipulationHelpers.ProductsTableValidator;
 import com.example.co2Automatic.SystemComponents.AdminSettings;
-import com.example.co2Automatic.models.HelpModels.ProductList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -16,22 +15,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import java.io.StringReader;
 import java.nio.charset.Charset;
 
 @Controller
 @RequestMapping("admin/settings/sync")
 public class AdminSettingsSyncController {
 
-
     @Autowired
     ProductsTableValidator productsTableValidator;
 
     @Autowired
     private AdminSettings adminSettings;
+
 
     @RequestMapping
     public String adminSettingsSync(Model model) {
@@ -54,17 +50,13 @@ public class AdminSettingsSyncController {
 
         if (headers.get("Content-Type").contains("text/xml") && response.getStatusCode().is2xxSuccessful()) {
 
-            JAXBContext jaxbContext = JAXBContext.newInstance(ProductList.class);
-            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-//            unmarshaller.setProperty(javax.xml.XMLConstants.ACCESS_EXTERNAL_DTD, Boolean.TRUE);
-
-            StringReader stringReader = new StringReader(response.getBody());
-            ProductList productsList = (ProductList) unmarshaller.unmarshal(stringReader);
-            int i =0;
-
+            productsTableValidator.validateProductsAndProductCategoriesTableByXmlString(response
+                    .getBody().replaceAll("<!DOCTYPE yml_catalog SYSTEM \"shops.dtd\">", ""));
 
         }
 
         return "redirect:../";
     }
+
+
 }

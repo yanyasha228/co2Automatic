@@ -5,14 +5,11 @@ import com.example.co2Automatic.models.Product;
 import com.example.co2Automatic.models.ProductCategory;
 import com.example.co2Automatic.services.ProductCategoryService;
 import com.example.co2Automatic.services.ProductService;
-import com.example.co2Automatic.services.ProductServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
+import java.util.Optional;
 
 @Component
 public class ProductsTableValidatorImpl implements ProductsTableValidator {
@@ -30,7 +27,7 @@ public class ProductsTableValidatorImpl implements ProductsTableValidator {
     }
 
     @Override
-    public void validateCategoriesTable(List<ProductCategory> productCategoryList){
+    public void validateCategoriesTable(List<ProductCategory> productCategoryList) {
         productCategoryService.saveAll(productCategoryList);
     }
 
@@ -39,16 +36,42 @@ public class ProductsTableValidatorImpl implements ProductsTableValidator {
 
         List<Product> productListForValidation = productService.findAll();
 
-        if (productListForValidation != null && newProductsList != null) {
+        if (productListForValidation.size() != 0 && newProductsList != null) {
             for (Product newProd : newProductsList) {
-                for (Product oldProd : productListForValidation) {
-                    if(newProd.getProductUrlFromExternalResource().equalsIgnoreCase(oldProd.getProductUrlFromExternalResource())){
-                        mergeProductWithExternalResourceProduct(oldProd,newProd);
-                    }else productListForValidation.add(newProd);
-                }
+
+//                for (int i = 0; i < productListForValidation.size(); i++) {
+//                    if (newProd.getProductUrlFromExternalResource().equalsIgnoreCase(productListForValidation.get(i).getProductUrlFromExternalResource())) {
+//                        mergeProductWithExternalResourceProduct(productListForValidation.get(i), newProd);
+//                        prodExist = true;
+//                    }
+//                }
+                Optional<Product> matchingProduct = productListForValidation.
+                        stream().
+                        filter(product -> product.getProductUrlFromExternalResource().equalsIgnoreCase(newProd.getProductUrlFromExternalResource())).
+                        findFirst();
+
+                if (matchingProduct.orElse(null) != null) {
+                    mergeProductWithExternalResourceProduct(matchingProduct.get(), newProd);
+
+                } else productListForValidation.add(newProd);
             }
-            productService.saveAll(productListForValidation);
         }
+
+        if (productListForValidation.size() == 0 && newProductsList != null) {
+            for (Product product : newProductsList) {
+                product.setProductCategory(productCategoryService.getOne(product.getCategoryXmlId()));
+                productListForValidation.add(product);
+            }
+        }
+        productService.saveAll(productListForValidation);
+
+    }
+
+
+    @Override
+    public void validateProductsAndProductCategoriesTableByXmlString(String xmlString) {
+        validateCategoriesTable(new ProductsXmlUnmarshaller(xmlString).buildXml().getCategoriesFromXml());
+        validateProductsTable(new ProductsXmlUnmarshaller(xmlString).buildXml().getProductListFromXml());
     }
 
 
@@ -62,6 +85,8 @@ public class ProductsTableValidatorImpl implements ProductsTableValidator {
         oldProduct.setVendor(newProduct.getVendor());
         oldProduct.setImageUrls(newProduct.getImageUrls());
         oldProduct.setParams(newProduct.getParams());
+        oldProduct.setCurrency(newProduct.getCurrency());
+        oldProduct.setProductCategory(productCategoryService.getOne(newProduct.getCategoryXmlId()));
 
     }
 

@@ -1,9 +1,11 @@
 
 $(function () {
+    $.noConflict();
     $(document).on('click', '.btn-add', function (e) {
         e.preventDefault();
 
-        var controlForm = $('.controls form:first'),
+
+        var controlForm = $('.controls-1:first'),
             currentEntry = $(this).parents('.entry:first'),
             newEntry = $(currentEntry.clone()).appendTo(controlForm);
 
@@ -14,7 +16,13 @@ $(function () {
             .removeClass('btn-success').addClass('btn-danger')
             .html('<span class="glyphicon glyphicon-minus"></span>');
     }).on('click', '.btn-remove', function (e) {
-        $(this).parents('.entry:first').remove();
+
+        $(document).on('click', 'btn-primary', function (e) {
+            $(this).parents('.entry:first').remove();
+        });
+        $('.delParamQue #delParamQue').modal();
+
+        // $(this).parents('.entry:first').remove();
 
         e.preventDefault();
         return false;

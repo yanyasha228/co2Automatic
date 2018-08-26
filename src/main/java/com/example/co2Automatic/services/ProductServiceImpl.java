@@ -132,7 +132,7 @@ public class ProductServiceImpl implements ProductService {
 
         if (productListPageHelper.getProductListSearchParam() == null) {
 
-            if (productListPageHelper.getProductsCategorySorting() == null && productListPageHelper.getProductsStockSorting() != null) {
+            if (productListPageHelper.getProductsCategorySorting().getId()==0 && productListPageHelper.getProductsStockSorting() != null) {
 
                 return findProductsByProductStockWithPagination(productListPageHelper, PageRequest.of(productListPageHelper.getCurrentPageNumber(),
                         productListPageHelper.getPageSize(),
@@ -140,14 +140,14 @@ public class ProductServiceImpl implements ProductService {
                         "id"));
             }
 
-            if (productListPageHelper.getProductsCategorySorting() != null && productListPageHelper.getProductsStockSorting() == null) {
+            if (productListPageHelper.getProductsCategorySorting().getId()!=0 && productListPageHelper.getProductsStockSorting() == null) {
 
                 return findProductsByCategoryWithPagination(productListPageHelper, PageRequest.of(productListPageHelper.getCurrentPageNumber(),
                         productListPageHelper.getPageSize(),
                         Sort.Direction.ASC,
                         "id"));
             }
-            if (productListPageHelper.getProductsCategorySorting() != null && productListPageHelper.getProductsStockSorting() != null) {
+            if (productListPageHelper.getProductsCategorySorting().getId()!=0 && productListPageHelper.getProductsStockSorting() != null) {
                 return findProductsByProductStockAndProductCategoryWithPagination(productListPageHelper,
                         PageRequest.of(productListPageHelper.getCurrentPageNumber(),
                                 productListPageHelper.getPageSize(),
@@ -156,7 +156,7 @@ public class ProductServiceImpl implements ProductService {
             }
         } else {
 
-            if (productListPageHelper.getProductsCategorySorting() == null && productListPageHelper.getProductsStockSorting() != null) {
+            if (productListPageHelper.getProductsCategorySorting().getId()==0 && productListPageHelper.getProductsStockSorting() != null) {
 
                 return findProductsByNameLikeAndProductStockWithPagination(productListPageHelper, PageRequest.of(productListPageHelper.getCurrentPageNumber(),
                         productListPageHelper.getPageSize(),
@@ -164,14 +164,14 @@ public class ProductServiceImpl implements ProductService {
                         "id"));
             }
 
-            if (productListPageHelper.getProductsCategorySorting() != null && productListPageHelper.getProductsStockSorting() == null) {
+            if (productListPageHelper.getProductsCategorySorting().getId()!=0 && productListPageHelper.getProductsStockSorting() == null) {
 
                 return findProductsByNameLikeAndProductCategoryWithPagination(productListPageHelper, PageRequest.of(productListPageHelper.getCurrentPageNumber(),
                         productListPageHelper.getPageSize(),
                         Sort.Direction.ASC,
                         "id"));
             }
-            if (productListPageHelper.getProductsCategorySorting() != null && productListPageHelper.getProductsStockSorting() != null) {
+            if (productListPageHelper.getProductsCategorySorting().getId()!=0 && productListPageHelper.getProductsStockSorting() != null) {
                 return findProductsByNameLikeAndProductStockAndProductCategoryWithPagination(productListPageHelper,
                         PageRequest.of(productListPageHelper.getCurrentPageNumber(),
                                 productListPageHelper.getPageSize(),

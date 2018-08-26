@@ -10,11 +10,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
 @Data
-@XmlRootElement(name = "offers")
+@XmlRootElement(name = "yml_catalog")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ProductList {
 
-    @XmlElement(name = "offer")
+    @XmlElement(name = "offers")
     private List<Product> productsList;
 
 }

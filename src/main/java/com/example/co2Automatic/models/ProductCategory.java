@@ -9,19 +9,25 @@ import java.util.Set;
 
 @Data
 @Entity
-@XmlRootElement(name = "category")
-@XmlAccessorType(XmlAccessType.FIELD)
+@Table(name = "product_category")
 public class ProductCategory {
 
+    public ProductCategory() {
+
+    }
+
+    public ProductCategory(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+
     @Id
-    @XmlAttribute(name = "id")
     private Integer id;
 
-    @XmlAttribute(name = "parentId")
     @Transient
     private Integer parentId;
 
-    @XmlElement(name = "category")
     @Column(name = "name")
     private String name;
 

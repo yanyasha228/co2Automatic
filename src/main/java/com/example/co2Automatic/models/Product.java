@@ -16,8 +16,6 @@ import java.util.*;
 @Data
 @Entity
 @Table(name = "product")
-@XmlRootElement(name = "offer")
-@XmlAccessorType(XmlAccessType.FIELD)
 public class Product {
 
     public Product() {
@@ -28,41 +26,36 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @XmlElement(name = "name")
+
     @Column(name = "name")
     private String name;
 
-    @XmlElement(name = "url")
+
     @Column(name = "product_url_from_external_resource")
     private String productUrlFromExternalResource;
 
     @Column(name = "quantity")
     private int quantity;
 
-    @XmlElement(name = "currencyId")
-    @XmlJavaTypeAdapter(MoneyCurrencyXmlAdapter.class)
     @Column(name = "moneyCurrency")
     @Enumerated(EnumType.STRING)
     private MoneyCurrency currency;
 
-
-    @XmlElement(name = "description")
-    @Column(name = "description")
+    //    @Lob
+//    @Basic(fetch = FetchType.LAZY)
+    @Column(name = "description" , length = 20000)
     private String description;
 
-    @XmlElement(name = "categoryId")
     @Transient
     private int categoryXmlId;
 
-    @XmlElement(name = "param")
-    @XmlJavaTypeAdapter(ParametersXmlAdapter.class)
     @ElementCollection(targetClass = String.class)
     @CollectionTable(name = "product_params")
     @MapKeyColumn(name = "product_param_name")
     @Column(name = "params")
     private Map<String, String> params = new HashMap<>();
 
-    @XmlElement(name = "price")
+
     @Column(name = "price")
     private double price;
 
@@ -73,7 +66,7 @@ public class Product {
     @JoinColumn(name = "category_id")
     private ProductCategory productCategory;
 
-    @XmlElement(name = "country_of_origin")
+
     @Column(name = "country_of_origin")
     private String countryOfOrigin;
 
@@ -90,13 +83,12 @@ public class Product {
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastUpdatingDate;
 
-    @XmlElement(name = "picture")
     @ElementCollection
     @CollectionTable(name = "urls")
     @Column(name = "image_urls")
-    private List<String> imageUrls = new ArrayList<String>();
+    private Set<String> imageUrls = new HashSet<>();
 
-    @XmlElement(name = "vendor")
+
     @Column(name = "vendor")
     private String vendor;
 

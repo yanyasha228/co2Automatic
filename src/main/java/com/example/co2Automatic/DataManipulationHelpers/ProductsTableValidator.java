@@ -8,4 +8,5 @@ import java.util.List;
 public interface ProductsTableValidator {
     void validateCategoriesTable(List<ProductCategory> productCategoryList);
     void validateProductsTable(List<Product> products);
-}
+    void validateProductsAndProductCategoriesTableByXmlString(String xmlString);
+ }
