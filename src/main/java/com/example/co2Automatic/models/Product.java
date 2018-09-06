@@ -1,16 +1,8 @@
 package com.example.co2Automatic.models;
 
-import com.example.co2Automatic.DataManipulationHelpers.XmlAdapters.MoneyCurrencyXmlAdapter;
-import com.example.co2Automatic.DataManipulationHelpers.XmlAdapters.ParametersXmlAdapter;
-import com.example.co2Automatic.models.SessionModels.MoneyCurrency;
 import lombok.Data;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.*;
 
 @Data
@@ -60,7 +52,7 @@ public class Product {
     private double price;
 
     @Column(name = "wholesale_price")
-    private double wholesalePrice;
+    private double wholeSalePrice;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
@@ -73,7 +65,7 @@ public class Product {
 
     @Column(name = "product_stock")
     @Enumerated(EnumType.STRING)
-    private ProductStock productStock;
+    private ProductStock productStock = ProductStock.NO_STOCK;
 
     @Column(name = "creation_date")
     @Temporal(TemporalType.TIMESTAMP)

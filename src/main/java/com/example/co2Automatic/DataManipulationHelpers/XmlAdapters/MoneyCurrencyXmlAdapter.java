@@ -1,6 +1,6 @@
 package com.example.co2Automatic.DataManipulationHelpers.XmlAdapters;
 
-import com.example.co2Automatic.models.SessionModels.MoneyCurrency;
+import com.example.co2Automatic.models.MoneyCurrency;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 

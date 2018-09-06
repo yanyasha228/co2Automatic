@@ -2,7 +2,7 @@ package com.example.co2Automatic.DataManipulationHelpers;
 
 import com.example.co2Automatic.models.Product;
 import com.example.co2Automatic.models.ProductCategory;
-import com.example.co2Automatic.models.SessionModels.MoneyCurrency;
+import com.example.co2Automatic.models.MoneyCurrency;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 

@@ -2,7 +2,7 @@ package com.example.co2Automatic.ControllerHelpers;
 
 import com.example.co2Automatic.models.ProductCategory;
 import com.example.co2Automatic.models.ProductStock;
-import com.example.co2Automatic.models.SessionModels.MoneyCurrency;
+import com.example.co2Automatic.models.MoneyCurrency;
 import com.example.co2Automatic.services.ProductCategoryService;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;

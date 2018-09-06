@@ -71,6 +71,7 @@ public class AdminProductController {
         Product productToEdit = productService.findById(id).orElse(null);
         if(productToEdit!=null) {
             model.addAttribute("product", productToEdit);
+            model.addAttribute("productCategories" , productCategoryService.findAll());
             return "editProduct";
         }
 

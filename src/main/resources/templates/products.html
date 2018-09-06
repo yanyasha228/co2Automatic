@@ -113,11 +113,11 @@
             <tr>
                 <td th:text="${product.getId()}"></td>
                 <td><img th:src="@{${product.getImageUrls().iterator().next()}}" width="70" height="70" class="avatar" alt="Avatar"><br><a
-                        href="#" th:text="${product.getName()}"></a></td>
+                        th:href="@{'/admin/products/editProduct' + '?id=' + ${product.getId()}}" th:text="${product.getName()}"></a></td>
                 <td th:text="${product.getQuantity()}">-</td>
                 <td th:text="${#dates.format(product.getLastUpdatingDate(), 'yyyy-MM-dd')}"></td>
-                <td th:text="${product.getPrice() + '$'}">-</td>
-                <td th:text="${product.getWholesalePrice() + '$'}">-</td>
+                <td th:text="${product.getPrice() + ' ' + product.getCurrency().getCurrencySymbol()}">-</td>
+                <td th:text="${product.getWholeSalePrice() + ' ' + product.getCurrency().getCurrencySymbol()}">-</td>
                 <td><a th:href="@{'/admin/products/editProduct' + '?id=' + ${product.getId()}}" class="view" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE5C8;</i></a>
                 </td>
                 <td><a href="#" class="delete" title="Delete Order" data-toggle="tooltip"><i class="material-icons">&#xe5cd;</i></a>

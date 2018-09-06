@@ -17,12 +17,11 @@ $(function () {
             .html('<span class="glyphicon glyphicon-minus"></span>');
     }).on('click', '.btn-remove', function (e) {
 
-        $(document).on('click', 'btn-primary', function (e) {
-            $(this).parents('.entry:first').remove();
-        });
-        $('.delParamQue #delParamQue').modal();
-
-        // $(this).parents('.entry:first').remove();
+        // $(document).on('click', 'btn-primary', function (e) {
+        //     $(this).parents('.entry:first').remove();
+        // });
+        // $('.delParamQue #delParamQue').modal();
+        $(this).parents('.entry:first').remove();
 
         e.preventDefault();
         return false;

@@ -3,7 +3,7 @@
 
 <head>
     <div th:replace="allPagesTemplates :: all_pages_head_data"></div>
-
+    <link rel="stylesheet" th:href="@{/csssource/item_list_stylesheet.css}">
     <script th:src="@{/jssource/dynamic_editor_form.js}"></script>
 </head>
 <body>
@@ -24,8 +24,29 @@
     <a class="carousel-control-next" href="#carouselExampleFade" role="button"
        data-slide="next">
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
+        <span class="sr-only">Следующая</span>
     </a>
+</div>
+
+<div class="table-wrapper">
+<div class="table-title">
+    <div class="row">
+        <div class="col-sm-4">
+            <h2>ID : <b th:text="${product.getId()}"></b></h2>
+        </div>
+        <div class="col-sm-8">
+            <a th:href="${product.getProductUrlFromExternalResource()}"
+               class="btn"><i class="material-icons">visibility</i>
+                <span>Prom.ua</span></a>
+            <a href="#" class="btn btn-add"><i class="material-icons">&#xe147;</i>
+                <span>Добавить фото</span></a>
+            <a th:href="@{${#httpServletRequest.requestURI} + '?id=' + ${product.getId()}}" class="btn btn-primary"><i class="material-icons">&#xE863;</i>
+                <span>Обновить</span></a>
+            <a href="#" class="btn btn-info"><i class="material-icons">&#xE24D;</i>
+                <span>История покупок</span></a>
+        </div>
+    </div>
+</div>
 </div>
 <div class="container">
     <div class="row">
@@ -36,43 +57,64 @@
                     <div class="form-row">
                         <div class="form-group col-md-5">
                     <div class="form-row">
-                        <div class="form-group col-md-8"><label for="inputPhoneNumber">Номер телефона</label> <input
-                                type="tel"
+                        <div class="form-group col-md-12"><label for="inputProductName">Имя товара:</label> <input
+                                type="text"
                                 class="form-control"
-                                id="inputPhoneNumber"
-                                name="inputPhoneNumber"
-                                onclick="numValid(this)">
+                                id="inputProductName"
+                                name="inputProductName"
+                        th:value="${product.getName()}">
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-6"><label for="inputDeliveryDate">Дата отправки</label> <input
-                                th:value="${#dates.format(nowDate, 'yyyy-MM-dd')}"
-                                type="date"
-                                class="form-control"
-                                id="inputDeliveryDate"
-                                name="inputDeliveryDate">
-                        </div>
-                        <div class="form-group col-md-6"><label for="inputPaymentMethod">Способ оплаты</label> <select
-                                id="inputPaymentMethod"
-                                name="inputPaymentMethod"
+                        <div class="form-group col-md-6"><label for="inputProductStock">Склад:</label> <select
+                                id="inputProductStock"
+                                name="inputProductStock"
                                 class="form-control">
-                            <option selected>Наложка</option>
-                            <option>Оценка</option>
-                            <option>Самовывоз</option>
+                            <option th:each="stockName : ${T(com.example.co2Automatic.models.ProductStock).values()}"
+                            th:text="${stockName}"
+                            th:selected="${product.getProductStock().name().equalsIgnoreCase(stockName)}">Не выбрано</option>
+
+
+                        </select></div>
+
+                        <div class="form-group col-md-6"><label for="inputProductCategory">Категория:</label> <select
+                                id="inputProductCategory"
+                                name="inputProducCategory"
+                                class="form-control">
+                            <option th:each="productCategory : ${productCategories}"
+                                    th:text="${productCategory.getName()}"
+                                    th:selected="${product.getProductCategory().getName().equalsIgnoreCase(productCategory.getName())}">Не выбрано</option>
+
 
                         </select></div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-6"><label for="inputName">Имя</label> <input
+                        <div class="form-group col-md-4"><label for="inputPrice">Цена:</label> <input
                                 type="text"
                                 class="form-control"
-                                id="inputName"
-                                name="inputName"
-                                placeholder="Имя">
+                                id="inputPrice"
+                                name="inputPrice"
+                        th:value="${product.getPrice()}"
+                                onclick="numValidDouble(this)">
                         </div>
-                        <div class="form-group col-md-6"><label for="inputSurname">Фамилия</label> <input
-                                type="text" class="form-control" id="inputSurname" name="inputSurname"
-                                placeholder="Фамилия"></div>
+                        <div class="form-group col-md-4"><label for="inputWholeSalePrice">Цена Опт:</label> <input
+                                type="text"
+                                class="form-control"
+                                id="inputWholeSalePrice"
+                                name="inputWholeSalePrice"
+                        th:value="${product.getWholeSalePrice()}"
+                                onclick="numValidDouble(this)"></div>
+
+                        <div class="form-group col-md-4"><label for="inputProductMoneyCurrency">Валюта:</label> <select
+                                id="inputProductMoneyCurrency"
+                                name="inputProductMoneyCurrency"
+                                class="form-control">
+                            <option th:each="productMoneyCurrency : ${T(com.example.co2Automatic.models.MoneyCurrency).values()}"
+                                    th:text="${productMoneyCurrency}"
+                                    th:selected="${product.getProductStock().name().equalsIgnoreCase(productMoneyCurrency)}">Не выбрано</option>
+
+
+                        </select></div>
                     </div>
 
 
@@ -152,27 +194,27 @@
     </div>
 </div>
 
-<div class="delParamQue">
-<div class="modal fade" tabindex="-1" id="delParamQue">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Удаление параметра</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>Вы уверены что хотите удалить этот параметр</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="removeParamBtn">Уверен</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
-            </div>
-        </div>
-    </div>
-</div>
-</div>
+<!--<div class="delParamQue">-->
+<!--<div class="modal fade" tabindex="-1" id="delParamQue">-->
+    <!--<div class="modal-dialog" role="document">-->
+        <!--<div class="modal-content">-->
+            <!--<div class="modal-header">-->
+                <!--<h5 class="modal-title">Удаление параметра</h5>-->
+                <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+                    <!--<span aria-hidden="true">&times;</span>-->
+                <!--</button>-->
+            <!--</div>-->
+            <!--<div class="modal-body">-->
+                <!--<p>Вы уверены что хотите удалить этот параметр</p>-->
+            <!--</div>-->
+            <!--<div class="modal-footer">-->
+                <!--<button type="button" class="btn btn-primary" id="removeParamBtn">Уверен</button>-->
+                <!--<button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+<!--</div>-->
 
 </body>
 </html>

@@ -43,16 +43,22 @@ public class Co2AutomaticApplication {
 //    public CommandLineRunner testDataProd(ProductService productService) {
 //        return (args) -> {
 //            // save a couple of customers
-//            List<Product> productList = new ArrayList<>();
+//            List<Product> productList = productService.findAll();
 //
+//            for (Product prod: productList) {
+//                prod.setProductStock(ProductStock.NO_STOCK);
+//            }
 //
+//            productService.saveAll(productList);
+
+
 //            Product product = new Product();
 //            product.setPrice(25.67);
 //            product.setDescription("Pnevmaticheskaya Vintowka");
 //            product.setImageUrls("http://co2.biz.ua/wp-content/uploads/2015/12/1664.jpg");
 //            product.setName("Hatsan 125 TH");
 //            product.setQuantity(67);
-//            product.setWholesalePrice(21.01);
+//            product.setWholeSalePrice(21.01);
 //            product.setProductStock(ProductStock.CO2_STOCK);
 //            productList.add(product);
 //
@@ -62,7 +68,7 @@ public class Co2AutomaticApplication {
 //            product1.setImageUrls("http://co2.biz.ua/wp-content/uploads/2015/12/1813.jpg");
 //            product1.setName("KM44");
 //            product1.setQuantity(12);
-//            product1.setWholesalePrice(75.89);
+//            product1.setWholeSalePrice(75.89);
 //            product1.setProductStock(ProductStock.B_STOCK);
 //            productList.add(product1);
 //
@@ -72,7 +78,7 @@ public class Co2AutomaticApplication {
 //            product2.setName("Osevoy Vint Hatsan");
 //            product2.setImageUrls("http://co2.biz.ua/wp-content/uploads/2015/10/828.jpg");
 //            product2.setQuantity(53);
-//            product2.setWholesalePrice(7.67);
+//            product2.setWholeSalePrice(7.67);
 //            product2.setProductStock(ProductStock.B_STOCK);
 //            productList.add(product2);
 //
@@ -82,7 +88,7 @@ public class Co2AutomaticApplication {
 //            product3.setName("Osevoy Vint Hatsan");
 //            product3.setImageUrls("http://co2.biz.ua/wp-content/uploads/2015/10/828.jpg");
 //            product3.setQuantity(533);
-//            product3.setWholesalePrice(56.78);
+//            product3.setWholeSalePrice(56.78);
 //            product3.setProductStock(ProductStock.CO2_STOCK);
 //            productList.add(product3);
 //
@@ -92,7 +98,7 @@ public class Co2AutomaticApplication {
 //            product4.setName("Osevoy Vint Hatsan");
 //            product4.setImageUrls("http://co2.biz.ua/wp-content/uploads/2015/10/828.jpg");
 //            product4.setQuantity(76);
-//            product4.setWholesalePrice(7.67);
+//            product4.setWholeSalePrice(7.67);
 //            product4.setProductStock(ProductStock.B_STOCK);
 //            productList.add(product4);
 //
@@ -102,7 +108,7 @@ public class Co2AutomaticApplication {
 //            product5.setName("Osevoy Vint Hatsan");
 //            product5.setImageUrls("http://co2.biz.ua/wp-content/uploads/2015/10/828.jpg");
 //            product5.setQuantity(53);
-//            product5.setWholesalePrice(7.67);
+//            product5.setWholeSalePrice(7.67);
 //            product5.setProductStock(ProductStock.CO2_STOCK);
 //            productList.add(product5);
 //
@@ -112,7 +118,7 @@ public class Co2AutomaticApplication {
 //            product6.setName("Osevoy Vint Hatsan");
 //            product6.setImageUrls("http://co2.biz.ua/wp-content/uploads/2015/10/828.jpg");
 //            product6.setQuantity(53);
-//            product6.setWholesalePrice(7.67);
+//            product6.setWholeSalePrice(7.67);
 //            product6.setProductStock(ProductStock.B_STOCK);
 //            productList.add(product6);
 //
@@ -122,7 +128,7 @@ public class Co2AutomaticApplication {
 //            product7.setName("Osevoy Vint Hatsan");
 //            product7.setImageUrls("http://co2.biz.ua/wp-content/uploads/2015/10/828.jpg");
 //            product7.setQuantity(53);
-//            product7.setWholesalePrice(7.67);
+//            product7.setWholeSalePrice(7.67);
 //            product7.setProductStock(ProductStock.CO2_STOCK);
 //            productList.add(product7);
 //
@@ -132,7 +138,7 @@ public class Co2AutomaticApplication {
 //            product8.setName("Osevoy Vint Hatsan");
 //            product8.setImageUrls("http://co2.biz.ua/wp-content/uploads/2015/10/828.jpg");
 //            product8.setQuantity(53);
-//            product8.setWholesalePrice(7.67);
+//            product8.setWholeSalePrice(7.67);
 //            product8.setProductStock(ProductStock.B_STOCK);
 //            productList.add(product8);
 //
@@ -142,7 +148,7 @@ public class Co2AutomaticApplication {
 //            product9.setName("Osevoy Vint Hatsan");
 //            product9.setImageUrls("http://co2.biz.ua/wp-content/uploads/2015/10/828.jpg");
 //            product9.setQuantity(53);
-//            product9.setWholesalePrice(7.67);
+//            product9.setWholeSalePrice(7.67);
 //            product9.setProductStock(ProductStock.CO2_STOCK);
 //            productList.add(product9);
 //
@@ -152,7 +158,7 @@ public class Co2AutomaticApplication {
 //            product10.setName("Osevoy Vint Hatsan");
 //            product10.setImageUrls("http://co2.biz.ua/wp-content/uploads/2015/10/828.jpg");
 //            product10.setQuantity(53);
-//            product10.setWholesalePrice(7.67);
+//            product10.setWholeSalePrice(7.67);
 //            product10.setProductStock(ProductStock.B_STOCK);
 //            productList.add(product10);
 //
@@ -162,7 +168,7 @@ public class Co2AutomaticApplication {
 //            product11.setName("Osevoy Vint Hatsan");
 //            product11.setImageUrls("http://co2.biz.ua/wp-content/uploads/2015/10/828.jpg");
 //            product11.setQuantity(53);
-//            product11.setWholesalePrice(7.67);
+//            product11.setWholeSalePrice(7.67);
 //            product11.setProductStock(ProductStock.CO2_STOCK);
 //            productList.add(product11);
 //
@@ -172,7 +178,7 @@ public class Co2AutomaticApplication {
 //            product12.setName("Osevoy Vint Hatsan");
 //            product12.setImageUrls("http://co2.biz.ua/wp-content/uploads/2015/10/828.jpg");
 //            product12.setQuantity(53);
-//            product12.setWholesalePrice(7.67);
+//            product12.setWholeSalePrice(7.67);
 //            product12.setProductStock(ProductStock.B_STOCK);
 //            productList.add(product12);
 //
