@@ -4,6 +4,7 @@ package com.example.co2Automatic.services;
 import com.example.co2Automatic.models.ProductCategory;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductCategoryService {
 
@@ -18,4 +19,6 @@ public interface ProductCategoryService {
     List<ProductCategory> findAll();
 
     void saveAll(List<ProductCategory> productCategoryList);
+
+    Optional<ProductCategory> findByName(String productCategoryName);
 }

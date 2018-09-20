@@ -2,9 +2,7 @@ package com.example.co2Automatic.services;
 
 import com.example.co2Automatic.ControllerHelpers.ProductListPageHelper;
 import com.example.co2Automatic.dao.ProductDao;
-import com.example.co2Automatic.models.Product;
-import com.example.co2Automatic.models.ProductCategory;
-import com.example.co2Automatic.models.ProductStock;
+import com.example.co2Automatic.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,13 +10,18 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductDao productDao;
+
+    @Autowired
+    private ProductCategoryService productCategoryService;
 
     @Override
     public void save(Product product) {
@@ -128,11 +131,50 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public void updateProduct(Integer productId,
+                              String inputProductName,
+                              String inputProductVendor,
+                              String inputProductCountryOfOrigin,
+                              ProductStock inputProductStock,
+                              String inputProductCategory,
+                              Double inputProductPrice,
+                              Double inputProductWholeSalePrice,
+                              MoneyCurrency inputProductMoneyCurrency,
+                              String inputProductDescription,
+                              String[] inputProductParamName,
+                              String[] inputProductParamValue) {
+
+        Product productForUpdating = productDao.findById(productId).orElse(new Product());
+
+        productForUpdating.setName(inputProductName);
+        productForUpdating.setVendor(inputProductVendor);
+        productForUpdating.setCountryOfOrigin(inputProductCountryOfOrigin);
+        productForUpdating.setProductStock(inputProductStock);
+        if (productCategoryService.findByName(inputProductCategory).isPresent())
+            productForUpdating.setProductCategory(productCategoryService.findByName(inputProductCategory).get());
+        productForUpdating.setPrice(inputProductPrice);
+        productForUpdating.setWholeSalePrice(inputProductWholeSalePrice);
+        productForUpdating.setDescription(inputProductDescription);
+
+
+        Map<String, String> newProdParams = new HashMap<>();
+        for (int i = 0; i < inputProductParamName.length; i++) {
+            if(!inputProductParamName[i].replaceAll(" ","").isEmpty()
+                    || !inputProductParamValue[i].replaceAll(" ","").isEmpty()){
+                newProdParams.put(inputProductParamName[i], inputProductParamValue[i]);
+            }
+        }
+        productForUpdating.setParams(newProdParams);
+        productDao.save(productForUpdating);
+    }
+
+
+    @Override
     public Page<Product> findProductsWithPagination(ProductListPageHelper productListPageHelper) {
 
         if (productListPageHelper.getProductListSearchParam() == null) {
 
-            if (productListPageHelper.getProductsCategorySorting().getId()==0 && productListPageHelper.getProductsStockSorting() != null) {
+            if (productListPageHelper.getProductsCategorySorting().getId() == 0 && productListPageHelper.getProductsStockSorting() != null) {
 
                 return findProductsByProductStockWithPagination(productListPageHelper, PageRequest.of(productListPageHelper.getCurrentPageNumber(),
                         productListPageHelper.getPageSize(),
@@ -140,14 +182,14 @@ public class ProductServiceImpl implements ProductService {
                         "id"));
             }
 
-            if (productListPageHelper.getProductsCategorySorting().getId()!=0 && productListPageHelper.getProductsStockSorting() == null) {
+            if (productListPageHelper.getProductsCategorySorting().getId() != 0 && productListPageHelper.getProductsStockSorting() == null) {
 
                 return findProductsByCategoryWithPagination(productListPageHelper, PageRequest.of(productListPageHelper.getCurrentPageNumber(),
                         productListPageHelper.getPageSize(),
                         Sort.Direction.ASC,
                         "id"));
             }
-            if (productListPageHelper.getProductsCategorySorting().getId()!=0 && productListPageHelper.getProductsStockSorting() != null) {
+            if (productListPageHelper.getProductsCategorySorting().getId() != 0 && productListPageHelper.getProductsStockSorting() != null) {
                 return findProductsByProductStockAndProductCategoryWithPagination(productListPageHelper,
                         PageRequest.of(productListPageHelper.getCurrentPageNumber(),
                                 productListPageHelper.getPageSize(),
@@ -156,7 +198,7 @@ public class ProductServiceImpl implements ProductService {
             }
         } else {
 
-            if (productListPageHelper.getProductsCategorySorting().getId()==0 && productListPageHelper.getProductsStockSorting() != null) {
+            if (productListPageHelper.getProductsCategorySorting().getId() == 0 && productListPageHelper.getProductsStockSorting() != null) {
 
                 return findProductsByNameLikeAndProductStockWithPagination(productListPageHelper, PageRequest.of(productListPageHelper.getCurrentPageNumber(),
                         productListPageHelper.getPageSize(),
@@ -164,14 +206,14 @@ public class ProductServiceImpl implements ProductService {
                         "id"));
             }
 
-            if (productListPageHelper.getProductsCategorySorting().getId()!=0 && productListPageHelper.getProductsStockSorting() == null) {
+            if (productListPageHelper.getProductsCategorySorting().getId() != 0 && productListPageHelper.getProductsStockSorting() == null) {
 
                 return findProductsByNameLikeAndProductCategoryWithPagination(productListPageHelper, PageRequest.of(productListPageHelper.getCurrentPageNumber(),
                         productListPageHelper.getPageSize(),
                         Sort.Direction.ASC,
                         "id"));
             }
-            if (productListPageHelper.getProductsCategorySorting().getId()!=0 && productListPageHelper.getProductsStockSorting() != null) {
+            if (productListPageHelper.getProductsCategorySorting().getId() != 0 && productListPageHelper.getProductsStockSorting() != null) {
                 return findProductsByNameLikeAndProductStockAndProductCategoryWithPagination(productListPageHelper,
                         PageRequest.of(productListPageHelper.getCurrentPageNumber(),
                                 productListPageHelper.getPageSize(),

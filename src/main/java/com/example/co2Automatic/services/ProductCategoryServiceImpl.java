@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductCategoryServiceImpl implements ProductCategoryService {
@@ -40,5 +41,10 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     @Override
     public void saveAll(List<ProductCategory> productCategoryList) {
         productCategoryDao.saveAll(productCategoryList);
+    }
+
+    @Override
+    public Optional<ProductCategory> findByName(String productCategoryName) {
+        return productCategoryDao.findByName(productCategoryName);
     }
 }

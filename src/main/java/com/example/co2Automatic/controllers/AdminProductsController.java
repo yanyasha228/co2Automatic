@@ -2,7 +2,9 @@ package com.example.co2Automatic.controllers;
 
 import com.example.co2Automatic.ControllerHelpers.ProductListPageHelper;
 import com.example.co2Automatic.SystemComponents.AdminSettings;
+import com.example.co2Automatic.models.MoneyCurrency;
 import com.example.co2Automatic.models.Product;
+import com.example.co2Automatic.models.ProductStock;
 import com.example.co2Automatic.services.ProductCategoryService;
 import com.example.co2Automatic.services.ProductService;
 import com.sun.org.apache.xpath.internal.operations.Mod;
@@ -18,7 +20,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/admin/products")
-public class AdminProductController {
+public class AdminProductsController {
 
 
     @Autowired
@@ -65,25 +67,5 @@ public class AdminProductController {
         return "products";
     }
 
-    @GetMapping("editProduct")
-    public String editProduct(Model model,@RequestParam Long id){
-
-        Product productToEdit = productService.findById(id).orElse(null);
-        if(productToEdit!=null) {
-            model.addAttribute("product", productToEdit);
-            model.addAttribute("productCategories" , productCategoryService.findAll());
-            return "editProduct";
-        }
-
-        return "products";
-    }
-
-    @PostMapping("editProduct/submit")
-    public String editProductSubmit(Model model, @ModelAttribute Product product){
-
-        productService.save(product);
-
-        return "products";
-    }
 
 }

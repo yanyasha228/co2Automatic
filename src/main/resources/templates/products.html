@@ -19,7 +19,7 @@
                     <h2>Co2 <b>Товары</b></h2>
                 </div>
                 <div class="col-sm-8">
-                    <a href="/editOrder" class="btn btn-add"><i class="material-icons">&#xe147;</i>
+                    <a th:href="@{editProduct(id=-1)}" class="btn btn-add"><i class="material-icons">&#xe147;</i>
                         <span>Добавить</span></a>
                     <a th:href="@{${#httpServletRequest.requestURI}}" class="btn btn-primary"><i class="material-icons">&#xE863;</i>
                         <span>Обновить</span></a>

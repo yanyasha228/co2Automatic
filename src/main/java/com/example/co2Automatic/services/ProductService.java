@@ -1,6 +1,7 @@
 package com.example.co2Automatic.services;
 
 import com.example.co2Automatic.ControllerHelpers.ProductListPageHelper;
+import com.example.co2Automatic.models.MoneyCurrency;
 import com.example.co2Automatic.models.Product;
 import com.example.co2Automatic.models.ProductCategory;
 import com.example.co2Automatic.models.ProductStock;
@@ -49,9 +50,12 @@ public interface ProductService {
 
     Optional<Product> findById(long id);
 
+
+
     void saveAll(List<Product> newProductList);
 
     void deleteById(Long id);
 
 
+    void updateProduct(Integer productId, String inputProductName, String inputProductVendor, String inputProductCountryOfOrigin, ProductStock inputProductStock, String inputProductCategory, Double inputProductPrice, Double inputProductWholeSalePrice, MoneyCurrency inputProductMoneyCurrency, String inputProductDescription, String[] inputProductParamName, String[] inputProductParamValue);
 }
