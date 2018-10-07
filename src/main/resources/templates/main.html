@@ -104,7 +104,18 @@
                 <td><a href="#">Василий Селевер</a></td>
                 <td>Одесса 1</td>
                 <td>Jun 21, 2017</td>
-                <td><span class="status text-info">&bull;</span> Упакован</td>
+                <td>
+                    <div id="tdStatus">
+                    <span class="status text-info"
+                        >&bull;</span>
+                    <a href="#"
+                       id="orderStatus"
+                       data-toggle="modal"
+                       data-target="#changeOrderStatusModal">
+                        Упакован
+                    </a>
+                    </div>
+                </td>
                 <td>$1,260</td>
                 <td><a href="#" class="view" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE5C8;</i></a>
                 </td>
@@ -149,6 +160,8 @@
             </tr>
             </tbody>
         </table>
+
+
         <div class="clearfix">
             <div class="hint-text">Показано <b>5</b> из <b>25</b> заказов</div>
             <ul class="pagination">
@@ -164,6 +177,34 @@
             </ul>
         </div>
     </div>
+<div class="modal fade" id="changeOrderStatusModal" tabindex="-1" role="dialog" aria-labelledby="changeOrderStatusModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="changeOrderStatusModalLabel">New message</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Recipient:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">Message:</label>
+                        <textarea class="form-control" id="message-text"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Send message</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 </body>

@@ -50,7 +50,9 @@ public interface ProductService {
 
     Optional<Product> findById(long id);
 
+    List<Product> findProductByNonFullProductName(String nonFullProductName);
 
+    List<Product> findProductByNonFullProductNameRegardlessOfTheWordsOrder(String nonFullProductName);
 
     void saveAll(List<Product> newProductList);
 

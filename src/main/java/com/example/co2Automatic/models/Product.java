@@ -1,5 +1,6 @@
 package com.example.co2Automatic.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -8,6 +9,19 @@ import java.util.*;
 @Data
 @Entity
 @Table(name = "product")
+@JsonIgnoreProperties(value = { "currency",
+        "productUrlFromExternalResource",
+        "description",
+        "params",
+        "wholeSalePrice",
+        "productCategory",
+        "countryOfOrigin",
+        "productStock",
+        "creationDate",
+        "lastUpdatingDate",
+        "vendor",
+        "orderLines"
+})
 public class Product {
 
     public Product() {

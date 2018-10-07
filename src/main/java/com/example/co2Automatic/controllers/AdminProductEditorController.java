@@ -21,19 +21,13 @@ public class AdminProductEditorController {
     ProductCategoryService productCategoryService;
 
     @GetMapping
-    public String editProduct(Model model, @RequestParam Long id) {
+    public String editProduct(Model model, @RequestParam(required = false) Long id) {
 
-        Product productToEdit = productService.findById(id).orElse(null);
-        if (productToEdit != null) {
+        Product productToEdit = productService.findById(id).orElse(new Product());
+
             model.addAttribute("product", productToEdit);
             model.addAttribute("productCategories", productCategoryService.findAll());
             return "editProduct";
-        }else {
-            model.addAttribute("product", new Product());
-            model.addAttribute("productCategories", productCategoryService.findAll());
-        }
-
-        return "redirect:../";
     }
 
     @PostMapping("submit")
@@ -69,4 +63,5 @@ public class AdminProductEditorController {
 
         return "redirect:../";
     }
+
 }

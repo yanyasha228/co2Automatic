@@ -1,6 +1,12 @@
 #selectPage{
     width: 64px;
 }
+#tdStatus:hover{
+    background: #c9cccf;
+    border-radius:3px;
+    -moz-border-radius:3px;
+    -webkit-border-radius:3px;
+}
 .table-wrapper {
     background: #fff;
     padding: 20px 25px;
@@ -165,7 +171,7 @@ table.table .avatar {
 }
 .status {
     font-size: 30px;
-    margin: 2px 2px 0 0;
+    /*margin: 2px 2px 0 0;*/
     display: inline-block;
     vertical-align: middle;
     line-height: 10px;

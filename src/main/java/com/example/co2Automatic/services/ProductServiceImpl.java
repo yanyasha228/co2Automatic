@@ -10,10 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -116,6 +113,38 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Optional<Product> findById(long id) {
         return productDao.findById(id);
+    }
+
+    @Override
+    public List<Product> findProductByNonFullProductName(String nonFullProductName) {
+        return productDao.findProductsByNameIgnoreCaseContaining(nonFullProductName);
+    }
+
+    @Override
+    public List<Product> findProductByNonFullProductNameRegardlessOfTheWordsOrder(String nonFullProductName) {
+
+        String[] searchingWords = nonFullProductName.split("\\s");
+
+        List<Product> firstWordSearchFromDb;
+
+        List<Product> productsThatMatch = new ArrayList<>();
+
+        if(searchingWords.length!=0 && !searchingWords[0].equalsIgnoreCase("")) {
+            firstWordSearchFromDb = productDao.findProductsByNameIgnoreCaseContaining(searchingWords[0]);
+        }else return productsThatMatch;
+
+
+        if(firstWordSearchFromDb.size()!=0){
+           out: for(Product prodForSearch : firstWordSearchFromDb) {
+                for (int i = 1; i < searchingWords.length; i++) {
+                    if(!prodForSearch.getName().toLowerCase().contains(searchingWords[i])) continue out;
+                }
+                productsThatMatch.add(prodForSearch);
+            }
+        }
+
+
+        return productsThatMatch;
     }
 
     @Override

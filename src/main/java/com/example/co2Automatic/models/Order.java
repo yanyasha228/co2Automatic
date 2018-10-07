@@ -36,6 +36,10 @@ public class Order {
     @JoinColumn(name = "manager", referencedColumnName = "id")
     private User manager;
 
+    @Column(name = "order_status")
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus;
+
     @Column(name = "order_volume_general")
     private double OrderVolumeGeneral;
 

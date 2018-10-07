@@ -1,6 +1,4 @@
-
 $(function () {
-    $.noConflict();
     $(document).on('click', '.btn-add', function (e) {
         e.preventDefault();
 
@@ -26,7 +24,27 @@ $(function () {
         e.preventDefault();
         return false;
     });
+
+    $(document).on('keyup', '#productNameInput', function (e) {
+        var searchList = $(this).siblings("#searchProductResult");
+        searchList.html('');
+        var searchField = $(this).val();
+
+        if(searchField.length>1) {
+            $.getJSON(location.origin + "/editOrder/getProductsByNonFullName?str=" + searchField, function (data) {
+                $.each(data, function (key, value) {
+
+                    searchList.append('<li class="list-group-item"><span>' + value.name + '</span></li>');
+
+                });
+
+            });
+        }
+
+    });
 });
+
+
 // function sumDouble(input) {
 //
 //

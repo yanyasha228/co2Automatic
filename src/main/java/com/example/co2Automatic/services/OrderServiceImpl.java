@@ -33,18 +33,24 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void addOrder(String inputPhoneNumber,
-                         String inputDeliveryDate,
-                         String inputPaymentMethod,
-                         String inputName,
-                         String inputSurname,
-                         String inputCity,
-                         int inputWarehouseNumber,
-                         String inputOrderComment,
-                         String[] field,
-                         int[] qua,
-                         Double inputWeight,
-                         Double inputVolume) {
+    public Optional<Order> findById(Long id) {
+        return orderDao.findById(id);
+    }
+
+    @Override
+    public void updateOrder(Long id,
+                            String inputPhoneNumber,
+                            String inputDeliveryDate,
+                            String inputPaymentMethod,
+                            String inputName,
+                            String inputSurname,
+                            String inputCity,
+                            Integer inputWarehouseNumber,
+                            String inputOrderComment,
+                            String[] productNameInput,
+                            Integer[] productQuaInput,
+                            Double inputWeight,
+                            Double inputVolume) {
         Client newClient;
         PhoneNumber newPhoneNumber;
         Date orderDate = null;
@@ -90,12 +96,12 @@ public class OrderServiceImpl implements OrderService {
 
         newOrder.setOrderVolumeGeneral(inputVolume);
 
-        for (int i = 0; i < field.length; i++) {
+        for (int i = 0; i < productNameInput.length; i++) {
             OrderLine newOrderLine = new OrderLine();
-            Product prodForOrderLine = productService.findByProductName(field[i]).orElse(null);
+            Product prodForOrderLine = productService.findByProductName(productNameInput[i]).orElse(null);
             if (prodForOrderLine != null) {
                 newOrderLine.setProduct(prodForOrderLine);
-                newOrderLine.setAmount(qua[i]);
+                newOrderLine.setAmount(productQuaInput[i]);
                 newOrderLine.setPurchasePrice(newOrderLine.getProduct().getPrice() * newOrderLine.getAmount());
                 newOrderLine.setOrder(newOrder);
                 newOrder.getOrderLines().add(newOrderLine);

@@ -5,7 +5,9 @@
     <div th:replace="allPagesTemplates :: all_pages_head_data"></div>
     <link rel="stylesheet" th:href="@{/csssource/item_list_stylesheet.css}">
     <script th:src="@{/jssource/item_list_js.js}"></script>
+
 </head>
+
 
 <body>
 <div th:replace="allPagesTemplates :: navBar"></div>
@@ -19,7 +21,7 @@
                     <h2>Co2 <b>Товары</b></h2>
                 </div>
                 <div class="col-sm-8">
-                    <a th:href="@{editProduct(id=-1)}" class="btn btn-add"><i class="material-icons">&#xe147;</i>
+                    <a th:href="@{editProduct}" class="btn btn-add"><i class="material-icons">&#xe147;</i>
                         <span>Добавить</span></a>
                     <a th:href="@{${#httpServletRequest.requestURI}}" class="btn btn-primary"><i class="material-icons">&#xE863;</i>
                         <span>Обновить</span></a>
@@ -120,7 +122,14 @@
                 <td th:text="${product.getWholeSalePrice() + ' ' + product.getCurrency().getCurrencySymbol()}">-</td>
                 <td><a th:href="@{'/admin/products/editProduct' + '?id=' + ${product.getId()}}" class="view" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE5C8;</i></a>
                 </td>
-                <td><a href="#" class="delete" title="Delete Order" data-toggle="tooltip"><i class="material-icons">&#xe5cd;</i></a>
+
+                <td><a href="#" class="delete"
+                       title="Delete Order"
+                       data-toggle="modal"
+                       data-target="#deleteProductModal"
+                       th:data-product-id="${product.getId()}"
+                       th:data-product-name="${product.getName()}">
+                    <i class="material-icons">&#xe5cd;</i></a>
                 </td>
             </tr>
 
@@ -149,6 +158,30 @@
             </ul>
         </div>
     </div>
+
+<div class="modal fade" id="deleteProductModal" tabindex="-1" role="dialog" aria-labelledby="deleteProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteProductModalLabel">Удалить продукт : </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <h4 class="modal-title" id="deleteProductNameModalLabel">Удалить продукт : </h4>
+                <hr>
+                <h6>Товар будет удален безвозвратно!!!</h6>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Нет</button>
+                <a href="#" id="deleteProductLink" class="btn btn-secondary">Да</a>
+
+            </div>
+        </div>
+    </div>
+</div>
 
 
 </body>

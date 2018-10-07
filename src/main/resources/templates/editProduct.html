@@ -57,7 +57,7 @@
             <div class="controls">
                 <form th:action="@{editProduct/submit}" method="post" role="form" autocomplete="off">
                     <input hidden
-                           type="text"
+                           type="number"
                     id="productId"
                     name="productId"
                     th:value="${product.getId()}">
