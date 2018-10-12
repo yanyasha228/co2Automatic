@@ -6,6 +6,7 @@ import com.example.co2Automatic.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,74 +27,73 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> findAllWithPagination(ProductListPageHelper productListPageHelper, PageRequest pageRequest) {
-        Page<Product> resultPage = productDao.findAll(pageRequest);
-        productListPageHelper.setTotalPagesAmount(resultPage.getTotalPages());
-        return resultPage;
+    public Page<Product> findAllWithPagination(Pageable pageable) {
+
+        return productDao.findAll(pageable);
     }
     //////////////////////////////////////////////////////////
 //Filtering methods without search
 
     @Override
-    public Page<Product> findProductsByProductStockWithPagination(ProductListPageHelper productListPageHelper, PageRequest pageRequest) {
-        Page<Product> resultPage = productDao.findProductsByProductStock(productListPageHelper.getProductsStockSorting(), pageRequest);
-        productListPageHelper.setTotalPagesAmount(resultPage.getTotalPages());
-        return resultPage;
+    public Page<Product> findProductsByProductStockWithPagination(ProductStock productsStockSorting, Pageable pageable) {
+        return productDao.findProductsByProductStock(productsStockSorting, pageable);
     }
 
     @Override
-    public Page<Product> findProductsByProductStockAndProductCategoryWithPagination(ProductListPageHelper productListPageHelper, PageRequest pageRequest) {
-        Page<Product> resultPage = productDao.findProductsByProductStockAndProductCategory(productListPageHelper.getProductsStockSorting(),
-                productListPageHelper.getProductsCategorySorting(),
-                pageRequest);
-        productListPageHelper.setTotalPagesAmount(resultPage.getTotalPages());
-        return resultPage;
+    public Page<Product> findProductsByProductStockAndProductCategoryWithPagination(ProductStock productStock,
+                                                                                    ProductCategory productCategory,
+                                                                                    Pageable pageable) {
+        return productDao.findProductsByProductStockAndProductCategory(productStock,
+                productCategory,
+                pageable);
     }
 
     @Override
-    public Page<Product> findProductsByCategoryWithPagination(ProductListPageHelper productListPageHelper, PageRequest pageRequest) {
-        Page<Product> resultPage = productDao.findProductsByProductCategory(productListPageHelper.getProductsCategorySorting(), pageRequest);
-        productListPageHelper.setTotalPagesAmount(resultPage.getTotalPages());
-        return resultPage;
+    public Page<Product> findProductsByCategoryWithPagination(ProductCategory productCategory, Pageable pageable) {
+        return productDao.findProductsByProductCategory(productCategory, pageable);
     }
 
     //////////////////////////////////////////////////////////
 //Filtering methods with search//////////////////////////////////
     @Override
-    public Page<Product> findProductsByNameLikeAndProductStockAndProductCategoryWithPagination(ProductListPageHelper productListPageHelper, PageRequest pageRequest) {
-        Page<Product> resultPage = productDao.findProductsByNameIgnoreCaseContainingAndProductStockAndProductCategory(productListPageHelper.getProductListSearchParam(),
-                productListPageHelper.getProductsStockSorting(),
-                productListPageHelper.getProductsCategorySorting(),
-                pageRequest);
-        productListPageHelper.setTotalPagesAmount(resultPage.getTotalPages());
-        return resultPage;
+    public Page<Product> findProductsByNameLikeAndProductStockAndProductCategoryWithPagination(String productNameSearchInput,
+                                                                                               ProductStock productStock,
+                                                                                               ProductCategory productCategory,
+                                                                                               Pageable pageable) {
+
+        return productDao.findProductsByNameIgnoreCaseContainingAndProductStockAndProductCategory(productNameSearchInput,
+                productStock,
+                productCategory,
+                pageable);
     }
 
     @Override
-    public Page<Product> findProductsByNameLikeWithPagination(ProductListPageHelper productListPageHelper, PageRequest pageRequest) {
-        Page<Product> resultPage = productDao.findProductsByNameIgnoreCaseContaining(productListPageHelper.getProductListSearchParam(),
-                pageRequest);
-        productListPageHelper.setTotalPagesAmount(resultPage.getTotalPages());
-        return resultPage;
+    public Page<Product> findProductsByNameLikeWithPagination(String productNameSearchInput,
+                                                              Pageable pageable) {
+
+        return productDao.findProductsByNameIgnoreCaseContaining(productNameSearchInput,
+                pageable);
 
     }
 
     @Override
-    public Page<Product> findProductsByNameLikeAndProductStockWithPagination(ProductListPageHelper productListPageHelper, PageRequest pageRequest) {
-        Page<Product> resultPage = productDao.findProductsByNameIgnoreCaseContainingAndProductStock(productListPageHelper.getProductListSearchParam(),
-                productListPageHelper.getProductsStockSorting(),
-                pageRequest);
-        productListPageHelper.setTotalPagesAmount(resultPage.getTotalPages());
-        return resultPage;
+    public Page<Product> findProductsByNameLikeAndProductStockWithPagination(String productNameSearchInput,
+                                                                             ProductStock productStock,
+                                                                             Pageable pageable) {
+
+        return productDao.findProductsByNameIgnoreCaseContainingAndProductStock(productNameSearchInput,
+                productStock,
+                pageable);
     }
 
     @Override
-    public Page<Product> findProductsByNameLikeAndProductCategoryWithPagination(ProductListPageHelper productListPageHelper, PageRequest pageRequest) {
-        Page<Product> resultPage = productDao.findProductsByNameIgnoreCaseContainingAndProductCategory(productListPageHelper.getProductListSearchParam(),
-                productListPageHelper.getProductsCategorySorting(),
-                pageRequest);
-        productListPageHelper.setTotalPagesAmount(resultPage.getTotalPages());
-        return resultPage;
+    public Page<Product> findProductsByNameLikeAndProductCategoryWithPagination(String productNameSearchInput,
+                                                                                ProductCategory productCategory,
+                                                                                Pageable pageable) {
+
+        return productDao.findProductsByNameIgnoreCaseContainingAndProductCategory(productNameSearchInput,
+                productCategory,
+                pageable);
     }
 ////////////////////////////////////////////////////////
 
@@ -129,15 +129,16 @@ public class ProductServiceImpl implements ProductService {
 
         List<Product> productsThatMatch = new ArrayList<>();
 
-        if(searchingWords.length!=0 && !searchingWords[0].equalsIgnoreCase("")) {
+        if (searchingWords.length != 0 && !searchingWords[0].equalsIgnoreCase("")) {
             firstWordSearchFromDb = productDao.findProductsByNameIgnoreCaseContaining(searchingWords[0]);
-        }else return productsThatMatch;
+        } else return productsThatMatch;
 
 
-        if(firstWordSearchFromDb.size()!=0){
-           out: for(Product prodForSearch : firstWordSearchFromDb) {
+        if (firstWordSearchFromDb.size() != 0) {
+            out:
+            for (Product prodForSearch : firstWordSearchFromDb) {
                 for (int i = 1; i < searchingWords.length; i++) {
-                    if(!prodForSearch.getName().toLowerCase().contains(searchingWords[i])) continue out;
+                    if (!prodForSearch.getName().toLowerCase().contains(searchingWords[i])) continue out;
                 }
                 productsThatMatch.add(prodForSearch);
             }
@@ -188,8 +189,8 @@ public class ProductServiceImpl implements ProductService {
 
         Map<String, String> newProdParams = new HashMap<>();
         for (int i = 0; i < inputProductParamName.length; i++) {
-            if(!inputProductParamName[i].replaceAll(" ","").isEmpty()
-                    || !inputProductParamValue[i].replaceAll(" ","").isEmpty()){
+            if (!inputProductParamName[i].replaceAll(" ", "").isEmpty()
+                    || !inputProductParamValue[i].replaceAll(" ", "").isEmpty()) {
                 newProdParams.put(inputProductParamName[i], inputProductParamValue[i]);
             }
         }
@@ -197,69 +198,53 @@ public class ProductServiceImpl implements ProductService {
         productDao.save(productForUpdating);
     }
 
-
     @Override
-    public Page<Product> findProductsWithPagination(ProductListPageHelper productListPageHelper) {
+    public Page<Product> findProductsWithPagination(Pageable pageable,
+                                                    ProductStock productStock,
+                                                    ProductCategory productCategory,
+                                                    String productNameSearchInput) {
 
-        if (productListPageHelper.getProductListSearchParam() == null) {
+        if (productNameSearchInput.replaceAll(" ", "").isEmpty()) {
 
-            if (productListPageHelper.getProductsCategorySorting().getId() == 0 && productListPageHelper.getProductsStockSorting() != null) {
+            if (productCategory == null && productStock != null) {
 
-                return findProductsByProductStockWithPagination(productListPageHelper, PageRequest.of(productListPageHelper.getCurrentPageNumber(),
-                        productListPageHelper.getPageSize(),
-                        Sort.Direction.ASC,
-                        "id"));
+                return findProductsByProductStockWithPagination(productStock, pageable);
             }
 
-            if (productListPageHelper.getProductsCategorySorting().getId() != 0 && productListPageHelper.getProductsStockSorting() == null) {
+            if (productCategory != null && productStock == null) {
 
-                return findProductsByCategoryWithPagination(productListPageHelper, PageRequest.of(productListPageHelper.getCurrentPageNumber(),
-                        productListPageHelper.getPageSize(),
-                        Sort.Direction.ASC,
-                        "id"));
+                return findProductsByCategoryWithPagination(productCategory, pageable);
             }
-            if (productListPageHelper.getProductsCategorySorting().getId() != 0 && productListPageHelper.getProductsStockSorting() != null) {
-                return findProductsByProductStockAndProductCategoryWithPagination(productListPageHelper,
-                        PageRequest.of(productListPageHelper.getCurrentPageNumber(),
-                                productListPageHelper.getPageSize(),
-                                Sort.Direction.ASC,
-                                "id"));
+            if (productCategory != null && productStock != null) {
+                return findProductsByProductStockAndProductCategoryWithPagination(productStock,
+                        productCategory,
+                        pageable);
             }
         } else {
 
-            if (productListPageHelper.getProductsCategorySorting().getId() == 0 && productListPageHelper.getProductsStockSorting() != null) {
+            if (productCategory == null && productStock != null) {
 
-                return findProductsByNameLikeAndProductStockWithPagination(productListPageHelper, PageRequest.of(productListPageHelper.getCurrentPageNumber(),
-                        productListPageHelper.getPageSize(),
-                        Sort.Direction.ASC,
-                        "id"));
+                return findProductsByNameLikeAndProductStockWithPagination(productNameSearchInput, productStock, pageable);
             }
 
-            if (productListPageHelper.getProductsCategorySorting().getId() != 0 && productListPageHelper.getProductsStockSorting() == null) {
+            if (productCategory != null && productStock == null) {
 
-                return findProductsByNameLikeAndProductCategoryWithPagination(productListPageHelper, PageRequest.of(productListPageHelper.getCurrentPageNumber(),
-                        productListPageHelper.getPageSize(),
-                        Sort.Direction.ASC,
-                        "id"));
+                return findProductsByNameLikeAndProductCategoryWithPagination(productNameSearchInput,
+                        productCategory,
+                        pageable);
             }
-            if (productListPageHelper.getProductsCategorySorting().getId() != 0 && productListPageHelper.getProductsStockSorting() != null) {
-                return findProductsByNameLikeAndProductStockAndProductCategoryWithPagination(productListPageHelper,
-                        PageRequest.of(productListPageHelper.getCurrentPageNumber(),
-                                productListPageHelper.getPageSize(),
-                                Sort.Direction.ASC,
-                                "id"));
+            if (productCategory != null && productStock != null) {
+                return findProductsByNameLikeAndProductStockAndProductCategoryWithPagination(productNameSearchInput,
+                        productStock,
+                        productCategory,
+                        pageable);
             }
 
-            return findProductsByNameLikeWithPagination(productListPageHelper, PageRequest.of(productListPageHelper.getCurrentPageNumber(),
-                    productListPageHelper.getPageSize(),
-                    Sort.Direction.ASC,
-                    "id"));
+            return findProductsByNameLikeWithPagination(productNameSearchInput, pageable);
         }
 
-        return findAllWithPagination(productListPageHelper, PageRequest.of(productListPageHelper.getCurrentPageNumber(),
-                productListPageHelper.getPageSize(),
-                Sort.Direction.ASC,
-                "id"));
+        return findAllWithPagination(pageable);
     }
 
 }
+

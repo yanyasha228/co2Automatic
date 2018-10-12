@@ -44,6 +44,11 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     }
 
     @Override
+    public Optional<ProductCategory> findById(Integer id) {
+        return productCategoryDao.findById(id);
+    }
+
+    @Override
     public Optional<ProductCategory> findByName(String productCategoryName) {
         return productCategoryDao.findByName(productCategoryName);
     }

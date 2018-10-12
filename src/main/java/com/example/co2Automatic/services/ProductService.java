@@ -15,34 +15,34 @@ import java.util.Optional;
 public interface ProductService {
     void save(Product product);
 
-    //methods with filtering without search
 
-    Page<Product> findAllWithPagination(ProductListPageHelper productListPageHelper,
-                                        PageRequest pageRequest);
+    Page<Product> findAllWithPagination(Pageable pageable);
 
-    Page<Product> findProductsByProductStockWithPagination(ProductListPageHelper productListPageHelper,
-                                                           PageRequest pageRequest
-    );
+    Page<Product> findProductsByProductStockWithPagination(ProductStock productsStockSorting, Pageable pageable);
 
-    Page<Product> findProductsByProductStockAndProductCategoryWithPagination(ProductListPageHelper productListPageHelper,
-                                                                             PageRequest pageRequest);
+    Page<Product> findProductsByProductStockAndProductCategoryWithPagination(ProductStock productStock,
+                                                                             ProductCategory productCategory,
+                                                                             Pageable pageable);
 
-    Page<Product> findProductsWithPagination(ProductListPageHelper productListPageHelper);
+    Page<Product> findProductsByCategoryWithPagination(ProductCategory productCategory, Pageable pageable);
 
-    Page<Product> findProductsByCategoryWithPagination(ProductListPageHelper productListPageHelper,
-                                                       PageRequest pageRequest);
-    // Search methods with filtering
+    //////////////////////////////////////////////////////////
+//Filtering methods with search//////////////////////////////////
+    Page<Product> findProductsByNameLikeAndProductStockAndProductCategoryWithPagination(String productNameSearchInput,
+                                                                                        ProductStock productStock,
+                                                                                        ProductCategory productCategory,
+                                                                                        Pageable pageable);
 
-    Page<Product> findProductsByNameLikeAndProductStockAndProductCategoryWithPagination(ProductListPageHelper productListPageHelper,
-                                                                                        PageRequest pageRequest);
+    Page<Product> findProductsByNameLikeWithPagination(String productNameSearchInput,
+                                                       Pageable pageable);
 
-    Page<Product> findProductsByNameLikeWithPagination(ProductListPageHelper productListPageHelper, PageRequest pageRequest);
+    Page<Product> findProductsByNameLikeAndProductStockWithPagination(String productNameSearchInput,
+                                                                      ProductStock productStock,
+                                                                      Pageable pageable);
 
-    Page<Product> findProductsByNameLikeAndProductStockWithPagination(ProductListPageHelper productListPageHelper,
-                                                                      PageRequest pageRequest);
-
-    Page<Product> findProductsByNameLikeAndProductCategoryWithPagination(ProductListPageHelper productListPageHelper,
-                                                                         PageRequest pageRequest);
+    Page<Product> findProductsByNameLikeAndProductCategoryWithPagination(String productNameSearchInput,
+                                                                         ProductCategory productCategory,
+                                                                         Pageable pageable);
 
     List<Product> findAll();
 
@@ -60,4 +60,9 @@ public interface ProductService {
 
 
     void updateProduct(Integer productId, String inputProductName, String inputProductVendor, String inputProductCountryOfOrigin, ProductStock inputProductStock, String inputProductCategory, Double inputProductPrice, Double inputProductWholeSalePrice, MoneyCurrency inputProductMoneyCurrency, String inputProductDescription, String[] inputProductParamName, String[] inputProductParamValue);
+
+    Page<Product> findProductsWithPagination(Pageable pageable,
+                                             ProductStock productStock,
+                                             ProductCategory productCategory,
+                                             String productNameSearchInput);
 }

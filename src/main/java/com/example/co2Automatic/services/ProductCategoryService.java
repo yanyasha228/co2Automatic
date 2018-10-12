@@ -20,5 +20,7 @@ public interface ProductCategoryService {
 
     void saveAll(List<ProductCategory> productCategoryList);
 
+    Optional<ProductCategory> findById(Integer id);
+
     Optional<ProductCategory> findByName(String productCategoryName);
 }

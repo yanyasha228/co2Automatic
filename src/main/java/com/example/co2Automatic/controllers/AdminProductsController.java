@@ -10,6 +10,9 @@ import com.example.co2Automatic.services.ProductService;
 import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.jws.WebParam;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin/products")
@@ -37,33 +41,41 @@ public class AdminProductsController {
 
     @RequestMapping
     public String productsList(Model model,
-                               @RequestParam(required = false) Integer productsPageNumber,
-                               @RequestParam(required = false) Integer productsPageSize,
-                               @RequestParam(required = false) Integer productsStockSorting,
-                               @RequestParam(required = false) Integer productsCategorySorting,
-                               @RequestParam(required = false) String productNameSearchInput) {
+                               @PageableDefault(sort = {"id"} , direction = Sort.Direction.ASC ,size = 5) Pageable pageable,
+                               @RequestParam Optional<ProductStock> productsStockSorting,
+                               @RequestParam Optional<Integer> productsCategorySortingId,
+                               @RequestParam Optional<String> productNameSearchInput) {
 
 
         /**
          * Delegate showing product list logic into the {@link ProductListPageHelper}
          */
-        productListPageHelper.validatePageShowingState(productsPageNumber, productsPageSize, productsStockSorting, productsCategorySorting , productNameSearchInput);
+//        productListPageHelper.validatePageShowingState(productsPageNumber, productsPageSize, productsStockSorting, productsCategorySortingId , productNameSearchInput);
+        Page<Product> productsPage = productService.findProductsWithPagination(pageable,
+                productsStockSorting.orElse(null),
+                productCategoryService.findById(productsCategorySortingId.orElse(0)).orElse(null),
+                productNameSearchInput.orElse(""));
 
-        Double eurCurrency = adminSettings.getEur_currency();
-        Double usdCurrency = adminSettings.getUsd_currency();
+//        Double eurCurrency = adminSettings.getEur_currency();
+//        Double usdCurrency = adminSettings.getUsd_currency();
 
-        Page<Product> productList = productService.findProductsWithPagination(productListPageHelper);
-        model.addAttribute("productList",
-                productService.findProductsWithPagination(productListPageHelper));
+        model.addAttribute("productStockSorting" , productsStockSorting.orElse(null));
+
+        model.addAttribute("productsCategorySortingId" , productsCategorySortingId.orElse(0));
+
+        model.addAttribute("productNameSearchInput" , productNameSearchInput.orElse(""));
+
+
+        model.addAttribute("productsPage",
+                productsPage);
 //            model.addAttribute("productsList",
 //                    productService.findProductsByProductStockWithPagination(productListPageHelper.getProductsStockSorting(), PageRequest.of(productListPageHelper.getCurrentPageNumber(),
 //                            productListPageHelper.getPageSize(),
 //                            Sort.Direction.ASC,
 //                            "id")));
 
-
-        model.addAttribute("productListPageHelper", productListPageHelper);
         model.addAttribute("productCategories" , productCategoryService.findAll());
+
         return "products";
     }
 

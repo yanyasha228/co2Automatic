@@ -9,4 +9,6 @@ public interface ProductCategoryDao extends JpaRepository<ProductCategory,Intege
 
     Optional<ProductCategory> findByName(String productCategoryName);
 
+    Optional<ProductCategory> findById(Integer id);
+
 }
