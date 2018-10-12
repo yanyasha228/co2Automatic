@@ -2,6 +2,7 @@ $(function () {
     $(document).on('click', '.btn-add', function (e) {
         e.preventDefault();
 
+        $("#searchProductResult").empty();
 
         var controlForm = $('.controls-1:first'),
             currentEntry = $(this).parents('.entry:first'),
@@ -15,30 +16,51 @@ $(function () {
             .html('<span class="glyphicon glyphicon-minus"></span>');
     }).on('click', '.btn-remove', function (e) {
 
-        // $(document).on('click', 'btn-primary', function (e) {
-        //     $(this).parents('.entry:first').remove();
-        // });
-        // $('.delParamQue #delParamQue').modal();
         $(this).parents('.entry:first').remove();
 
         e.preventDefault();
         return false;
     });
 
-    $(document).on('keyup', '#productNameInput', function (e) {
+    $(document).on('click' ,'#orderLineItem' , function (e) {
+        var serchList = $(this).closest('.product-search-editor-res');
+       var searchInput = $(this).closest('.form-group').find('#inputOrderLineProductName');
+       var prodName = $(this).find('#prodNamePar').text();
+       searchInput.val(prodName);
+       serchList.empty();
+
+    } );
+
+    $(document).mouseup(function (e) {
+        var searcResOrdList = $("#searchProductResult");
+        if (searcResOrdList.has(e.target).length === 0) {
+            searcResOrdList.empty();
+        }
+    });
+
+    $(document).on('keyup', '#inputOrderLineProductName', function (e) {
         var searchList = $(this).siblings("#searchProductResult");
         searchList.html('');
         var searchField = $(this).val();
 
         if(searchField.length>1) {
-            $.getJSON(location.origin + "/editOrder/getProductsByNonFullName?str=" + searchField, function (data) {
+            $.getJSON(location.origin + "/editOrder/getProductsByNonFullName?search_S=" + searchField, function (data) {
                 $.each(data, function (key, value) {
 
-                    searchList.append('<li class="list-group-item"><span>' + value.name + '</span></li>');
+                    searchList.append('<li class="list-group-item product-search-editor-res-item" id="orderLineItem" data-prodid = "'+ value.id +'"><div class="row"' +
+                        '><div class="col-4"><img src="'+ value.imageUrls[0] +'" height="60" width="80" class="img-thumbnail"></div>'  +
+                        '<div class="col-8"> <p id="prodNamePar" style="overflow: hidden; text-overflow: ellipsis;">' + value.name + '</p> </div>' +
+                        '</div></li>');
 
                 });
 
             });
+
+            $.getJSON(location.origin + "/editOrder/getProductsByName?search_S=" + searchField, function (data) {
+                if(!data){
+                    $(this).attr('class','form-control is-invalid');
+                }
+            })
         }
 
     });

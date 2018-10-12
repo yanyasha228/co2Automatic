@@ -41,13 +41,13 @@ public class AdminProductsController {
                                @RequestParam(required = false) Integer productsPageSize,
                                @RequestParam(required = false) Integer productsStockSorting,
                                @RequestParam(required = false) Integer productsCategorySorting,
-                               @RequestParam(required = false) String searchParam) {
+                               @RequestParam(required = false) String productNameSearchInput) {
 
 
         /**
          * Delegate showing product list logic into the {@link ProductListPageHelper}
          */
-        productListPageHelper.validatePageShowingState(productsPageNumber, productsPageSize, productsStockSorting, productsCategorySorting , searchParam);
+        productListPageHelper.validatePageShowingState(productsPageNumber, productsPageSize, productsStockSorting, productsCategorySorting , productNameSearchInput);
 
         Double eurCurrency = adminSettings.getEur_currency();
         Double usdCurrency = adminSettings.getUsd_currency();
@@ -75,6 +75,14 @@ public class AdminProductsController {
         }
 
         return "redirect:../products";
+    }
+
+    @RequestMapping(value ="/getProductsByNonFullName" , method = RequestMethod.GET)
+    @ResponseBody
+    public List<Product> getProductsByNonFullName(@RequestParam(value = "search_S") String nonFullNameString)
+    {
+        return productService.findProductByNonFullProductNameRegardlessOfTheWordsOrder(nonFullNameString);
+
     }
 
 }

@@ -58,7 +58,8 @@
                         </button>
                         <div class="filter-group">
                             <label>Имя</label>
-                            <input th:value="${productListPageHelper.getProductListSearchParam()}" type="text" name="searchParam" class="form-control" id="searchParam">
+                            <input th:value="${productListPageHelper.getProductListSearchParam()}" type="text" name="productNameSearchInput" class="form-control" id="productNameSearchInput">
+                            <ul class="list-group product-search-res" id="searchProductResult"></ul>
                         </div>
                     </form>
 

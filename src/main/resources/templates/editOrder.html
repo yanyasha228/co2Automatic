@@ -22,6 +22,8 @@
                            th:value="${order.getId()}">
 
                     <div class="form-row">
+                        <div class="form-group col-md-6">
+                    <div class="form-row">
                         <div class="form-group col-md-8"><label for="inputPhoneNumber">Номер телефона</label> <input
                                 type="tel"
                                 class="form-control"
@@ -112,35 +114,71 @@
                     <div class="form-group">
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Добавить заказ</button>
                     </div>
-                    <div class="entry">
-                        <div class="form-row">
-                            <div class="form-group col-md-9">
-                                <label for="productNameInput">Товар</label>
-                                <input class="form-control" name="productNameInput" id="productNameInput" type="text"
-                                       placeholder="Type something"/>
-                                <ul class="list-group" id="searchProductResult"></ul>
-                            </div>
-                            <div class="form-group col-md-2">
-                                <label for="productQuaInput">Кол-во</label>
-                                <input class="form-control" name="productQuaInput" id="productQuaInput" type="number" placeholder="0"
-                                       onclick="numValid(this)"/>
-                            </div>
+                        </div>
+                    <div id="orderLines" class="form-group col-md-6">
+                        <label for="orderLines">Позиции заказа:</label>
+                        <div class="controls-1">
 
-                            <div class="form-group col-md-1">
+                            <div id="orderLine" class="entry" th:each="orderLine : ${order.getOrderLines()}">
+                                <div class="form-row">
+                                    <div class="form-group col-md-9" id="inputOrdProdNameDiv">
+                                        <label for="inputOrderLineProductName">Товар</label>
+                                        <input th:value="${orderLine.getProduct().getName()}" class="form-control"
+                                               name="inputOrderLineProductName"
+                                               id="inputOrderLineProductName" type="text"/>
+                                        <ul class="list-group product-search-editor-res" id="searchProductResult"></ul>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label for="inputOrderLineProductQua">Кол-во</label>
+                                        <input th:value="${orderLine.getAmount()}" class="form-control"
+                                               name="inputOrderLineProductQua"
+                                               id="inputOrderLineProductQua" type="text"/>
+                                    </div>
+
+                                    <div class="form-group col-md-1">
                             <span class="input-group-btn">
                             <button class="btn btn-success btn-add" type="button">
                                 <span class="glyphicon glyphicon-plus"></span>
                             </button>
                         </span>
+                                    </div>
+                                </div>
                             </div>
+
+                            <div id="orderLine" class="entry" th:if="${order.getOrderLines().size()==0}">
+                                <div class="form-row">
+                                    <div class="form-group col-md-9" id="inputOrdProdNameDiv">
+                                        <label for="inputOrderLineProductName">Товар</label>
+                                        <input class="form-control"
+                                               name="inputOrderLineProductName"
+                                               id="inputOrderLineProductName" type="text"/>
+                                        <ul class="list-group product-search-editor-res" id="searchProductResult"></ul>
+                                    </div>
+
+                                    <div class="form-group col-md-2">
+                                        <label for="inputOrderLineProductQua">Кол-во</label>
+                                        <input class="form-control"
+                                               name="inputOrderLineProductQua"
+                                               id="inputOrderLineProductQua" type="text"/>
+                                    </div>
+
+                                    <div class="form-group col-md-1">
+                            <span class="input-group-btn">
+                            <button class="btn btn-success btn-add" type="button">
+                                <span class="glyphicon glyphicon-plus"></span>
+                            </button>
+                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
-                </form>
-                <br>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
-
+</div>
 </body>
 </html>

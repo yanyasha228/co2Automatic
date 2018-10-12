@@ -44,4 +44,6 @@ public interface ProductDao extends JpaRepository<Product, Long> {
 
     List<Product> findProductsByNameIgnoreCaseContaining(String nonFullName);
 
+//    Product findProductsByNameLike(String productName);
+
 }

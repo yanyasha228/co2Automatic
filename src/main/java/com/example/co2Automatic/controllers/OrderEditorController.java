@@ -5,10 +5,12 @@ import com.example.co2Automatic.models.Product;
 import com.example.co2Automatic.services.OrderService;
 import com.example.co2Automatic.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Pageable;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -70,10 +72,16 @@ if(orderId!=null) {
 
     @RequestMapping(value ="/getProductsByNonFullName" , method = RequestMethod.GET)
     @ResponseBody
-    public List<Product> getProductsByNonFullName(@RequestParam(value = "str") String nonFullNameString)
+    public List<Product> getProductsByNonFullName(@RequestParam(value = "search_S") String nonFullNameString)
     {
         return productService.findProductByNonFullProductNameRegardlessOfTheWordsOrder(nonFullNameString);
 
+    }
+    @RequestMapping(value ="/getProductsByName" , method = RequestMethod.GET)
+    @ResponseBody
+    public Product getProductByName(@RequestParam(value = "search_S") String productName){
+
+    return productService.findByProductName(productName).orElse(null);
     }
 
 
