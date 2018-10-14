@@ -3,9 +3,7 @@ package com.example.co2Automatic.models;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Data
 @Entity
@@ -22,14 +20,17 @@ public class Client {
     @Column(name = "surname")
     private String surname;
 
+    @Column(name = "patronymic")
+    private String patronymic;
+
     @Column(name = "usual_delivery_place")
     private String usualDeliveryPlace;
 
     @Column(name = "usual_warehouse_number")
     private int usualWarehouseNumber;
 
-    @OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
-    private PhoneNumber phoneNumber;
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+    private Set<PhoneNumber> phoneNumbers = new HashSet<PhoneNumber>();
 
 //    @Column(name = "wholesaler")
 //    private boolean wholesaler;

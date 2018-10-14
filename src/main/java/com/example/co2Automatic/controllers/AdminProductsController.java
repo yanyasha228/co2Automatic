@@ -42,8 +42,8 @@ public class AdminProductsController {
     @RequestMapping
     public String productsList(Model model,
                                @PageableDefault(sort = {"id"} , direction = Sort.Direction.ASC ,size = 5) Pageable pageable,
-                               @RequestParam Optional<ProductStock> productsStockSorting,
-                               @RequestParam Optional<Integer> productsCategorySortingId,
+                               @RequestParam Optional<ProductStock> productStockSorting,
+                               @RequestParam Optional<Integer> productCategorySortingId,
                                @RequestParam Optional<String> productNameSearchInput) {
 
 
@@ -52,16 +52,16 @@ public class AdminProductsController {
          */
 //        productListPageHelper.validatePageShowingState(productsPageNumber, productsPageSize, productsStockSorting, productsCategorySortingId , productNameSearchInput);
         Page<Product> productsPage = productService.findProductsWithPagination(pageable,
-                productsStockSorting.orElse(null),
-                productCategoryService.findById(productsCategorySortingId.orElse(0)).orElse(null),
+                productStockSorting.orElse(null),
+                productCategoryService.findById(productCategorySortingId.orElse(0)).orElse(null),
                 productNameSearchInput.orElse(""));
 
 //        Double eurCurrency = adminSettings.getEur_currency();
 //        Double usdCurrency = adminSettings.getUsd_currency();
 
-        model.addAttribute("productStockSorting" , productsStockSorting.orElse(null));
+        model.addAttribute("productStockSorting" , productStockSorting.orElse(null));
 
-        model.addAttribute("productsCategorySortingId" , productsCategorySortingId.orElse(0));
+        model.addAttribute("productCategorySortingId" , productCategorySortingId.orElse(0));
 
         model.addAttribute("productNameSearchInput" , productNameSearchInput.orElse(""));
 

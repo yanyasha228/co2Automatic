@@ -77,7 +77,7 @@ if(orderId!=null) {
         return productService.findProductByNonFullProductNameRegardlessOfTheWordsOrder(nonFullNameString);
 
     }
-    @RequestMapping(value ="/getProductsByName" , method = RequestMethod.GET)
+    @RequestMapping(value ="/getProductByName" , method = RequestMethod.GET)
     @ResponseBody
     public Product getProductByName(@RequestParam(value = "search_S") String productName){
 

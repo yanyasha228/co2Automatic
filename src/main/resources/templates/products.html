@@ -38,25 +38,25 @@
                     <select id="selectPageSize" class="form-control" onchange="location = this.value;">
                         <option th:value="@{/admin/products(
                         productStockSorting = ${productStockSorting != null ? productStockSorting.name() : ''},
-                             productsCategorySortingId = ${productsCategorySortingId} ,
+                             productCategorySortingId = ${productCategorySortingId} ,
                              productNameSearchInput = ${productNameSearchInput})}"
                                 th:selected="${productsPage.getSize() == 5}">5
                         </option>
                         <option th:value="@{/admin/products(size=10 ,
                              productStockSorting = ${productStockSorting != null ? productStockSorting.name() : ''},
-                             productsCategorySortingId = ${productsCategorySortingId} ,
+                             productCategorySortingId = ${productCategorySortingId} ,
                              productNameSearchInput = ${productNameSearchInput})}"
                                 th:selected="${productsPage.getSize() == 10}">10
                         </option>
                         <option th:value="@{/admin/products(size=15 ,
                              productStockSorting = ${productStockSorting != null ? productStockSorting.name() : ''},
-                             productsCategorySortingId = ${productsCategorySortingId} ,
+                             productCategorySortingId = ${productCategorySortingId} ,
                              productNameSearchInput = ${productNameSearchInput})}"
                                 th:selected="${productsPage.getSize() == 15}">15
                         </option>
                         <option th:value="@{/admin/products(size=20 ,
                              productStockSorting = ${productStockSorting != null ? productStockSorting.name() : ''},
-                             productsCategorySortingId = ${productsCategorySortingId} ,
+                             productCategorySortingId = ${productCategorySortingId} ,
                              productNameSearchInput = ${productNameSearchInput})}"
                                 th:selected="${productsPage.getSize() == 20}">20
                         </option>
@@ -80,20 +80,19 @@
                     <label>Категория</label>
                     <select id="selectProductsCategory" class="form-control" onchange="location = this.value;">
                         <option
-                                th:value="@{/admin/products(page = ${productsPage.getNumber()},
-                                        size=${productsPage.getSize()} ,
+                                th:value="@{/admin/products(size=${productsPage.getSize()} ,
                              productStockSorting = ${productStockSorting != null ? productStockSorting.name() : ''},
-                             productsCategorySortingId = 0,
+                             productCategorySortingId = 0,
                              productNameSearchInput = ${productNameSearchInput})}"
-                                th:selected="${productsCategorySortingId == 0}">Все
+                                th:selected="${productCategorySortingId == 0}">Все
                         </option>
                         <option th:each="productCategory : ${productCategories}"
-                                th:value="@{/admin/products(page = ${productsPage.getNumber()},
+                                th:value="@{/admin/products(
                                         size=${productsPage.getSize()} ,
                              productStockSorting = ${productStockSorting != null ? productStockSorting.name() : ''},
-                             productsCategorySortingId = ${productCategory.getId()},
+                             productCategorySortingId = ${productCategory.getId()},
                              productNameSearchInput = ${productNameSearchInput})}"
-                                th:selected="${productsCategorySortingId == productCategory.getId() }"
+                                th:selected="${productCategorySortingId == productCategory.getId() }"
                                 th:text="${productCategory.getName()}">
                         </option>
                     </select>
@@ -103,18 +102,18 @@
                     <label>Склад</label>
                     <select id="selectProductStockSorting" class="form-control"
                             onchange="location = this.value;">
-                        <option th:value="@{/admin/products(page = ${productsPage.getNumber()},
+                        <option th:value="@{/admin/products(
                                         size=${productsPage.getSize()} ,
                              productStockSorting = '',
-                             productsCategorySortingId = ${productsCategorySortingId} ,
+                             productCategorySortingId = ${productCategorySortingId} ,
                              productNameSearchInput = ${productNameSearchInput})}"
                                 th:selected="${productStockSorting == null}">Все
                         </option>
                         <option th:each="productStock : ${T(com.example.co2Automatic.models.ProductStock).values()}"
-                                th:value="@{/admin/products(page = ${productsPage.getNumber()},
+                                th:value="@{/admin/products(
                                         size=${productsPage.getSize()} ,
                              productStockSorting = ${productStock},
-                             productsCategorySortingId = ${productsCategorySortingId} ,
+                             productCategorySortingId = ${productCategorySortingId} ,
                              productNameSearchInput = ${productNameSearchInput})}"
                                 th:text="${productStock}"
                                 th:selected="${productStockSorting != null ? productStockSorting.name().equalsIgnoreCase(productStock) : false}">
@@ -171,14 +170,14 @@
             <li class="page-item"><a
                     th:href="@{/admin/products(size=${productsPage.getSize()} ,
                              productStockSorting = ${productStockSorting != null ? productStockSorting.name() : ''},
-                             productsCategorySortingId = ${productsCategorySortingId} ,
+                             productCategorySortingId = ${productCategorySortingId} ,
                              productNameSearchInput = ${productNameSearchInput})}"
                     class="page-link"> << </a></li>
             <li class="page-item"><a
                     th:href="@{/admin/products(page = ${productsPage.getNumber() - 1},
                                         size=${productsPage.getSize()} ,
                              productStockSorting = ${productStockSorting != null ? productStockSorting.name() : ''},
-                             productsCategorySortingId = ${productsCategorySortingId},
+                             productCategorySortingId = ${productCategorySortingId},
                              productNameSearchInput = ${productNameSearchInput})}"
                     th:if="${productsPage.getNumber() > 0}"
                     class="page-link"> < </a></li>
@@ -188,7 +187,7 @@
                     th:href="@{/admin/products(page = ${productsPage.getNumber() + 1},
                                         size=${productsPage.getSize()} ,
                              productStockSorting = ${productStockSorting != null ? productStockSorting.name() : ''},
-                             productsCategorySortingId = ${productsCategorySortingId},
+                             productCategorySortingId = ${productCategorySortingId},
                              productNameSearchInput = ${productNameSearchInput})}"
                     th:if="${(productsPage.getNumber() + 1) < productsPage.getTotalPages()}"
                     class="page-link"> > </a></li>
@@ -197,7 +196,7 @@
                     th:href="@{/admin/products(page = ${productsPage.getTotalPages() - 1},
                                         size=${productsPage.getSize()} ,
                              productStockSorting = ${productStockSorting != null ? productStockSorting.name() : ''},
-                             productsCategorySortingId = ${productsCategorySortingId},
+                             productCategorySortingId = ${productCategorySortingId},
                              productNameSearchInput = ${productNameSearchInput})}"
                     class="page-link"> >> </a></li>
         </ul>

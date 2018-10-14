@@ -9,7 +9,7 @@ $(function () {
             newEntry = $(currentEntry.clone()).appendTo(controlForm);
 
         newEntry.find('input').val('');
-        newEntry.find('input')
+        newEntry.find('input').attr("class" , "form-control" );
         controlForm.find('.entry:not(:last) .btn-add')
             .removeClass('btn-add').addClass('btn-remove')
             .removeClass('btn-success').addClass('btn-danger')
@@ -28,6 +28,7 @@ $(function () {
        var prodName = $(this).find('#prodNamePar').text();
        searchInput.val(prodName);
        serchList.empty();
+       searchInput.attr('class', 'form-control is-valid');
 
     } );
 
@@ -55,15 +56,80 @@ $(function () {
                 });
 
             });
-
-            $.getJSON(location.origin + "/editOrder/getProductsByName?search_S=" + searchField, function (data) {
-                if(!data){
-                    $(this).attr('class','form-control is-invalid');
-                }
-            })
         }
 
     });
+
+    $(document).on('focusout' , '#inputOrderLineProductName', function(e) {
+
+        var searchField = $(this).val();
+        var inputField = $(this);
+
+        $.getJSON(location.origin + "/editOrder/getProductByName?search_S=" + searchField, function (d) {
+            }).done(function () {
+            inputField.attr('class', 'form-control is-valid');
+        }).fail( function () {
+            inputField.attr('class', 'form-control is-invalid');
+        });
+        });
+
+    // $('#inputPhoneNumber')
+    //
+    //     .keydown(function (e) {
+    //         var key = e.which || e.charCode || e.keyCode || 0;
+    //         $phone = $(this);
+    //
+    //         // Don't let them remove the starting '('
+    //         if ($phone.val().length === 1 && (key === 8 || key === 46)) {
+    //             $phone.val('(');
+    //             return false;
+    //         }
+    //         // Reset if they highlight and type over first char.
+    //         else if ($phone.val().charAt(0) !== '(') {
+    //             $phone.val('('+$phone.val());
+    //         }
+    //
+    //         // Auto-format- do not expose the mask as the user begins to type
+    //         if (key !== 8 && key !== 9) {
+    //             if ($phone.val().length === 4) {
+    //                 $phone.val($phone.val() + ')');
+    //             }
+    //             if ($phone.val().length === 5) {
+    //                 $phone.val($phone.val() + ' ');
+    //             }
+    //             if ($phone.val().length === 9) {
+    //                 $phone.val($phone.val() + '-');
+    //             }
+    //         }
+    //
+    //         // Allow numeric (and tab, backspace, delete) keys only
+    //         return (key == 8 ||
+    //             key == 9 ||
+    //             key == 46 ||
+    //             (key >= 48 && key <= 57) ||
+    //             (key >= 96 && key <= 105));
+    //     })
+    //
+    //     .bind('focus click', function () {
+    //         $phone = $(this);
+    //
+    //         if ($phone.val().length === 0) {
+    //             $phone.val('(');
+    //         }
+    //         else {
+    //             var val = $phone.val();
+    //             $phone.val('').val(val); // Ensure cursor remains at the end
+    //         }
+    //     })
+    //
+    //     .blur(function () {
+    //         $phone = $(this);
+    //
+    //         if ($phone.val() === '(') {
+    //             $phone.val('');
+    //         }
+    //     });
+
 });
 
 
