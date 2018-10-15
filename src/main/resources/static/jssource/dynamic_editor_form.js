@@ -1,4 +1,66 @@
+
+
+
 $(function () {
+
+    $('#inputPhoneNumber').intlTelInput({
+
+    });
+
+//     $(document).ready(function () {
+//
+//         $('#inputPhoneNumber').intlTelInput({
+// //         // whether or not to allow the dropdown
+// //         allowDropdown: true,
+// //
+// // // if there is just a dial code in the input: remove it on blur, and re-add it on focus
+// //         autoHideDialCode: true,
+// //
+// // // add a placeholder in the input with an example number for the selected country
+// //         autoPlaceholder: "polite",
+// //
+// // // modify the auto placeholder
+// //         customPlaceholder: null,
+// //
+// // // append menu to specified element
+// //         dropdownContainer: null,
+// //
+// // // don't display these countries
+// //         excludeCountries: [],
+// //
+// // // format the input value during initialisation and on setNumber
+// //         formatOnDisplay: true,
+// //
+// // // geoIp lookup function
+// //         geoIpLookup: null,
+// //
+// // // inject a hidden input with this name, and on submit, populate it with the result of getNumber
+// //         hiddenInput: "",
+// //
+// // // initial country
+// //         initialCountry: "",
+// //
+// // // localized country names e.g. { 'de': 'Deutschland' }
+// //         localizedCountries: null,
+// //
+// // // don't insert international dial codes
+// //         nationalMode: true,
+// //
+// // // display only these countries
+// //         onlyCountries: [],
+// //
+// // // number type to use for placeholders
+// //         placeholderNumberType: "MOBILE",
+// //
+// // // the countries at the top of the list. defaults to united states and united kingdom
+// //         preferredCountries: [ "us", "gb" ],
+// //
+// // // display the country dial code next to the selected flag so it's not part of the typed number
+// //         separateDialCode: false
+//         });
+//
+//     });
+
     $(document).on('click', '.btn-add', function (e) {
         e.preventDefault();
 
@@ -73,62 +135,76 @@ $(function () {
         });
         });
 
-    // $('#inputPhoneNumber')
-    //
-    //     .keydown(function (e) {
-    //         var key = e.which || e.charCode || e.keyCode || 0;
-    //         $phone = $(this);
-    //
-    //         // Don't let them remove the starting '('
-    //         if ($phone.val().length === 1 && (key === 8 || key === 46)) {
-    //             $phone.val('(');
-    //             return false;
-    //         }
-    //         // Reset if they highlight and type over first char.
-    //         else if ($phone.val().charAt(0) !== '(') {
-    //             $phone.val('('+$phone.val());
-    //         }
-    //
-    //         // Auto-format- do not expose the mask as the user begins to type
-    //         if (key !== 8 && key !== 9) {
-    //             if ($phone.val().length === 4) {
-    //                 $phone.val($phone.val() + ')');
-    //             }
-    //             if ($phone.val().length === 5) {
-    //                 $phone.val($phone.val() + ' ');
-    //             }
-    //             if ($phone.val().length === 9) {
-    //                 $phone.val($phone.val() + '-');
-    //             }
-    //         }
-    //
-    //         // Allow numeric (and tab, backspace, delete) keys only
-    //         return (key == 8 ||
-    //             key == 9 ||
-    //             key == 46 ||
-    //             (key >= 48 && key <= 57) ||
-    //             (key >= 96 && key <= 105));
-    //     })
-    //
-    //     .bind('focus click', function () {
-    //         $phone = $(this);
-    //
-    //         if ($phone.val().length === 0) {
-    //             $phone.val('(');
-    //         }
-    //         else {
-    //             var val = $phone.val();
-    //             $phone.val('').val(val); // Ensure cursor remains at the end
-    //         }
-    //     })
-    //
-    //     .blur(function () {
-    //         $phone = $(this);
-    //
-    //         if ($phone.val() === '(') {
-    //             $phone.val('');
-    //         }
-    //     });
+    $(document).on('paste' , '#inputPhoneNumber' , function (event) {
+
+        event.preventDefault();
+
+        var validNumb = window.event.clipboardData.getData('text').replace(/\D+/g, "");
+
+        $(this).val("+" + validNumb);
+    });
+    
+    $('#inputPhoneNumber')
+
+        .keydown(function (e) {
+            var key = e.which || e.charCode || e.keyCode || 0;
+            $phone = $(this);
+
+            // Don't let them remove the starting '('
+            if ($phone.val().length === 1 && (key === 8 || key === 46)) {
+                $phone.val('+');
+                return false;
+            }
+            // Reset if they highlight and type over first char.
+            else if ($phone.val().charAt(0) !== '+') {
+                $phone.val('+'+$phone.val());
+            }
+
+            // Auto-format- do not expose the mask as the user begins to type
+            if (key !== 8 && key !== 9) {
+                if ($phone.val().length === 4) {
+                    $phone.val($phone.val() + ' ');
+                }
+                if ($phone.val().length === 5) {
+                    $phone.val($phone.val() + ' ');
+                }
+                if ($phone.val().length === 8) {
+                    $phone.val($phone.val() + ' ');
+                }
+                if ($phone.val().length === 12) {
+                    $phone.val($phone.val() + ' ');
+                }
+            }
+
+            // Allow numeric (and tab, backspace, delete) keys only
+            return (key == 8 ||
+                key == 9 ||
+                key == 46 ||
+                (key >= 48 && key <= 57) ||
+                (key >= 96 && key <= 105) ||
+                (key == 67 && e.ctrlKey == true) ||
+                (key == 86 && e.ctrlKey == true));
+        })
+
+        .bind('focus click', function () {
+            $phone = $(this);
+
+            if ($phone.val().length === 0) {
+                $phone.val('+');
+            }
+            else {
+                var val = $phone.val();
+                $phone.val('').val(val); // Ensure cursor remains at the end
+            }
+        })
+
+        .blur(function () {
+            $phone = $(this);
+
+            if ($phone.val() === '+') {
+                $phone.val('');
+            }
+        });
 
 });
 

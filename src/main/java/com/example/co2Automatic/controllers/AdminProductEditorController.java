@@ -21,7 +21,7 @@ public class AdminProductEditorController {
     ProductCategoryService productCategoryService;
 
     @GetMapping
-    public String editProduct(Model model, @RequestParam(required = false) Long id) {
+    public String editProduct(Model model, @RequestParam(required = false , defaultValue = "0") Long id) {
 
         Product productToEdit = productService.findById(id).orElse(new Product());
 
