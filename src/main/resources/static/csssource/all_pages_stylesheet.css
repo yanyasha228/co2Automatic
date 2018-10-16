@@ -11,7 +11,9 @@ body {
 #orderLines{
     padding-left: 70px;
 }
-
+#copyNumberButton{
+    padding-right: 40px;
+}
 .product-search-editor-res{
     position: absolute;
     z-index: 1000;

@@ -4,7 +4,9 @@
 $(function () {
 
     $('#inputPhoneNumber').intlTelInput({
-
+        preferredCountries: ['ua' , 'ru' , 'ml'],
+        autoHideDialCode: true,
+        utilsScript : "static/htmlhelpers/intl-tel-input/build/js/utils.js"
     });
 
 //     $(document).ready(function () {
@@ -106,6 +108,7 @@ $(function () {
         searchList.html('');
         var searchField = $(this).val();
 
+
         if(searchField.length>1) {
             $.getJSON(location.origin + "/editOrder/getProductsByNonFullName?search_S=" + searchField, function (data) {
                 $.each(data, function (key, value) {
@@ -150,14 +153,16 @@ $(function () {
             var key = e.which || e.charCode || e.keyCode || 0;
             $phone = $(this);
 
+            var tI = "+" + $(this).intlTelInput("getSelectedCountryData").dialCode;
+
             // Don't let them remove the starting '('
-            if ($phone.val().length === 1 && (key === 8 || key === 46)) {
-                $phone.val('+');
+            if ($phone.val().length === tI.length && (key === 8 || key === 46)) {
+                $phone.val(tI);
                 return false;
             }
             // Reset if they highlight and type over first char.
-            else if ($phone.val().charAt(0) !== '+') {
-                $phone.val('+'+$phone.val());
+            else if ($phone.val().indexOf(tI) !== 0) {
+                $phone.val(tI+$phone.val());
             }
 
             // Auto-format- do not expose the mask as the user begins to type
@@ -189,8 +194,10 @@ $(function () {
         .bind('focus click', function () {
             $phone = $(this);
 
+            var tI = "+" + $(this).intlTelInput("getSelectedCountryData").dialCode;
+
             if ($phone.val().length === 0) {
-                $phone.val('+');
+                $phone.val(tI);
             }
             else {
                 var val = $phone.val();
@@ -201,8 +208,20 @@ $(function () {
         .blur(function () {
             $phone = $(this);
 
-            if ($phone.val() === '+') {
+            var tI = "+" + $phone.intlTelInput("getSelectedCountryData").dialCode;
+
+            if ($phone.val().trim() === tI ) {
                 $phone.val('');
+            } else {
+                if($.trim($phone.val())){
+                    if ($phone.intlTelInput("isValidNumber")){
+                        $phone.attr( 'class', 'form-control is-valid' );
+                        $('#copyNumberButton').attr('class' , 'btn btn-success');
+                    } else {
+                        $phone.attr( 'class', 'form-control is-invalid' );
+                        $('#copyNumberButton').attr('class' , 'btn btn-danger');
+                    }
+                }
             }
         });
 
