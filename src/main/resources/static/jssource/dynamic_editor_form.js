@@ -1,12 +1,9 @@
-
-
-
 $(function () {
 
     $('#inputPhoneNumber').intlTelInput({
-        preferredCountries: ['ua' , 'ru' , 'ml'],
+        preferredCountries: ['ua', 'ru', 'ml'],
         autoHideDialCode: true,
-        utilsScript : "static/htmlhelpers/intl-tel-input/build/js/utils.js"
+        utilsScript: "static/htmlhelpers/intl-tel-input/build/js/utils.js"
     });
 
 //     $(document).ready(function () {
@@ -73,7 +70,7 @@ $(function () {
             newEntry = $(currentEntry.clone()).appendTo(controlForm);
 
         newEntry.find('input').val('');
-        newEntry.find('input').attr("class" , "form-control" );
+        newEntry.find('input').attr("class", "form-control");
         controlForm.find('.entry:not(:last) .btn-add')
             .removeClass('btn-add').addClass('btn-remove')
             .removeClass('btn-success').addClass('btn-danger')
@@ -86,15 +83,15 @@ $(function () {
         return false;
     });
 
-    $(document).on('click' ,'#orderLineItem' , function (e) {
+    $(document).on('click', '#orderLineItem', function (e) {
         var serchList = $(this).closest('.product-search-editor-res');
-       var searchInput = $(this).closest('.form-group').find('#inputOrderLineProductName');
-       var prodName = $(this).find('#prodNamePar').text();
-       searchInput.val(prodName);
-       serchList.empty();
-       searchInput.attr('class', 'form-control is-valid');
+        var searchInput = $(this).closest('.form-group').find('#inputOrderLineProductName');
+        var prodName = $(this).find('#prodNamePar').text();
+        searchInput.val(prodName);
+        serchList.empty();
+        searchInput.attr('class', 'form-control is-valid');
 
-    } );
+    });
 
     $(document).mouseup(function (e) {
         var searcResOrdList = $("#searchProductResult");
@@ -109,12 +106,12 @@ $(function () {
         var searchField = $(this).val();
 
 
-        if(searchField.length>1) {
+        if (searchField.length > 1) {
             $.getJSON(location.origin + "/editOrder/getProductsByNonFullName?search_S=" + searchField, function (data) {
                 $.each(data, function (key, value) {
 
-                    searchList.append('<li class="list-group-item product-search-editor-res-item" id="orderLineItem" data-prodid = "'+ value.id +'"><div class="row"' +
-                        '><div class="col-4"><img src="'+ value.imageUrls[0] +'" height="60" width="80" class="img-thumbnail"></div>'  +
+                    searchList.append('<li class="list-group-item product-search-editor-res-item" id="orderLineItem" data-prodid = "' + value.id + '"><div class="row"' +
+                        '><div class="col-4"><img src="' + value.imageUrls[0] + '" height="60" width="80" class="img-thumbnail"></div>' +
                         '<div class="col-8"> <p id="prodNamePar" style="overflow: hidden; text-overflow: ellipsis;">' + value.name + '</p> </div>' +
                         '</div></li>');
 
@@ -125,20 +122,20 @@ $(function () {
 
     });
 
-    $(document).on('focusout' , '#inputOrderLineProductName', function(e) {
+    $(document).on('focusout', '#inputOrderLineProductName', function (e) {
 
         var searchField = $(this).val();
         var inputField = $(this);
 
         $.getJSON(location.origin + "/editOrder/getProductByName?search_S=" + searchField, function (d) {
-            }).done(function () {
+        }).done(function () {
             inputField.attr('class', 'form-control is-valid');
-        }).fail( function () {
+        }).fail(function () {
             inputField.attr('class', 'form-control is-invalid');
         });
-        });
+    });
 
-    $(document).on('paste' , '#inputPhoneNumber' , function (event) {
+    $(document).on('paste', '#inputPhoneNumber', function (event) {
 
         event.preventDefault();
 
@@ -146,7 +143,7 @@ $(function () {
 
         $(this).val("+" + validNumb);
     });
-    
+
     $('#inputPhoneNumber')
 
         .keydown(function (e) {
@@ -162,7 +159,7 @@ $(function () {
             }
             // Reset if they highlight and type over first char.
             else if ($phone.val().indexOf(tI) !== 0) {
-                $phone.val(tI+$phone.val());
+                $phone.val(tI + $phone.val());
             }
 
             // Auto-format- do not expose the mask as the user begins to type
@@ -210,20 +207,49 @@ $(function () {
 
             var tI = "+" + $phone.intlTelInput("getSelectedCountryData").dialCode;
 
-            if ($phone.val().trim() === tI ) {
+            if ($phone.val().trim() === tI) {
                 $phone.val('');
             } else {
-                if($.trim($phone.val())){
-                    if ($phone.intlTelInput("isValidNumber")){
-                        $phone.attr( 'class', 'form-control is-valid' );
-                        $('#copyNumberButton').attr('class' , 'btn btn-success');
+                if ($.trim($phone.val())) {
+                    if ($phone.intlTelInput("isValidNumber")) {
+                        $phone.attr('class', 'form-control is-valid');
+                        $('#copyNumberButton').attr('class', 'btn btn-success');
                     } else {
-                        $phone.attr( 'class', 'form-control is-invalid' );
-                        $('#copyNumberButton').attr('class' , 'btn btn-danger');
+                        $phone.attr('class', 'form-control is-invalid');
+                        $('#copyNumberButton').attr('class', 'btn btn-danger');
                     }
                 }
             }
-        });
+        }).keyup(function (event) {
+
+        $phone = $(this);
+
+        var DCode = "+" + $phone.intlTelInput("getSelectedCountryData").dialCode;
+
+        var dataForSending ;
+
+        if ($phone.val().replace(DCode, '').length === 0) {
+
+            dataForSending = $phone.val().replace(DCode, '');
+
+            $.getJSON(location.origin + "/editOrder/getPhoneNumbersByNoNFullPhoneNumber?search_S=" + searchField, function (data) {
+                $.each(data, function (key, value) {
+
+                    searchList.append('<li class="list-group-item product-search-editor-res-item" id="orderLineItem" data-prodid = "' + value.id + '"><div class="row"' +
+                        '><div class="col-4"><img src="' + value.imageUrls[0] + '" height="60" width="80" class="img-thumbnail"></div>' +
+                        '<div class="col-8"> <p id="prodNamePar" style="overflow: hidden; text-overflow: ellipsis;">' + value.name + '</p> </div>' +
+                        '</div></li>');
+
+                });
+
+            });
+
+        }
+
+
+
+
+    });
 
 });
 

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+
+<head>
+    <div th:replace="allPagesTemplates :: all_pages_head_data"></div>
+    <link rel="stylesheet" th:href="@{/csssource/item_list_stylesheet.css}">
+    <script th:src="@{/jssource/item_list_js.js}"></script>
+
+</head>
+
+
+<body>
+<div th:replace="allPagesTemplates :: navBar"></div>
+
+</div>
+
+<div class="table-wrapper">
+    <div class="table-title">
+        <div class="row">
+            <div class="col-sm-4">
+                <h2>Co2 <b>Товары</b></h2>
+            </div>
+            <div class="col-sm-8">
+                <a th:href="@{editProduct}" class="btn btn-add"><i class="material-icons">&#xe147;</i>
+                    <span>Добавить</span></a>
+                <a th:href="@{${#httpServletRequest.requestURI}}" class="btn btn-primary"><i class="material-icons">&#xE863;</i>
+                    <span>Обновить</span></a>
+                <a href="#" class="btn btn-info"><i class="material-icons">&#xE24D;</i>
+                    <span>Excel Импорт </span></a>
+            </div>
+        </div>
+    </div>
+    <div class="table-filter">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="show-entries">
+                    <span>Кол-во</span>
+                    <!--<select id="selectPageSize" class="form-control" onchange="location = this.value;">-->
+                        <!--<option th:value="@{/clients(-->
+                        <!--productStockSorting = ${productStockSorting != null ? productStockSorting.name() : ''},-->
+                             <!--productCategorySortingId = ${productCategorySortingId} ,-->
+                             <!--productNameSearchInput = ${productNameSearchInput})}"-->
+                                <!--th:selected="${productsPage.getSize() == 5}">5-->
+                        <!--</option>-->
+                        <!--<option th:value="@{/admin/products(size=10 ,-->
+                             <!--productStockSorting = ${productStockSorting != null ? productStockSorting.name() : ''},-->
+                             <!--productCategorySortingId = ${productCategorySortingId} ,-->
+                             <!--productNameSearchInput = ${productNameSearchInput})}"-->
+                                <!--th:selected="${productsPage.getSize() == 10}">10-->
+                        <!--</option>-->
+                        <!--<option th:value="@{/admin/products(size=15 ,-->
+                             <!--productStockSorting = ${productStockSorting != null ? productStockSorting.name() : ''},-->
+                             <!--productCategorySortingId = ${productCategorySortingId} ,-->
+                             <!--productNameSearchInput = ${productNameSearchInput})}"-->
+                                <!--th:selected="${productsPage.getSize() == 15}">15-->
+                        <!--</option>-->
+                        <!--<option th:value="@{/admin/products(size=20 ,-->
+                             <!--productStockSorting = ${productStockSorting != null ? productStockSorting.name() : ''},-->
+                             <!--productCategorySortingId = ${productCategorySortingId} ,-->
+                             <!--productNameSearchInput = ${productNameSearchInput})}"-->
+                                <!--th:selected="${productsPage.getSize() == 20}">20-->
+                        <!--</option>-->
+                    <!--</select>-->
+                    <!--<span>страниц</span>-->
+                <!--</div>-->
+            </div>
+            <div class="col-sm-9">
+                <!--<form th:action="@{/admin/products}" method="get" role="form" autocomplete="off">-->
+                    <!--<button type="submit" class="btn btn-primary"><i class="fa fa-search"></i>-->
+                    <!--</button>-->
+                    <!--<div class="filter-group">-->
+                        <!--<label>Имя</label>-->
+                        <!--<input th:value="${productNameSearchInput}" type="text" name="productNameSearchInput"-->
+                               <!--class="form-control" id="productNameSearchInput">-->
+                        <!--<ul class="list-group product-search-res" id="searchProductResult"></ul>-->
+                    <!--</div>-->
+                <!--</form>-->
+
+                <div class="filter-group">
+                    <label>Категория</label>
+                    <!--<select id="selectProductsCategory" class="form-control" onchange="location = this.value;">-->
+                        <!--<option-->
+                                <!--th:value="@{/admin/products(size=${productsPage.getSize()} ,-->
+                             <!--productStockSorting = ${productStockSorting != null ? productStockSorting.name() : ''},-->
+                             <!--productCategorySortingId = 0,-->
+                             <!--productNameSearchInput = ${productNameSearchInput})}"-->
+                                <!--th:selected="${productCategorySortingId == 0}">Все-->
+                        <!--</option>-->
+                        <!--<option th:each="productCategory : ${productCategories}"-->
+                                <!--th:value="@{/admin/products(-->
+                                        <!--size=${productsPage.getSize()} ,-->
+                             <!--productStockSorting = ${productStockSorting != null ? productStockSorting.name() : ''},-->
+                             <!--productCategorySortingId = ${productCategory.getId()},-->
+                             <!--productNameSearchInput = ${productNameSearchInput})}"-->
+                                <!--th:selected="${productCategorySortingId == productCategory.getId() }"-->
+                                <!--th:text="${productCategory.getName()}">-->
+                        <!--</option>-->
+                    <!--</select>-->
+                </div>
+
+                <div class="filter-group">
+                    <label>Склад</label>
+                    <!--<select id="selectProductStockSorting" class="form-control"-->
+                            <!--onchange="location = this.value;">-->
+                        <!--<option th:value="@{/admin/products(-->
+                                        <!--size=${productsPage.getSize()} ,-->
+                             <!--productStockSorting = '',-->
+                             <!--productCategorySortingId = ${productCategorySortingId} ,-->
+                             <!--productNameSearchInput = ${productNameSearchInput})}"-->
+                                <!--th:selected="${productStockSorting == null}">Все-->
+                        <!--</option>-->
+                        <!--<option th:each="productStock : ${T(com.example.co2Automatic.models.ProductStock).values()}"-->
+                                <!--th:value="@{/admin/products(-->
+                                        <!--size=${productsPage.getSize()} ,-->
+                             <!--productStockSorting = ${productStock},-->
+                             <!--productCategorySortingId = ${productCategorySortingId} ,-->
+                             <!--productNameSearchInput = ${productNameSearchInput})}"-->
+                                <!--th:text="${productStock}"-->
+                                <!--th:selected="${productStockSorting != null ? productStockSorting.name().equalsIgnoreCase(productStock) : false}">-->
+                        <!--</option>-->
+                    <!--</select>-->
+                </div>
+                <span class="filter-icon"><i class="fa fa-filter"></i></span>
+            </div>
+        </div>
+    </div>
+    <table class="table table-striped table-hover" id="orderListTable">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Клиент</th>
+            <th>Номер</th>
+            <th>Дата созд.</th>
+            <th>Посл. заказ</th>
+            <th>Опт. Цена</th>
+            <th>Детально</th>
+            <th>Удалить</th>
+        </tr>
+        </thead>
+        <tbody th:each="client : ${clientsPage}">
+        <tr>
+            <td th:text="${product.getId()}"></td>
+            <td><img th:src="@{${product.getImageUrls().iterator().next()}}" width="70" height="70" class="avatar"
+                     alt="Avatar"><br><a
+                    th:href="@{'/admin/products/editProduct' + '?id=' + ${product.getId()}}"
+                    th:text="${product.getName()}"></a></td>
+            <td th:text="${product.getQuantity()}">-</td>
+            <td th:text="${#dates.format(product.getLastUpdatingDate(), 'yyyy-MM-dd')}"></td>
+            <td th:text="${product.getPrice() + ' ' + product.getCurrency().getCurrencySymbol()}">-</td>
+            <td th:text="${product.getWholeSalePrice() + ' ' + product.getCurrency().getCurrencySymbol()}">-</td>
+            <td><a th:href="@{'/admin/products/editProduct' + '?id=' + ${product.getId()}}" class="view"
+                   title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE5C8;</i></a>
+            </td>
+
+            <td><a href="#" class="delete"
+                   title="Delete Order"
+                   data-toggle="modal"
+                   data-target="#deleteProductModal"
+                   th:data-product-id="${product.getId()}"
+                   th:data-product-name="${product.getName()}">
+                <i class="material-icons">&#xe5cd;</i></a>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+    <div class="clearfix">
+        <div class="hint-text">Показано <b>5</b> из <b>25</b> заказов</div>
+        <ul class="pagination">
+            <li class="page-item"><a
+                    th:href="@{/admin/products(size=${productsPage.getSize()} ,
+                             productStockSorting = ${productStockSorting != null ? productStockSorting.name() : ''},
+                             productCategorySortingId = ${productCategorySortingId} ,
+                             productNameSearchInput = ${productNameSearchInput})}"
+                    class="page-link"> << </a></li>
+            <li class="page-item"><a
+                    th:href="@{/admin/products(page = ${productsPage.getNumber() - 1},
+                                        size=${productsPage.getSize()} ,
+                             productStockSorting = ${productStockSorting != null ? productStockSorting.name() : ''},
+                             productCategorySortingId = ${productCategorySortingId},
+                             productNameSearchInput = ${productNameSearchInput})}"
+                    th:if="${productsPage.getNumber() > 0}"
+                    class="page-link"> < </a></li>
+            <li class="page-item active"><a class="page-link"
+                                            th:text="${productsPage.getNumber()}"></a></li>
+            <li class="page-item"><a
+                    th:href="@{/admin/products(page = ${productsPage.getNumber() + 1},
+                                        size=${productsPage.getSize()} ,
+                             productStockSorting = ${productStockSorting != null ? productStockSorting.name() : ''},
+                             productCategorySortingId = ${productCategorySortingId},
+                             productNameSearchInput = ${productNameSearchInput})}"
+                    th:if="${(productsPage.getNumber() + 1) < productsPage.getTotalPages()}"
+                    class="page-link"> > </a></li>
+
+            <li class="page-item"><a
+                    th:href="@{/admin/products(page = ${productsPage.getTotalPages() - 1},
+                                        size=${productsPage.getSize()} ,
+                             productStockSorting = ${productStockSorting != null ? productStockSorting.name() : ''},
+                             productCategorySortingId = ${productCategorySortingId},
+                             productNameSearchInput = ${productNameSearchInput})}"
+                    class="page-link"> >> </a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteProductModal" tabindex="-1" role="dialog" aria-labelledby="deleteProductModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteProductModalLabel">Удалить продукт : </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <h4 class="modal-title" id="deleteProductNameModalLabel">Удалить продукт : </h4>
+                <hr>
+                <h6>Товар будет удален безвозвратно!!!</h6>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Нет</button>
+                <a href="#" id="deleteProductLink" class="btn btn-secondary">Да</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

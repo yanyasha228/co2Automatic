@@ -15,4 +15,6 @@ public interface PhoneNumberDao extends JpaRepository<PhoneNumber, Long> {
 
     Optional<PhoneNumber> findPhoneNumberByPhoneNumber(String phoneNumber);
 
+    List<PhoneNumber> findPhoneNumbersByPhoneNumber(String nonFullPhoneNumber);
+
 }

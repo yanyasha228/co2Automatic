@@ -1,5 +1,6 @@
 package com.example.co2Automatic.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -8,6 +9,7 @@ import java.util.*;
 @Data
 @Entity
 @Table(name = "clients")
+@JsonIgnoreProperties(value = { "clientsOrders"})
 public class Client {
 
     @Id
@@ -26,14 +28,22 @@ public class Client {
     @Column(name = "usual_delivery_place")
     private String usualDeliveryPlace;
 
+    @Column(name = "client_status")
+    private ClientStatus clientStatus;
+
     @Column(name = "usual_warehouse_number")
     private int usualWarehouseNumber;
 
-    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
-    private Set<PhoneNumber> phoneNumbers = new HashSet<PhoneNumber>();
+    @OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
+    private PhoneNumber phoneNumber;
+
+    @Column(name = "creation_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date creationDate;
 
 //    @Column(name = "wholesaler")
 //    private boolean wholesaler;
+
 
     @OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Order> clientsOrders = new ArrayList<Order>();

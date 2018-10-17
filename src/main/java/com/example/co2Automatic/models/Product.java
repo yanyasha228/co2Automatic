@@ -115,13 +115,4 @@ public class Product {
         lastUpdatingDate = new Date();
     }
 
-    @Override
-    public String toString() {
-        return "Product{" +
-                "name='" + name + '\'' +
-                ", quantity=" + quantity +
-                ", addingDate=" + creationDate +
-                ", imageUrls='" + imageUrls + '\'' +
-                '}';
-    }
 }
