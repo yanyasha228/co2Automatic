@@ -2,6 +2,8 @@ package com.example.co2Automatic.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.*;
@@ -25,6 +27,9 @@ public class Client {
     @Column(name = "patronymic")
     private String patronymic;
 
+    @Column(name = "email")
+    private String email;
+
     @Column(name = "usual_delivery_place")
     private String usualDeliveryPlace;
 
@@ -44,8 +49,8 @@ public class Client {
 //    @Column(name = "wholesaler")
 //    private boolean wholesaler;
 
-
-    @OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     private List<Order> clientsOrders = new ArrayList<Order>();
 
 

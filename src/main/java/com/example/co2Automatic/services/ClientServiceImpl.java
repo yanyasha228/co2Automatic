@@ -7,6 +7,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class ClientServiceImpl implements ClientService {
     @Autowired
@@ -20,5 +23,17 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public Page<Client> findAllWithPagination(Pageable pageable) {
         return clientDao.findAll(pageable);
+    }
+
+
+
+    @Override
+    public Optional<Client> findById(long l) {
+        return clientDao.findById(l);
+    }
+
+    @Override
+    public List<Client> findAll() {
+        return clientDao.findAll();
     }
 }

@@ -65,7 +65,7 @@ public class OrderServiceImpl implements OrderService {
         if (!phoneNumberService.getPhoneNumberByPhoneNumber(inputPhoneNumber).isPresent()) {
             newPhoneNumber = new PhoneNumber(inputPhoneNumber);
             newClient = new Client();
-            newClient.getPhoneNumbers().add(newPhoneNumber);
+            newClient.setPhoneNumber(newPhoneNumber);
             newClient.setName(inputName);
             newClient.setSurname(inputSurname);
             newPhoneNumber.setClient(newClient);
