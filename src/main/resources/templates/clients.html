@@ -12,7 +12,6 @@
 <body>
 <div th:replace="allPagesTemplates :: navBar"></div>
 
-</div>
 
 <div class="table-wrapper">
     <div class="table-title">
@@ -145,7 +144,7 @@
             <td th:text="${client.getEmail()}">-</td>
             <td th:text="${client.getClientStatus().name()}">-</td>
             <td th:text="${#dates.format(client.getCreationDate(), 'yyyy-MM-dd')}"></td>
-            <td><a th:href="@{'/admin/products/editProduct' + '?id=' + ${product.getId()}}" class="view"
+            <td><a th:href="@{'/admin/products/editProduct' + '?id=' + ${client.getId()}}" class="view"
                    title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE5C8;</i></a>
             </td>
 
@@ -165,23 +164,23 @@
         <div class="hint-text">Показано <b>5</b> из <b>25</b> заказов</div>
         <ul class="pagination">
             <li class="page-item"><a
-                    th:href="@{/admin/products(size=${clientsPage.getSize()})}"
+                    th:href="@{/clients(size=${clientsPage.getSize()})}"
                     class="page-link"> << </a></li>
             <li class="page-item"><a
-                    th:href="@{/admin/products(page = ${clientsPage.getNumber() - 1},
+                    th:href="@{/clients(page = ${clientsPage.getNumber() - 1},
                                         size=${clientsPage.getSize()})}"
                     th:if="${clientsPage.getNumber() > 0}"
                     class="page-link"> < </a></li>
             <li class="page-item active"><a class="page-link"
                                             th:text="${clientsPage.getNumber()}"></a></li>
             <li class="page-item"><a
-                    th:href="@{/admin/products(page = ${productsPage.getNumber() + 1},
-                                        size=${productsPage.getSize()})}"
+                    th:href="@{/clients(page = ${clientsPage.getNumber() + 1},
+                                        size=${clientsPage.getSize()})}"
                     th:if="${(clientsPage.getNumber() + 1) < clientsPage.getTotalPages()}"
                     class="page-link"> > </a></li>
 
             <li class="page-item"><a
-                    th:href="@{/admin/products(page = ${clientsPage.getTotalPages() - 1},
+                    th:href="@{/clients(page = ${clientsPage.getTotalPages() - 1},
                                         size=${clientsPage.getSize()})}"
                     class="page-link"> >> </a></li>
         </ul>
@@ -213,6 +212,6 @@
     </div>
 </div>
 
-
+</div>
 </body>
 </html>

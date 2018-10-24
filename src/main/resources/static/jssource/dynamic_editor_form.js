@@ -228,7 +228,7 @@ $(function () {
 
         var dataForSending ;
 
-        if ($phone.val().replace(DCode, '').length === 0) {
+        if ($phone.val().replace(DCode, '').length !== 0) {
 
             dataForSending = $phone.val().replace(DCode, '');
 

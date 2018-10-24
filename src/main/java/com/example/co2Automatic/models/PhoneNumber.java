@@ -3,6 +3,7 @@ package com.example.co2Automatic.models;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Data
 @Entity
@@ -23,8 +24,20 @@ public class PhoneNumber {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "client_id")
     private Client client;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PhoneNumber that = (PhoneNumber) o;
+        return this.phoneNumber.equalsIgnoreCase(that.getPhoneNumber());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(phoneNumber);
+    }
 }
