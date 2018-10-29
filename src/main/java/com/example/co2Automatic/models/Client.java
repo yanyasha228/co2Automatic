@@ -27,6 +27,9 @@ public class Client {
     @Column(name = "patronymic")
     private String patronymic;
 
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
     @Column(name = "email")
     private String email;
 
@@ -39,9 +42,6 @@ public class Client {
     @Column(name = "usual_warehouse_number")
     private int usualWarehouseNumber;
 
-    @OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
-    private PhoneNumber phoneNumber;
-
     @Column(name = "creation_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
@@ -53,24 +53,24 @@ public class Client {
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     private List<Order> clientsOrders = new ArrayList<Order>();
 
-    public void setPhoneNumber(PhoneNumber newPhoneNumber) {
-        //prevent endless loop
-        if (sameAsFormer(newPhoneNumber))
-            return;
-        //set new facebook account
-        PhoneNumber oldPhoneNumber = this.phoneNumber;
-        this.phoneNumber = newPhoneNumber;
-        //remove from the old facebook account
-        if (oldPhoneNumber!=null)
-            oldPhoneNumber.setClient(null);
-        //set myself into new facebook account
-        if (newPhoneNumber!=null)
-            newPhoneNumber.setClient(this);
-    }
-
-    private boolean sameAsFormer(PhoneNumber newPhoneNumber) {
-        return phoneNumber == null ?
-                newPhoneNumber == null : phoneNumber.equals(newPhoneNumber);
-    }
+//    public void setPhoneNumber(PhoneNumber newPhoneNumber) {
+//        //prevent endless loop
+//        if (sameAsFormer(newPhoneNumber))
+//            return;
+//        //set new facebook account
+//        PhoneNumber oldPhoneNumber = this.phoneNumber;
+//        this.phoneNumber = newPhoneNumber;
+//        //remove from the old facebook account
+//        if (oldPhoneNumber!=null)
+//            oldPhoneNumber.setClient(null);
+//        //set myself into new facebook account
+//        if (newPhoneNumber!=null)
+//            newPhoneNumber.setClient(this);
+//    }
+//
+//    private boolean sameAsFormer(PhoneNumber newPhoneNumber) {
+//        return phoneNumber == null ?
+//                newPhoneNumber == null : phoneNumber.equals(newPhoneNumber);
+//    }
 
 }

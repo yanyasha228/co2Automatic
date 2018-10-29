@@ -52,7 +52,6 @@ public class OrderServiceImpl implements OrderService {
                             Double inputWeight,
                             Double inputVolume) {
         Client newClient;
-        PhoneNumber newPhoneNumber;
         Date orderDate = null;
 
         try {
@@ -61,17 +60,15 @@ public class OrderServiceImpl implements OrderService {
             e.printStackTrace();
         }
 
+        Optional<Client> clientFromDb = clientService.findClientByPhoneNumber(inputPhoneNumber);
 
-        if (!phoneNumberService.getPhoneNumberByPhoneNumber(inputPhoneNumber).isPresent()) {
-            newPhoneNumber = new PhoneNumber(inputPhoneNumber);
+        if (!clientFromDb.isPresent()) {
             newClient = new Client();
-            newClient.setPhoneNumber(newPhoneNumber);
+            newClient.setPhoneNumber(inputPhoneNumber);
             newClient.setName(inputName);
             newClient.setSurname(inputSurname);
-            newPhoneNumber.setClient(newClient);
         } else {
-            newPhoneNumber = phoneNumberService.getPhoneNumberByPhoneNumber(inputPhoneNumber).get();
-            newClient = newPhoneNumber.getClient();
+            newClient = clientFromDb.get();
             if (!newClient.getUsualDeliveryPlace().equalsIgnoreCase(inputCity))
                 newClient.setUsualDeliveryPlace(inputCity);
             if (newClient.getUsualWarehouseNumber() == inputWarehouseNumber) {

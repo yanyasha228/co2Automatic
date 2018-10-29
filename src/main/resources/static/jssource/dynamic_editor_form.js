@@ -6,59 +6,6 @@ $(function () {
         utilsScript: "static/htmlhelpers/intl-tel-input/build/js/utils.js"
     });
 
-//     $(document).ready(function () {
-//
-//         $('#inputPhoneNumber').intlTelInput({
-// //         // whether or not to allow the dropdown
-// //         allowDropdown: true,
-// //
-// // // if there is just a dial code in the input: remove it on blur, and re-add it on focus
-// //         autoHideDialCode: true,
-// //
-// // // add a placeholder in the input with an example number for the selected country
-// //         autoPlaceholder: "polite",
-// //
-// // // modify the auto placeholder
-// //         customPlaceholder: null,
-// //
-// // // append menu to specified element
-// //         dropdownContainer: null,
-// //
-// // // don't display these countries
-// //         excludeCountries: [],
-// //
-// // // format the input value during initialisation and on setNumber
-// //         formatOnDisplay: true,
-// //
-// // // geoIp lookup function
-// //         geoIpLookup: null,
-// //
-// // // inject a hidden input with this name, and on submit, populate it with the result of getNumber
-// //         hiddenInput: "",
-// //
-// // // initial country
-// //         initialCountry: "",
-// //
-// // // localized country names e.g. { 'de': 'Deutschland' }
-// //         localizedCountries: null,
-// //
-// // // don't insert international dial codes
-// //         nationalMode: true,
-// //
-// // // display only these countries
-// //         onlyCountries: [],
-// //
-// // // number type to use for placeholders
-// //         placeholderNumberType: "MOBILE",
-// //
-// // // the countries at the top of the list. defaults to united states and united kingdom
-// //         preferredCountries: [ "us", "gb" ],
-// //
-// // // display the country dial code next to the selected flag so it's not part of the typed number
-// //         separateDialCode: false
-//         });
-//
-//     });
 
     $(document).on('click', '.btn-add', function (e) {
         e.preventDefault();
@@ -87,6 +34,12 @@ $(function () {
         var serchList = $(this).closest('.product-search-editor-res');
         var searchInput = $(this).closest('.form-group').find('#inputOrderLineProductName');
         var prodName = $(this).find('#prodNamePar').text();
+        $.getJSON(location.origin + "/editOrder/getProductByName?search_S=" + searchField, function (d) {
+        }).done(function () {
+            inputField.attr('class', 'form-control is-valid');
+        }).fail(function () {
+            inputField.attr('class', 'form-control is-invalid');
+        });
         searchInput.val(prodName);
         serchList.empty();
         searchInput.attr('class', 'form-control is-valid');
@@ -144,8 +97,41 @@ $(function () {
         $(this).val("+" + validNumb);
     });
 
-    $('#inputPhoneNumber')
+    $(document).on('click', '#clientItem', function (e) {
+        var searchInput = $('#inputPhoneNumber');
+        var clientNameField = $('#inputName');
+        var clientSurnameField = $('#inputSurname');
 
+        var searchList = $('#searchClientsResult');
+        var clientId = $(this).data('clientid');
+
+
+
+        $.getJSON(location.origin + "/editOrder/getClientById?search_Id=" + clientId, function (d) {
+        }).done(function (clientData) {
+            searchInput.val(clientData.phoneNumber);
+            clientNameField.val(clientData.name);
+            clientSurnameField.val(clientData.surname);
+            searchInput.attr('class', 'form-control is-valid');
+        }).fail(function () {
+            searchInput.attr('class', 'form-control is-invalid');
+        });
+
+        // searchInput.val(prodName);
+        searchList.empty();
+
+
+    });
+
+    $(document).mouseup(function (e) {
+        var searchResClientList = $('#searchClientsResult');
+        if (searchResClientList.has(e.target).length === 0) {
+            searchResClientList.empty();
+        }
+    });
+
+
+    $('#inputPhoneNumber')
         .keydown(function (e) {
             var key = e.which || e.charCode || e.keyCode || 0;
             $phone = $(this);
@@ -226,19 +212,28 @@ $(function () {
 
         var DCode = "+" + $phone.intlTelInput("getSelectedCountryData").dialCode;
 
-        var dataForSending ;
+        var searchList = $('#searchClientsResult');
+
+        var dataForSending;
 
         if ($phone.val().replace(DCode, '').length !== 0) {
 
-            dataForSending = $phone.val().replace(DCode, '');
+            dataForSending = $phone.val().replace(DCode, '').replace(/\s/g,'');
 
-            $.getJSON(location.origin + "/editOrder/getPhoneNumbersByNoNFullPhoneNumber?search_S=" + searchField, function (data) {
+            $.getJSON(location.origin + "/editOrder/getClientsByNoNFullPhoneNumber?search_S=" + dataForSending, function (data) {
                 $.each(data, function (key, value) {
 
-                    searchList.append('<li class="list-group-item product-search-editor-res-item" id="orderLineItem" data-prodid = "' + value.id + '"><div class="row"' +
-                        '><div class="col-4"><img src="' + value.imageUrls[0] + '" height="60" width="80" class="img-thumbnail"></div>' +
-                        '<div class="col-8"> <p id="prodNamePar" style="overflow: hidden; text-overflow: ellipsis;">' + value.name + '</p> </div>' +
-                        '</div></li>');
+                    searchList.append('<li class="list-group-item clients-search-editor-res-item" id="clientItem" data-clientid = "' + value.id + '">' +
+                        '<div class="form-row">' +
+                        '<div class="form-group col-md-8">' +
+                        '<div class="form-row">' + value.phoneNumber +
+                        '</div>' +
+                        '<div class="form-row">' + '<p id="prodNamePar" style="overflow: hidden; text-overflow: ellipsis;">' + value.name + ' ' + value.surname+ '</p> ' +
+                        '</div>' +
+                        '</div>' +
+                        '<div class="form-group col-md-4">' +
+                        '<div class="form-row"> ' +  '<p id="prodNamePar" style="overflow: hidden; text-overflow: ellipsis;">'+ value.clientStatus +'</p> </div>' +
+                        '</div></div></li>');
 
                 });
 

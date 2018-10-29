@@ -10,7 +10,10 @@ import java.util.Optional;
 public interface ClientService {
     void save(Client client);
 
+    List<Client> findClientsByNoNFullPhoneNumber(String nonFullPhoneNumber);
     Page<Client> findAllWithPagination(Pageable pageable);
+
+    Optional<Client> findClientByPhoneNumber(String phoneNumber);
 
     Optional<Client> findById(long l);
 

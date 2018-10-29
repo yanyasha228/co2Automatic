@@ -21,10 +21,19 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    public List<Client> findClientsByNoNFullPhoneNumber(String nonFullPhoneNumber) {
+        return clientDao.findClientsByPhoneNumberIgnoreCaseContaining(nonFullPhoneNumber);
+    }
+
+    @Override
     public Page<Client> findAllWithPagination(Pageable pageable) {
         return clientDao.findAll(pageable);
     }
 
+    @Override
+    public Optional<Client> findClientByPhoneNumber(String phoneNumber) {
+        return clientDao.findClientByPhoneNumber(phoneNumber);
+    }
 
 
     @Override

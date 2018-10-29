@@ -1,8 +1,10 @@
 package com.example.co2Automatic.controllers;
 
+import com.example.co2Automatic.models.Client;
 import com.example.co2Automatic.models.Order;
 import com.example.co2Automatic.models.PhoneNumber;
 import com.example.co2Automatic.models.Product;
+import com.example.co2Automatic.services.ClientService;
 import com.example.co2Automatic.services.OrderService;
 import com.example.co2Automatic.services.PhoneNumberService;
 import com.example.co2Automatic.services.ProductService;
@@ -28,7 +30,7 @@ public class OrderEditorController {
     ProductService productService;
 
     @Autowired
-    PhoneNumberService phoneNumberService;
+    ClientService clientService;
 
     @RequestMapping
     public String editorPage(Model model, @RequestParam(required = false) Long orderId) {
@@ -89,12 +91,19 @@ if(orderId!=null) {
     return productService.findByProductName(productName).orElse(null);
     }
 
-    @RequestMapping(value = "/getPhoneNumbersByNoNFullPhoneNumber" , method = RequestMethod.GET)
+    @RequestMapping(value = "/getClientsByNoNFullPhoneNumber" , method = RequestMethod.GET)
     @ResponseBody
-    public List<PhoneNumber> getPhoneNumbersByNoNFullPhoneNumber(@RequestParam(value = "search_S") String nonFullPhoneNUmber){
+    public List<Client> getClientsByNoNFullPhoneNumber(@RequestParam(value = "search_S") String nonFullPhoneNUmber){
 
-        return phoneNumberService.getPhoneNumbersByNoNFullPhoneNumber(nonFullPhoneNUmber);
+        return clientService.findClientsByNoNFullPhoneNumber(nonFullPhoneNUmber);
 
+    }
+
+    @RequestMapping(value = "/getClientById", method = RequestMethod.GET)
+    @ResponseBody
+    public Client getClientById(@RequestParam(value = "search_Id") Long id){
+        Client client = clientService.findById(id).orElse(null);
+        return client;
     }
 
 }
