@@ -30,31 +30,37 @@ $(function () {
         return false;
     });
 
+
     $(document).on('click', '#orderLineItem', function (e) {
-        var serchList = $(this).closest('.product-search-editor-res');
+        var searchList = $(this).parent();
         var searchInput = $(this).closest('.form-group').find('#inputOrderLineProductName');
         var prodName = $(this).find('#prodNamePar').text();
-        $.getJSON(location.origin + "/editOrder/getProductByName?search_S=" + searchField, function (d) {
+
+        var productId = $(this).data('prodid');
+
+        $.getJSON(location.origin + "/editOrder/getProductById?search_Id=" + productId, function (d) {
         }).done(function () {
-            inputField.attr('class', 'form-control is-valid');
+            searchInput.attr('class', 'form-control is-valid');
         }).fail(function () {
-            inputField.attr('class', 'form-control is-invalid');
+            searchInput.attr('class', 'form-control is-invalid');
         });
         searchInput.val(prodName);
-        serchList.empty();
-        searchInput.attr('class', 'form-control is-valid');
+        searchList.empty();
 
     });
 
+
     $(document).mouseup(function (e) {
-        var searcResOrdList = $("#searchProductResult");
-        if (searcResOrdList.has(e.target).length === 0) {
+        var searcResOrdList = $("#searchOrderLineProductsList");
+        if (e.target != searcResOrdList[0] && !searcResOrdList.has(e.target).length) {
             searcResOrdList.empty();
         }
     });
 
     $(document).on('keyup', '#inputOrderLineProductName', function (e) {
-        var searchList = $(this).siblings("#searchProductResult");
+        var searchList = $(this).siblings("#searchOrderLineProductsList");
+
+        var hui = searchList.children("#searchProductResult");
         searchList.html('');
         var searchField = $(this).val();
 
@@ -75,6 +81,7 @@ $(function () {
 
     });
 
+
     $(document).on('focusout', '#inputOrderLineProductName', function (e) {
 
         var searchField = $(this).val();
@@ -85,8 +92,10 @@ $(function () {
             inputField.attr('class', 'form-control is-valid');
         }).fail(function () {
             inputField.attr('class', 'form-control is-invalid');
+
         });
     });
+
 
     $(document).on('paste', '#inputPhoneNumber', function (event) {
 
@@ -104,7 +113,6 @@ $(function () {
 
         var searchList = $('#searchClientsResult');
         var clientId = $(this).data('clientid');
-
 
 
         $.getJSON(location.origin + "/editOrder/getClientById?search_Id=" + clientId, function (d) {
@@ -214,11 +222,13 @@ $(function () {
 
         var searchList = $('#searchClientsResult');
 
+        searchList.html('');
+
         var dataForSending;
 
         if ($phone.val().replace(DCode, '').length !== 0) {
 
-            dataForSending = $phone.val().replace(DCode, '').replace(/\s/g,'');
+            dataForSending = $phone.val().replace(DCode, '').replace(/\s/g, '');
 
             $.getJSON(location.origin + "/editOrder/getClientsByNoNFullPhoneNumber?search_S=" + dataForSending, function (data) {
                 $.each(data, function (key, value) {
@@ -228,11 +238,11 @@ $(function () {
                         '<div class="form-group col-md-8">' +
                         '<div class="form-row">' + value.phoneNumber +
                         '</div>' +
-                        '<div class="form-row">' + '<p id="prodNamePar" style="overflow: hidden; text-overflow: ellipsis;">' + value.name + ' ' + value.surname+ '</p> ' +
+                        '<div class="form-row">' + '<p id="prodNamePar" style="overflow: hidden; text-overflow: ellipsis;">' + value.name + ' ' + value.surname + '</p> ' +
                         '</div>' +
                         '</div>' +
                         '<div class="form-group col-md-4">' +
-                        '<div class="form-row"> ' +  '<p id="prodNamePar" style="overflow: hidden; text-overflow: ellipsis;">'+ value.clientStatus +'</p> </div>' +
+                        '<div class="form-row"> ' + '<p id="prodNamePar" style="overflow: hidden; text-overflow: ellipsis;">' + value.clientStatus + '</p> </div>' +
                         '</div></div></li>');
 
                 });
@@ -240,8 +250,6 @@ $(function () {
             });
 
         }
-
-
 
 
     });

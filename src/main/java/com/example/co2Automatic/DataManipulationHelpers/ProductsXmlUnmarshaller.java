@@ -136,7 +136,7 @@ public class ProductsXmlUnmarshaller {
                         product.setDescription(paramTextContent);
                         break;
                     case "name":
-                        product.setName(paramTextContent);
+                        product.setName(paramTextContent.trim());
                         break;
                     case "vendor":
                         product.setVendor(paramTextContent);

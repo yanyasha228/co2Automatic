@@ -14,7 +14,8 @@ body {
 #copyNumberButton{
     padding-right: 40px;
 }
-.product-search-editor-res{
+
+#searchOrderLineProductsList{
     position: absolute;
     z-index: 1000;
     max-height: calc(15 * (1.125em + 8px));
@@ -26,6 +27,20 @@ body {
     box-shadow: 0 0 5px #ddd;
     border-color: #ebebeb;
 }
+
+/*.product-search-editor-res{*/
+    /*position: absolute;*/
+    /*z-index: 1000;*/
+    /*max-height: calc(15 * (1.125em + 8px));*/
+    /*!*border-style: solid;*!*/
+    /*border-width: 1px;*/
+    /*border-radius: 0 0 3px 3px;*/
+    /*overflow-y: auto;*/
+    /*width: 320px;*/
+    /*box-shadow: 0 0 5px #ddd;*/
+    /*border-color: #ebebeb;*/
+/*}*/
+
 .product-search-editor-res-item:hover{
     background: #c9cccf;
     cursor: pointer;

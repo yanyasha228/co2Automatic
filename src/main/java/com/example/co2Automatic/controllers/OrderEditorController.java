@@ -102,8 +102,15 @@ if(orderId!=null) {
     @RequestMapping(value = "/getClientById", method = RequestMethod.GET)
     @ResponseBody
     public Client getClientById(@RequestParam(value = "search_Id") Long id){
-        Client client = clientService.findById(id).orElse(null);
-        return client;
+
+        return clientService.findById(id).orElse(null);
+    }
+
+    @RequestMapping(value = "/getProductById" , method = RequestMethod.GET)
+    @ResponseBody
+    public Product getProductById(@RequestParam(value = "search_Id") Long id){
+
+        return productService.findById(id).orElse(null);
     }
 
 }
