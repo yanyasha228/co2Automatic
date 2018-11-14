@@ -81,11 +81,13 @@ $(function () {
 
     });
 
-
+//FOCUSOUT_EVENT
     $(document).on('focusout', '#inputOrderLineProductName', function (e) {
 
         var searchField = $(this).val();
         var inputField = $(this);
+
+        searchField = searchField.replace("+" , "%2B").trim();
 
         $.getJSON(location.origin + "/editOrder/getProductByName?search_S=" + searchField, function (d) {
         }).done(function () {
