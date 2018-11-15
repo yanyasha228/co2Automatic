@@ -41,6 +41,12 @@ body {
     /*border-color: #ebebeb;*/
 /*}*/
 
+.active-item{
+
+}
+
+
+
 .product-search-editor-res-item:hover{
     background: #c9cccf;
     cursor: pointer;

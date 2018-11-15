@@ -57,13 +57,18 @@ $(function () {
         }
     });
 
-    $(document).on('keyup', '#inputOrderLineProductName', function (e) {
+    $(document).on('keydown', '#inputOrderLineProductName', function (e) {
         var searchList = $(this).siblings("#searchOrderLineProductsList");
 
         var hui = searchList.children("#searchProductResult");
-        searchList.html('');
         var searchField = $(this).val();
 
+        if(e.keyCode == 40 || e.keyCode == 38){
+            var searchListLiEl = searchList.children('.list-group-item:first');
+            searchListLiEl.addClass('active-item');
+
+        } else {
+            searchList.html('');
 
         if (searchField.length > 1) {
             $.getJSON(location.origin + "/editOrder/getProductsByNonFullName?search_S=" + searchField, function (data) {
@@ -74,9 +79,11 @@ $(function () {
                         '<div class="col-8"> <p id="prodNamePar" style="overflow: hidden; text-overflow: ellipsis;">' + value.name + '</p> </div>' +
                         '</div></li>');
 
+
                 });
 
             });
+        }
         }
 
     });
@@ -87,7 +94,7 @@ $(function () {
         var searchField = $(this).val();
         var inputField = $(this);
 
-        searchField = searchField.replace("+" , "%2B").trim();
+        searchField = searchField.replace("+", "%2B").trim();
 
         $.getJSON(location.origin + "/editOrder/getProductByName?search_S=" + searchField, function (d) {
         }).done(function () {
