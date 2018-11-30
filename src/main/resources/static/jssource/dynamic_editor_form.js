@@ -30,14 +30,9 @@ $(function () {
         return false;
     });
 
-
-    $(document).on('click', '#orderLineItem', function (e) {
-        var searchList = $(this).parent();
-        var searchInput = $(this).closest('.form-group').find('#inputOrderLineProductName');
-        var prodName = $(this).find('#prodNamePar').text();
-
-        var productId = $(this).data('prodid');
-
+    function validateAndCloseOrderLineList(searchList, searchInput, selectedItem) {
+        var prodName = selectedItem.find('#prodNamePar').text();
+        var productId = selectedItem.data('prodid');
         $.getJSON(location.origin + "/editOrder/getProductById?search_Id=" + productId, function (d) {
         }).done(function () {
             searchInput.attr('class', 'form-control is-valid');
@@ -46,6 +41,13 @@ $(function () {
         });
         searchInput.val(prodName);
         searchList.empty();
+    }
+
+    $(document).on('click', '#orderLineItem', function (e) {
+        var searchList = $(this).parent();
+        var searchInput = $(this).closest('.form-group').find('#inputOrderLineProductName');
+
+        validateAndCloseOrderLineList(searchList, searchInput, $(this));
 
     });
 
@@ -57,33 +59,88 @@ $(function () {
         }
     });
 
+    function arrowActiveItemHandling(e, htmlItemList) {
+        var searchListLiElFirst = htmlItemList.children('.list-group-item:first');
+        var searchListLiElLast = htmlItemList.children('.list-group-item:last');
+        var searchListLiElActive = htmlItemList.children('.active:first');
+        var activeLiIsFirst = searchListLiElFirst.hasClass("active");
+        var activeLiIsLast = searchListLiElLast.hasClass("active");
+
+        if (searchListLiElActive.length !== 0) {
+
+            if (e.keyCode == 38 && activeLiIsFirst ||
+                e.keyCode == 40 && activeLiIsLast) {
+
+                if (e.keyCode == 38 && activeLiIsFirst) {
+                    searchListLiElFirst.removeClass("active");
+                    searchListLiElLast.addClass("active");
+                }
+
+                if (e.keyCode == 40 && activeLiIsLast) {
+                    searchListLiElLast.removeClass("active");
+                    searchListLiElFirst.addClass("active");
+                }
+
+            } else {
+
+                if (e.keyCode == 40) {
+                    var nextActiveLi = searchListLiElActive.next();
+                    nextActiveLi.addClass("active");
+                    searchListLiElActive.removeClass("active");
+                    nextActiveLi.scrollIntoView();
+                }
+
+                if (e.keyCode == 38) {
+                    var prevActiveLi = searchListLiElActive.prev();
+                    prevActiveLi.addClass("active");
+                    searchListLiElActive.removeClass("active");
+                    prevActiveLi.scrollIntoView();
+                }
+
+            }
+
+        } else {
+            searchListLiElFirst.addClass("active");
+        }
+
+    }
+
     $(document).on('keydown', '#inputOrderLineProductName', function (e) {
+
         var searchList = $(this).siblings("#searchOrderLineProductsList");
 
         var hui = searchList.children("#searchProductResult");
+
         var searchField = $(this).val();
 
-        if(e.keyCode == 40 || e.keyCode == 38){
-            var searchListLiEl = searchList.children('.list-group-item:first');
-            searchListLiEl.addClass('active-item');
+        if (e.keyCode == 13) {
+            e.preventDefault();
+            var activeItem = searchList.children('.active:first');
+            validateAndCloseOrderLineList(searchList, $(this), activeItem);
+            return;
+
+        }
+
+        if (e.keyCode == 40 || e.keyCode == 38) {
+            arrowActiveItemHandling(e, searchList);
 
         } else {
             searchList.html('');
+//////Validirovat searchSend !!!!!!!!!!!!!!!!
+            if (searchField.length > 1) {
+                $.getJSON(location.origin + "/editOrder/getProductsByNonFullName?search_S=" + searchField, function (data) {
+                    $.each(data, function (key, value) {
 
-        if (searchField.length > 1) {
-            $.getJSON(location.origin + "/editOrder/getProductsByNonFullName?search_S=" + searchField, function (data) {
-                $.each(data, function (key, value) {
+                        searchList.append('<li class="list-group-item product-search-editor-res-item" id="orderLineItem" data-prodid = "' + value.id + '"><div class="row"' +
+                            '><div class="col-4"><img src="' + value.imageUrls[0] + '" height="60" width="80" class="img-thumbnail"></div>' +
+                            '<div class="col-8"> <p id="prodNamePar" style="overflow: hidden; text-overflow: ellipsis;">' + value.name + '</p> </div>' +
+                            '</div></li>');
 
-                    searchList.append('<li class="list-group-item product-search-editor-res-item" id="orderLineItem" data-prodid = "' + value.id + '"><div class="row"' +
-                        '><div class="col-4"><img src="' + value.imageUrls[0] + '" height="60" width="80" class="img-thumbnail"></div>' +
-                        '<div class="col-8"> <p id="prodNamePar" style="overflow: hidden; text-overflow: ellipsis;">' + value.name + '</p> </div>' +
-                        '</div></li>');
 
+                    });
 
                 });
-
-            });
-        }
+            }
         }
 
     });
@@ -198,8 +255,7 @@ $(function () {
 
             if ($phone.val().length === 0) {
                 $phone.val(tI);
-            }
-            else {
+            } else {
                 var val = $phone.val();
                 $phone.val('').val(val); // Ensure cursor remains at the end
             }
@@ -284,8 +340,7 @@ function numValidDouble(input) {
             // Ничего не делаем
 
             return;
-        }
-        else {
+        } else {
             // Обеждаемся, что это цифра, и останавливаем событие keypress
             if ((event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
                 event.preventDefault();
@@ -305,8 +360,7 @@ function numValid(input) {
             (event.keyCode >= 35 && event.keyCode <= 39)) {
             // Ничего не делаем
             return;
-        }
-        else {
+        } else {
             // Обеждаемся, что это цифра, и останавливаем событие keypress
             if ((event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
                 event.preventDefault();

@@ -23,7 +23,7 @@ body {
     border-width: 1px;
     border-radius: 0 0 3px 3px;
     overflow-y: auto;
-    width: 320px;
+    width: 600px;
     box-shadow: 0 0 5px #ddd;
     border-color: #ebebeb;
 }
@@ -41,9 +41,13 @@ body {
     /*border-color: #ebebeb;*/
 /*}*/
 
-.active-item{
-
-}
+/*.selected-list-item{*/
+    /*background: #c9cccf;*/
+    /*cursor: pointer;*/
+    /*border-radius:3px;*/
+    /*-moz-border-radius:3px;*/
+    /*-webkit-border-radius:3px;*/
+/*}*/
 
 
 
