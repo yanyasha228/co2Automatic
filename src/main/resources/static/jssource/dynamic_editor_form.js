@@ -30,18 +30,6 @@ $(function () {
         return false;
     });
 
-    function validateAndCloseOrderLineList(searchList, searchInput, selectedItem) {
-        var prodName = selectedItem.find('#prodNamePar').text();
-        var productId = selectedItem.data('prodid');
-        $.getJSON(location.origin + "/editOrder/getProductById?search_Id=" + productId, function (d) {
-        }).done(function () {
-            searchInput.attr('class', 'form-control is-valid');
-        }).fail(function () {
-            searchInput.attr('class', 'form-control is-invalid');
-        });
-        searchInput.val(prodName);
-        searchList.empty();
-    }
 
     $(document).on('click', '#orderLineItem', function (e) {
         var searchList = $(this).parent();
@@ -59,51 +47,6 @@ $(function () {
         }
     });
 
-    function arrowActiveItemHandling(e, htmlItemList) {
-        var searchListLiElFirst = htmlItemList.children('.list-group-item:first');
-        var searchListLiElLast = htmlItemList.children('.list-group-item:last');
-        var searchListLiElActive = htmlItemList.children('.active:first');
-        var activeLiIsFirst = searchListLiElFirst.hasClass("active");
-        var activeLiIsLast = searchListLiElLast.hasClass("active");
-
-        if (searchListLiElActive.length !== 0) {
-
-            if (e.keyCode == 38 && activeLiIsFirst ||
-                e.keyCode == 40 && activeLiIsLast) {
-
-                if (e.keyCode == 38 && activeLiIsFirst) {
-                    searchListLiElFirst.removeClass("active");
-                    searchListLiElLast.addClass("active");
-                }
-
-                if (e.keyCode == 40 && activeLiIsLast) {
-                    searchListLiElLast.removeClass("active");
-                    searchListLiElFirst.addClass("active");
-                }
-
-            } else {
-
-                if (e.keyCode == 40) {
-                    var nextActiveLi = searchListLiElActive.next();
-                    nextActiveLi.addClass("active");
-                    searchListLiElActive.removeClass("active");
-                    nextActiveLi.scrollIntoView();
-                }
-
-                if (e.keyCode == 38) {
-                    var prevActiveLi = searchListLiElActive.prev();
-                    prevActiveLi.addClass("active");
-                    searchListLiElActive.removeClass("active");
-                    prevActiveLi.scrollIntoView();
-                }
-
-            }
-
-        } else {
-            searchListLiElFirst.addClass("active");
-        }
-
-    }
 
     $(document).on('keydown', '#inputOrderLineProductName', function (e) {
 
@@ -122,7 +65,7 @@ $(function () {
         }
 
         if (e.keyCode == 40 || e.keyCode == 38) {
-            arrowActiveItemHandling(e, searchList);
+            arrowActiveItemHandling(e, searchList , $(this));
 
         } else {
             searchList.html('');
@@ -131,7 +74,7 @@ $(function () {
                 $.getJSON(location.origin + "/editOrder/getProductsByNonFullName?search_S=" + searchField, function (data) {
                     $.each(data, function (key, value) {
 
-                        searchList.append('<li class="list-group-item product-search-editor-res-item" id="orderLineItem" data-prodid = "' + value.id + '"><div class="row"' +
+                        searchList.append('<li class="list-group-item product-search-editor-res-item" tabindex ="' + key + '" id="orderLineItem" data-prodid = "' + value.id + '"><div class="row"' +
                             '><div class="col-4"><img src="' + value.imageUrls[0] + '" height="60" width="80" class="img-thumbnail"></div>' +
                             '<div class="col-8"> <p id="prodNamePar" style="overflow: hidden; text-overflow: ellipsis;">' + value.name + '</p> </div>' +
                             '</div></li>');
@@ -349,6 +292,73 @@ function numValidDouble(input) {
     });
 
 };
+
+function validateAndCloseOrderLineList(searchList, searchInput, selectedItem) {
+    var prodName = selectedItem.find('#prodNamePar').text();
+    var productId = selectedItem.data('prodid');
+    $.getJSON(location.origin + "/editOrder/getProductById?search_Id=" + productId, function (d) {
+    }).done(function () {
+        searchInput.attr('class', 'form-control is-valid');
+    }).fail(function () {
+        searchInput.attr('class', 'form-control is-invalid');
+    });
+    searchInput.val(prodName);
+    searchList.empty();
+}
+
+function arrowActiveItemHandling(e, htmlItemList , searchInputField) {
+    var searchListLiElFirst = htmlItemList.children('.list-group-item:first');
+    var searchListLiElLast = htmlItemList.children('.list-group-item:last');
+    var searchListLiElActive = htmlItemList.children('.active:first');
+    var activeLiIsFirst = searchListLiElFirst.hasClass("active");
+    var activeLiIsLast = searchListLiElLast.hasClass("active");
+
+    if (searchListLiElActive.length !== 0) {
+
+        if (e.keyCode == 38 && activeLiIsFirst ||
+            e.keyCode == 40 && activeLiIsLast) {
+
+            if (e.keyCode == 38 && activeLiIsFirst) {
+                searchListLiElFirst.removeClass("active");
+                searchListLiElLast.addClass("active");
+                searchListLiElLast.focus();
+                searchInputField.focus();
+            }
+
+            if (e.keyCode == 40 && activeLiIsLast) {
+                searchListLiElLast.removeClass("active");
+                searchListLiElFirst.addClass("active");
+                searchListLiElFirst.focus();
+                searchInputField.focus();
+            }
+
+        } else {
+
+            if (e.keyCode == 40) {
+                var nextActiveLi = searchListLiElActive.next();
+                nextActiveLi.addClass("active");
+                nextActiveLi.focus();
+                searchInputField.focus();
+                searchListLiElActive.removeClass("active");
+
+            }
+
+            if (e.keyCode == 38) {
+                var prevActiveLi = searchListLiElActive.prev();
+                prevActiveLi.addClass("active");
+                prevActiveLi.focus();
+                searchInputField.focus();
+                searchListLiElActive.removeClass("active");
+
+            }
+
+        }
+
+    } else {
+        searchListLiElFirst.addClass("active");
+    }
+
+}
 
 function numValid(input) {
     $(input).keydown(function (event) {
