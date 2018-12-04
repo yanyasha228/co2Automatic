@@ -37,6 +37,10 @@ public class OrderServiceImpl implements OrderService {
         return orderDao.findById(id);
     }
 
+    /*
+    * MiddleName ist involved!!!!
+    * */
+
     @Override
     public void updateOrder(Long id,
                             String inputPhoneNumber,
@@ -44,6 +48,7 @@ public class OrderServiceImpl implements OrderService {
                             String inputPaymentMethod,
                             String inputName,
                             String inputSurname,
+                            String inputMiddleName,
                             String inputCity,
                             Integer inputWarehouseNumber,
                             String inputOrderComment,

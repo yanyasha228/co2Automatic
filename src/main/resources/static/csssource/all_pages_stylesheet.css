@@ -8,6 +8,25 @@ body {
     padding-left: 120px;
 
 }
+/*.order-edit-row{*/
+    /*position: absolute;*/
+    /*width: 100%;*/
+    /*left: 0;*/
+/*}*/
+
+.order-price{
+    position:absolute;
+    text-decoration: underline;
+    bottom: 0;
+}
+.order-edit-group{
+    position: absolute;
+    width: 100%;
+    margin-top: 10px;
+    padding-left: 35px;
+    padding-right: 35px;
+    left: 0;
+}
 #orderLines{
     padding-left: 70px;
 }

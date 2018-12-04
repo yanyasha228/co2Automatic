@@ -24,6 +24,9 @@ public class Client {
     @Column(name = "surname")
     private String surname;
 
+    @Column(name = "middleName")
+    private String middleName;
+
     @Column(name = "patronymic")
     private String patronymic;
 

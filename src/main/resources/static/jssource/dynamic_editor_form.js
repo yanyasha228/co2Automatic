@@ -170,12 +170,15 @@ $(function () {
                 if ($phone.val().length === 4) {
                     $phone.val($phone.val() + ' ');
                 }
+
                 if ($phone.val().length === 5) {
                     $phone.val($phone.val() + ' ');
                 }
+
                 if ($phone.val().length === 8) {
                     $phone.val($phone.val() + ' ');
                 }
+
                 if ($phone.val().length === 12) {
                     $phone.val($phone.val() + ' ');
                 }

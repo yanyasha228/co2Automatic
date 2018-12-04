@@ -16,6 +16,7 @@ public interface OrderService {
                      String inputPaymentMethod,
                      String inputName,
                      String inputSurname,
+                     String inputMiddleName,
                      String inputCity,
                      Integer inputWarehouseNumber,
                      String inputOrderComment,
