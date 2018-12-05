@@ -16,7 +16,7 @@
     <div class="row">
         <div class="control-group order-edit-group" id="fields">
             <div class="controls">
-                <form th:action="@{/editOrder/submit}" method="get" role="form" autocomplete="off">
+                <form id="orderForm" th:action="@{/editOrder/submit}" method="get" role="form" autocomplete="off">
 
                     <input hidden
                            type="number"
@@ -135,10 +135,14 @@
 
                             <div id="orderLine" class="entry" th:each="orderLine : ${order.getOrderLines()}">
                                 <div class="form-row">
+                                    <input hidden
+                                           type="number"
+                                           id="prodOrderLineIdInput"
+                                           name="prodOrderLineIdInput">
+
                                     <div class="form-group col-md-7" id="inputOrdProdNameDiv">
                                         <label for="inputOrderLineProductName">Товар</label>
                                         <input th:value="${orderLine.getProduct().getName()}" class="form-control"
-                                               name="inputOrderLineProductName"
                                                id="inputOrderLineProductName" type="text"/>
                                         <div id="searchOrderLineProductsList">
                                         <ul class="list-group product-search-editor-res"  tabindex="-1" id="searchProductResult"></ul>
@@ -168,10 +172,14 @@
 
                             <div id="orderLine" class="entry" th:if="${order.getOrderLines().size()==0}">
                                 <div class="form-row">
+                                    <input hidden
+                                           type="number"
+                                           id="prodOrderLineIdInput"
+                                           name="prodOrderLineIdInput">
+
                                     <div class="form-group col-md-7" id="inputOrdProdNameDiv">
                                         <label for="inputOrderLineProductName">Товар</label>
                                         <input class="form-control"
-                                               name="inputOrderLineProductName"
                                                id="inputOrderLineProductName" type="text"/>
                                         <div id="searchOrderLineProductsList">
                                         <ul class="list-group product-search-editor-res" id="searchProductResult"></ul>

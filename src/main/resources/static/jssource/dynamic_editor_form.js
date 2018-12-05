@@ -1,10 +1,15 @@
 $(function () {
 
+    var orderLines = new Map();
+
+
     $('#inputPhoneNumber').intlTelInput({
         preferredCountries: ['ua', 'ru', 'ml'],
         autoHideDialCode: true,
         utilsScript: "static/htmlhelpers/intl-tel-input/build/js/utils.js"
     });
+
+    $('#orderForm').submit()
 
 
     $(document).on('click', '.btn-add', function (e) {
@@ -296,18 +301,26 @@ function numValidDouble(input) {
 
 };
 
+
 function validateAndCloseOrderLineList(searchList, searchInput, selectedItem) {
     var prodName = selectedItem.find('#prodNamePar').text();
     var productId = selectedItem.data('prodid');
+    var productOrderLineIdInput = selectedItem.closest('#prodOrderLineIdInput');
     $.getJSON(location.origin + "/editOrder/getProductById?search_Id=" + productId, function (d) {
     }).done(function () {
         searchInput.attr('class', 'form-control is-valid');
     }).fail(function () {
         searchInput.attr('class', 'form-control is-invalid');
     });
+
+    productOrderLineIdInput.text(productId);
     searchInput.val(prodName);
     searchList.empty();
 }
+function addOrderLineInModel(selectedItem) {
+
+}
+
 
 function arrowActiveItemHandling(e, htmlItemList , searchInputField) {
     var searchListLiElFirst = htmlItemList.children('.list-group-item:first');
