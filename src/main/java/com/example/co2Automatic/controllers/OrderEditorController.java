@@ -56,8 +56,8 @@ if(orderId!=null) {
                               @RequestParam(required = false) String inputCity,
                               @RequestParam(required = false) Integer inputWarehouseNumber,
                               @RequestParam(required = false) String inputOrderComment,
-                              @RequestParam(required = false) String[] productNameInput,
-                              @RequestParam(required = false) Integer[] productQuaInput,
+                              @RequestParam(required = false) Integer[] prodOrderLineIdInput,
+                              @RequestParam(required = false) Integer[] inputOrderLineProductQua,
                               @RequestParam(required = false) Double inputWeight,
                               @RequestParam(required = false) Double inputVolume) {
 
@@ -71,8 +71,8 @@ if(orderId!=null) {
                 inputCity,
                 inputWarehouseNumber,
                 inputOrderComment,
-                productNameInput,
-                productQuaInput,
+                prodOrderLineIdInput,
+                inputOrderLineProductQua,
                 inputWeight,
                 inputVolume);
 

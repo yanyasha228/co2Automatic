@@ -20,7 +20,7 @@ public interface OrderService {
                      String inputCity,
                      Integer inputWarehouseNumber,
                      String inputOrderComment,
-                     String[] productNameInput,
+                     Integer[] prodOrderLineIdInput,
                      Integer[] productQuaInput,
                      Double inputWeight,
                      Double inputVolume);

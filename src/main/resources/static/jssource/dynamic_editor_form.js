@@ -9,7 +9,6 @@ $(function () {
         utilsScript: "static/htmlhelpers/intl-tel-input/build/js/utils.js"
     });
 
-    $('#orderForm').submit()
 
 
     $(document).on('click', '.btn-add', function (e) {
@@ -305,7 +304,7 @@ function numValidDouble(input) {
 function validateAndCloseOrderLineList(searchList, searchInput, selectedItem) {
     var prodName = selectedItem.find('#prodNamePar').text();
     var productId = selectedItem.data('prodid');
-    var productOrderLineIdInput = selectedItem.closest('#prodOrderLineIdInput');
+    var productOrderLineIdInput = selectedItem.closest("div.form-row").find("input[id='prodOrderLineIdInput']");
     $.getJSON(location.origin + "/editOrder/getProductById?search_Id=" + productId, function (d) {
     }).done(function () {
         searchInput.attr('class', 'form-control is-valid');
@@ -313,7 +312,7 @@ function validateAndCloseOrderLineList(searchList, searchInput, selectedItem) {
         searchInput.attr('class', 'form-control is-invalid');
     });
 
-    productOrderLineIdInput.text(productId);
+    productOrderLineIdInput.attr('value' , productId);
     searchInput.val(prodName);
     searchList.empty();
 }

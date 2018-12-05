@@ -52,7 +52,7 @@ public class OrderServiceImpl implements OrderService {
                             String inputCity,
                             Integer inputWarehouseNumber,
                             String inputOrderComment,
-                            String[] productNameInput,
+                            Integer[] prodOrderLineIdInput,
                             Integer[] productQuaInput,
                             Double inputWeight,
                             Double inputVolume) {
@@ -98,9 +98,9 @@ public class OrderServiceImpl implements OrderService {
 
         newOrder.setOrderVolumeGeneral(inputVolume);
 
-        for (int i = 0; i < productNameInput.length; i++) {
+        for (int i = 0; i < prodOrderLineIdInput.length; i++) {
             OrderLine newOrderLine = new OrderLine();
-            Product prodForOrderLine = productService.findByProductName(productNameInput[i]).orElse(null);
+            Product prodForOrderLine = productService.findById(prodOrderLineIdInput[i]).orElse(null);
             if (prodForOrderLine != null) {
                 newOrderLine.setProduct(prodForOrderLine);
                 newOrderLine.setAmount(productQuaInput[i]);
