@@ -4,22 +4,41 @@ body {
     font-family: 'Varela Round', sans-serif;
     font-size: 18px;
 }
-#paramsDiv{
+
+#paramsDiv {
     padding-left: 120px;
 
 }
-/*.order-edit-row{*/
-    /*position: absolute;*/
-    /*width: 100%;*/
-    /*left: 0;*/
-/*}*/
 
-.order-price{
-    position:absolute;
-    text-decoration: underline;
-    bottom: 0;
+.orderLinesFooter {
+    padding-top: 20px;
 }
-.order-edit-group{
+
+/*.order-edit-row{*/
+/*position: absolute;*/
+/*width: 100%;*/
+/*left: 0;*/
+/*}*/
+.orderLinesFooterTextLine{
+    text-decoration: underline;
+}
+
+.order-price-sum {
+    font-weight: bold;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.order-price {
+    font-weight: bold;
+    position: absolute;
+    text-decoration: underline;
+    right: 0;
+    font-size: 20px;
+}
+
+.order-edit-group {
     position: absolute;
     width: 100%;
     margin-top: 10px;
@@ -27,14 +46,16 @@ body {
     padding-right: 35px;
     left: 0;
 }
-#orderLines{
+
+#orderLines {
     padding-left: 70px;
 }
-#copyNumberButton{
+
+#copyNumberButton {
     padding-right: 40px;
 }
 
-#searchOrderLineProductsList{
+#searchOrderLineProductsList {
     position: absolute;
     z-index: 1000;
     max-height: calc(15 * (1.125em + 8px));
@@ -48,37 +69,36 @@ body {
 }
 
 /*.product-search-editor-res{*/
-    /*position: absolute;*/
-    /*z-index: 1000;*/
-    /*max-height: calc(15 * (1.125em + 8px));*/
-    /*!*border-style: solid;*!*/
-    /*border-width: 1px;*/
-    /*border-radius: 0 0 3px 3px;*/
-    /*overflow-y: auto;*/
-    /*width: 320px;*/
-    /*box-shadow: 0 0 5px #ddd;*/
-    /*border-color: #ebebeb;*/
+/*position: absolute;*/
+/*z-index: 1000;*/
+/*max-height: calc(15 * (1.125em + 8px));*/
+/*!*border-style: solid;*!*/
+/*border-width: 1px;*/
+/*border-radius: 0 0 3px 3px;*/
+/*overflow-y: auto;*/
+/*width: 320px;*/
+/*box-shadow: 0 0 5px #ddd;*/
+/*border-color: #ebebeb;*/
 /*}*/
 
 /*.selected-list-item{*/
-    /*background: #c9cccf;*/
-    /*cursor: pointer;*/
-    /*border-radius:3px;*/
-    /*-moz-border-radius:3px;*/
-    /*-webkit-border-radius:3px;*/
+/*background: #c9cccf;*/
+/*cursor: pointer;*/
+/*border-radius:3px;*/
+/*-moz-border-radius:3px;*/
+/*-webkit-border-radius:3px;*/
 /*}*/
 
 
-
-.product-search-editor-res-item:hover{
+.product-search-editor-res-item:hover {
     background: #c9cccf;
     cursor: pointer;
-    border-radius:3px;
-    -moz-border-radius:3px;
-    -webkit-border-radius:3px;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
 }
 
-.clients-search-editor-res{
+.clients-search-editor-res {
     position: absolute;
     z-index: 1000;
     max-height: calc(15 * (1.125em + 8px));
@@ -90,18 +110,19 @@ body {
     box-shadow: 0 0 5px #ddd;
     border-color: #ebebeb;
 }
-.clients-search-editor-res-item:hover{
+
+.clients-search-editor-res-item:hover {
     background: #c9cccf;
     cursor: pointer;
-    border-radius:3px;
-    -moz-border-radius:3px;
-    -webkit-border-radius:3px;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
 }
-.clients-search-editor-res-item
-{
+
+.clients-search-editor-res-item {
     height: 80px;
 }
 
 .bg-dark {
-    background-color: #4b5366!important;
+    background-color: #4b5366 !important;
 }

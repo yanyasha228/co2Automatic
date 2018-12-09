@@ -140,14 +140,14 @@
 
                                 <div id="orderLine" class="entry" th:each="orderLine : ${order.getOrderLines()}">
                                     <div class="form-row">
-                                        <input hidden
-                                               type="number"
-                                               class="form-control"
-                                               id="prodOrderLineIdInput"
-                                               name="prodOrderLineIdInput"
-                                        >
 
                                         <div class="form-group col-md-7" id="inputOrdProdNameDiv">
+                                            <input hidden
+                                                   type="number"
+                                                   class="form-control"
+                                                   id="prodOrderLineIdInput"
+                                                   name="prodOrderLineIdInput"
+                                            >
                                             <label for="inputOrderLineProductName">Товар</label>
                                             <input th:value="${orderLine.getProduct().getName()}" class="form-control"
                                                    id="inputOrderLineProductName" type="text"/>
@@ -181,13 +181,12 @@
                                 <div id="orderLine" class="entry" th:if="${order.getOrderLines().size()==0}">
                                     <div class="form-row">
 
-                                        <input hidden
-                                               type="number"
-                                               class="form-control"
-                                               id="prodOrderLineIdInput"
-                                               name="prodOrderLineIdInput">
-
                                         <div class="form-group col-md-7" id="inputOrdProdNameDiv">
+                                            <input hidden
+                                                   type="number"
+                                                   class="form-control"
+                                                   id="prodOrderLineIdInput"
+                                                   name="prodOrderLineIdInput">
 
                                             <label for="inputOrderLineProductName">Товар</label>
                                             <input class="form-control"
@@ -214,12 +213,35 @@
                                         </div>
                                         <div class="form-group col-md-2">
 
-                                            <p class="order-price"><b>2136.20</b></p>
+                                            <p class="order-price-sum">2136.20</p>
                                         </div>
                                     </div>
                                 </div>
 
                             </div>
+
+                            <div class="orderLinesFooter">
+                            <div class="form-row">
+                                <div class="form-group col-md-10">
+                                    <h5 class="orderLinesFooterTextLine">Скидка:</h5>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <input type="number" class="form-control" name="discount" >
+                                </div>
+
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-8">
+                                    <h5 class="orderLinesFooterTextLine">Сумма заказа:</h5>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <p class="order-price" id="orderSumPrice">2136.20</p>
+                                </div>
+
+                            </div>
+                            </div>
+
                         </div>
                     </div>
                 </form>

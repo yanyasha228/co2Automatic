@@ -1,14 +1,14 @@
 $(function () {
 
-    var orderLines = new Map();
-
+    var orderLinesMap = new Map();
+    var discount;
+    var sumPrice;
 
     $('#inputPhoneNumber').intlTelInput({
         preferredCountries: ['ua', 'ru', 'ml'],
         autoHideDialCode: true,
         utilsScript: "static/htmlhelpers/intl-tel-input/build/js/utils.js"
     });
-
 
 
     $(document).on('click', '.btn-add', function (e) {
@@ -27,11 +27,27 @@ $(function () {
             .removeClass('btn-success').addClass('btn-danger')
             .html('<span class="glyphicon glyphicon-minus"></span>');
     }).on('click', '.btn-remove', function (e) {
+        var entryToRemove = $(this).parents('.entry:first');
+        var entryProdId = entryToRemove.find('#prodOrderLineIdInput');
 
-        $(this).parents('.entry:first').remove();
+        var strValInp = entryProdId.val();
+        if (strValInp!=="") {
+            if (!orderLinesMap.delete(Number(strValInp))){
+                alert("Перезагрузи страницу");
+            }
+        }
+        entryToRemove.remove();
 
         e.preventDefault();
         return false;
+    });
+
+    $('#orderForm').on('keyup keypress', function(e) {
+        var keyCode = e.keyCode || e.which;
+        if (keyCode === 13) {
+            e.preventDefault();
+            return false;
+        }
     });
 
 
@@ -69,7 +85,7 @@ $(function () {
         }
 
         if (e.keyCode == 40 || e.keyCode == 38) {
-            arrowActiveItemHandling(e, searchList , $(this));
+            arrowActiveItemHandling(e, searchList, $(this));
 
         } else {
             searchList.html('');
@@ -269,127 +285,152 @@ $(function () {
 
     });
 
-});
-
-
 // function sumDouble(input) {
 //
 //
 //     })
 //
 // }
-function numValidDouble(input) {
-    $(input).keydown(function (event) {
-        // Разрешаем: backspace, delete, tab, escape , "."
-        if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 ||
-            event.keyCode == 110 || event.keyCode == 190 ||
-            // Разрешаем: Ctrl+A
-            (event.keyCode == 65 && event.ctrlKey === true) ||
-            // Разрешаем: home, end, влево, вправо
-            (event.keyCode >= 35 && event.keyCode <= 39)) {
-            // Ничего не делаем
+    function numValidDouble(input) {
+        $(input).keydown(function (event) {
+            // Разрешаем: backspace, delete, tab, escape , "."
+            if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 ||
+                event.keyCode == 110 || event.keyCode == 190 ||
+                // Разрешаем: Ctrl+A
+                (event.keyCode == 65 && event.ctrlKey === true) ||
+                // Разрешаем: home, end, влево, вправо
+                (event.keyCode >= 35 && event.keyCode <= 39)) {
+                // Ничего не делаем
 
-            return;
-        } else {
-            // Обеждаемся, что это цифра, и останавливаем событие keypress
-            if ((event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
-                event.preventDefault();
+                return;
+            } else {
+                // Обеждаемся, что это цифра, и останавливаем событие keypress
+                if ((event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
+                    event.preventDefault();
+                }
             }
-        }
-    });
+        });
 
-};
+    };
 
+    ///////!!!!!!!!!!!!!!!!!!!!!!!!!!!Watch this!!!!!!!!!!!!!!!!!!!!!!!
+    function validatePrices(){
+        var sumPriceOrderLInes = 0;
+       orderLinesMap.forEach(value , key )
+           sumPriceOrderLInes = sumPriceOrderLInes + (ordLine.price * ordLine.productAmount);
 
-function validateAndCloseOrderLineList(searchList, searchInput, selectedItem) {
-    var prodName = selectedItem.find('#prodNamePar').text();
-    var productId = selectedItem.data('prodid');
-    var productOrderLineIdInput = selectedItem.closest("div.form-row").find("input[id='prodOrderLineIdInput']");
-    $.getJSON(location.origin + "/editOrder/getProductById?search_Id=" + productId, function (d) {
-    }).done(function () {
-        searchInput.attr('class', 'form-control is-valid');
-    }).fail(function () {
-        searchInput.attr('class', 'form-control is-invalid');
-    });
+       sumPrice = sumPriceOrderLInes;
 
-    productOrderLineIdInput.attr('value' , productId);
-    searchInput.val(prodName);
-    searchList.empty();
-}
-function addOrderLineInModel(selectedItem) {
+       $('#orderSumPrice').val(sumPriceOrderLInes);
 
-}
+    };
 
 
-function arrowActiveItemHandling(e, htmlItemList , searchInputField) {
-    var searchListLiElFirst = htmlItemList.children('.list-group-item:first');
-    var searchListLiElLast = htmlItemList.children('.list-group-item:last');
-    var searchListLiElActive = htmlItemList.children('.active:first');
-    var activeLiIsFirst = searchListLiElFirst.hasClass("active");
-    var activeLiIsLast = searchListLiElLast.hasClass("active");
-
-    if (searchListLiElActive.length !== 0) {
-
-        if (e.keyCode == 38 && activeLiIsFirst ||
-            e.keyCode == 40 && activeLiIsLast) {
-
-            if (e.keyCode == 38 && activeLiIsFirst) {
-                searchListLiElFirst.removeClass("active");
-                searchListLiElLast.addClass("active");
-                searchListLiElLast.focus();
-                searchInputField.focus();
+    function validateAndCloseOrderLineList(searchList, searchInput, selectedItem) {
+        var existsInOrderLineList = false;
+        var productObj;
+        var prodName = selectedItem.find('#prodNamePar').text();
+        var productId = selectedItem.data('prodid');
+        var productOrderLineIdInput = selectedItem.closest("div.form-row").find("input[id='prodOrderLineIdInput']");
+        var productOrderLineQua = selectedItem.closest("div.form-row").find("input[id='inputOrderLineProductQua']");
+        $.getJSON(location.origin + "/editOrder/getProductById?search_Id=" + productId).done(function (data) {
+            if (!orderLinesMap.has(data.id)) {
+                addOrderLineInModel(data);
+                productOrderLineQua.val(1);
+                searchInput.attr('class', 'form-control is-valid');
+                productOrderLineIdInput.val(productId);
+                searchInput.val(prodName);
+            } else {
+                searchInput.attr('class', 'form-control is-invalid');
+                searchInput.val('');
             }
+        }).fail(function () {
+            searchInput.attr('class', 'form-control is-invalid');
+        });
 
-            if (e.keyCode == 40 && activeLiIsLast) {
-                searchListLiElLast.removeClass("active");
-                searchListLiElFirst.addClass("active");
-                searchListLiElFirst.focus();
-                searchInputField.focus();
-            }
+        validatePrices();
 
-        } else {
+        searchList.empty();
 
-            if (e.keyCode == 40) {
-                var nextActiveLi = searchListLiElActive.next();
-                nextActiveLi.addClass("active");
-                nextActiveLi.focus();
-                searchInputField.focus();
-                searchListLiElActive.removeClass("active");
-
-            }
-
-            if (e.keyCode == 38) {
-                var prevActiveLi = searchListLiElActive.prev();
-                prevActiveLi.addClass("active");
-                prevActiveLi.focus();
-                searchInputField.focus();
-                searchListLiElActive.removeClass("active");
-
-            }
-
-        }
-
-    } else {
-        searchListLiElFirst.addClass("active");
     }
 
-}
+    function addOrderLineInModel(data) {
+        data.productAmount = 1;
+        orderLinesMap.set(data.id, data);
 
-function numValid(input) {
-    $(input).keydown(function (event) {
-        // Разрешаем: backspace, delete, tab, escape ,
-        if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 ||
-            // Разрешаем: Ctrl+A
-            (event.keyCode == 65 && event.ctrlKey === true) ||
-            // Разрешаем: home, end, влево, вправо
-            (event.keyCode >= 35 && event.keyCode <= 39)) {
-            // Ничего не делаем
-            return;
-        } else {
-            // Обеждаемся, что это цифра, и останавливаем событие keypress
-            if ((event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
-                event.preventDefault();
+    }
+
+
+    function arrowActiveItemHandling(e, htmlItemList, searchInputField) {
+        var searchListLiElFirst = htmlItemList.children('.list-group-item:first');
+        var searchListLiElLast = htmlItemList.children('.list-group-item:last');
+        var searchListLiElActive = htmlItemList.children('.active:first');
+        var activeLiIsFirst = searchListLiElFirst.hasClass("active");
+        var activeLiIsLast = searchListLiElLast.hasClass("active");
+
+        if (searchListLiElActive.length !== 0) {
+
+            if (e.keyCode == 38 && activeLiIsFirst ||
+                e.keyCode == 40 && activeLiIsLast) {
+
+                if (e.keyCode == 38 && activeLiIsFirst) {
+                    searchListLiElFirst.removeClass("active");
+                    searchListLiElLast.addClass("active");
+                    searchListLiElLast.focus();
+                    searchInputField.focus();
+                }
+
+                if (e.keyCode == 40 && activeLiIsLast) {
+                    searchListLiElLast.removeClass("active");
+                    searchListLiElFirst.addClass("active");
+                    searchListLiElFirst.focus();
+                    searchInputField.focus();
+                }
+
+            } else {
+
+                if (e.keyCode == 40) {
+                    var nextActiveLi = searchListLiElActive.next();
+                    nextActiveLi.addClass("active");
+                    nextActiveLi.focus();
+                    searchInputField.focus();
+                    searchListLiElActive.removeClass("active");
+
+                }
+
+                if (e.keyCode == 38) {
+                    var prevActiveLi = searchListLiElActive.prev();
+                    prevActiveLi.addClass("active");
+                    prevActiveLi.focus();
+                    searchInputField.focus();
+                    searchListLiElActive.removeClass("active");
+
+                }
+
             }
+
+        } else {
+            searchListLiElFirst.addClass("active");
         }
-    });
-};
+
+    }
+
+    function numValid(input) {
+        $(input).keydown(function (event) {
+            // Разрешаем: backspace, delete, tab, escape ,
+            if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 ||
+                // Разрешаем: Ctrl+A
+                (event.keyCode == 65 && event.ctrlKey === true) ||
+                // Разрешаем: home, end, влево, вправо
+                (event.keyCode >= 35 && event.keyCode <= 39)) {
+                // Ничего не делаем
+                return;
+            } else {
+                // Обеждаемся, что это цифра, и останавливаем событие keypress
+                if ((event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
+                    event.preventDefault();
+                }
+            }
+        });
+    };
+});
