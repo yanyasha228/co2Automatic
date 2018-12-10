@@ -1,8 +1,11 @@
 $(function () {
+    String.prototype.replaceAll = function(search, replace){
+        return this.split(search).join(replace);
+    }
 
     var orderLinesMap = new Map();
     var discount;
-    var sumPrice;
+    var sumPrice = 0;
 
     $('#inputPhoneNumber').intlTelInput({
         preferredCountries: ['ua', 'ru', 'ml'],
@@ -31,18 +34,19 @@ $(function () {
         var entryProdId = entryToRemove.find('#prodOrderLineIdInput');
 
         var strValInp = entryProdId.val();
-        if (strValInp!=="") {
-            if (!orderLinesMap.delete(Number(strValInp))){
+        if (strValInp !== "") {
+            if (!orderLinesMap.delete(Number(strValInp))) {
                 alert("Перезагрузи страницу");
             }
         }
         entryToRemove.remove();
 
+        validatePrices();
         e.preventDefault();
         return false;
     });
 
-    $('#orderForm').on('keyup keypress', function(e) {
+    $('#orderForm').on('keyup keypress', function (e) {
         var keyCode = e.keyCode || e.which;
         if (keyCode === 13) {
             e.preventDefault();
@@ -75,6 +79,8 @@ $(function () {
         var hui = searchList.children("#searchProductResult");
 
         var searchField = $(this).val();
+
+        searchField = encodeRequestReservedSymbols(searchField);
 
         if (e.keyCode == 13) {
             e.preventDefault();
@@ -114,7 +120,7 @@ $(function () {
         var searchField = $(this).val();
         var inputField = $(this);
 
-        searchField = searchField.replace("+", "%2B").trim();
+        searchField = encodeRequestReservedSymbols(searchField);
 
         $.getJSON(location.origin + "/editOrder/getProductByName?search_S=" + searchField, function (d) {
         }).done(function () {
@@ -291,6 +297,13 @@ $(function () {
 //     })
 //
 // }
+    function encodeRequestReservedSymbols(strToValidation) {
+        return strToValidation.replaceAll("%","%25")
+            .replaceAll("+", "%2B")
+            .replaceAll("&","%26")
+            .trim();
+    }
+
     function numValidDouble(input) {
         $(input).keydown(function (event) {
             // Разрешаем: backspace, delete, tab, escape , "."
@@ -314,14 +327,23 @@ $(function () {
     };
 
     ///////!!!!!!!!!!!!!!!!!!!!!!!!!!!Watch this!!!!!!!!!!!!!!!!!!!!!!!
-    function validatePrices(){
+    function validatePrices() {
         var sumPriceOrderLInes = 0;
-       orderLinesMap.forEach(value , key )
-           sumPriceOrderLInes = sumPriceOrderLInes + (ordLine.price * ordLine.productAmount);
+        // var orderLineIdsM = orderLinesMap.values();
+        var sumPricePageFieldP = $('#orderSumPrice');
+        orderLinesMap.forEach(function (value, key, map) {
+            sumPriceOrderLInes = sumPriceOrderLInes + (value.price * value.productAmount);
+        });
+        // orderLineIdsM.forEach(function (id, i, orderLineIdsM) {
+        //     ordLine = orderLinesMap.get(id);
+        //     sumPriceOrderLInes = sumPriceOrderLInes + (ordLine.price * ordLine.productAmount);
+        //
+        // });
 
-       sumPrice = sumPriceOrderLInes;
 
-       $('#orderSumPrice').val(sumPriceOrderLInes);
+        sumPrice = sumPriceOrderLInes;
+
+        sumPricePageFieldP.text(sumPrice);
 
     };
 
@@ -340,6 +362,7 @@ $(function () {
                 searchInput.attr('class', 'form-control is-valid');
                 productOrderLineIdInput.val(productId);
                 searchInput.val(prodName);
+                validatePrices();
             } else {
                 searchInput.attr('class', 'form-control is-invalid');
                 searchInput.val('');
@@ -348,16 +371,14 @@ $(function () {
             searchInput.attr('class', 'form-control is-invalid');
         });
 
-        validatePrices();
 
         searchList.empty();
 
     }
 
-    function addOrderLineInModel(data) {
-        data.productAmount = 1;
-        orderLinesMap.set(data.id, data);
-
+    function addOrderLineInModel(oLineData) {
+        oLineData.productAmount = 1;
+        orderLinesMap.set(oLineData.id, oLineData);
     }
 
 

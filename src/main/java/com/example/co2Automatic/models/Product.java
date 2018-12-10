@@ -9,14 +9,11 @@ import java.util.*;
 @Data
 @Entity
 @Table(name = "product")
-@JsonIgnoreProperties(value = { "currency",
-        "productUrlFromExternalResource",
+@JsonIgnoreProperties(value = {"productUrlFromExternalResource",
         "description",
         "params",
-        "wholeSalePrice",
         "productCategory",
         "countryOfOrigin",
-        "productStock",
         "creationDate",
         "lastUpdatingDate",
         "vendor",
