@@ -1,5 +1,5 @@
 $(function () {
-    String.prototype.replaceAll = function(search, replace){
+    String.prototype.replaceAll = function (search, replace) {
         return this.split(search).join(replace);
     }
 
@@ -129,6 +129,23 @@ $(function () {
             inputField.attr('class', 'form-control is-invalid');
 
         });
+    });
+
+    $(document).on('focusout', '#inputOrderLineProductQua', function (eve) {
+
+
+        var inputQuaField = $(this);
+        var inputQuaFieldValue = inputQuaField.val();
+
+        var productOrderLineIdInputItem = inputQuaField.closest("div.form-row").find("input[id='prodOrderLineIdInput']");
+        var productOrderLineIdInputItemVal = productOrderLineIdInputItem.val();
+
+        if (orderLinesMap.has(Number(productOrderLineIdInputItemVal))) {
+            var her = orderLinesMap.get(Number(productOrderLineIdInputItemVal));
+            her.productAmount = inputQuaFieldValue;
+            validatePrices();
+        }
+
     });
 
 
@@ -285,7 +302,6 @@ $(function () {
                 });
 
             });
-
         }
 
 
@@ -298,9 +314,9 @@ $(function () {
 //
 // }
     function encodeRequestReservedSymbols(strToValidation) {
-        return strToValidation.replaceAll("%","%25")
+        return strToValidation.replaceAll("%", "%25")
             .replaceAll("+", "%2B")
-            .replaceAll("&","%26")
+            .replaceAll("&", "%26")
             .trim();
     }
 
