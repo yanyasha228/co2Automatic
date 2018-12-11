@@ -4,7 +4,7 @@ $(function () {
     }
 
     var orderLinesMap = new Map();
-    var discount;
+    var discount = 0;
     var sumPrice = 0;
 
     $('#inputPhoneNumber').intlTelInput({
@@ -53,6 +53,14 @@ $(function () {
             return false;
         }
     });
+
+    // $('#orderDiscount').on('keyup keypress', function (e) {
+    //     var keyCode = e.keyCode || e.which;
+    //     if (keyCode === 13) {
+    //         e.preventDefault();
+    //         return false;
+    //     }
+    // });
 
 
     $(document).on('click', '#orderLineItem', function (e) {
@@ -348,16 +356,13 @@ $(function () {
         // var orderLineIdsM = orderLinesMap.values();
         var sumPricePageFieldP = $('#orderSumPrice');
         orderLinesMap.forEach(function (value, key, map) {
-            sumPriceOrderLInes = sumPriceOrderLInes + (value.price * value.productAmount);
+            var orderLineSumPrice = value.orderLineProductItem.price * value.productAmount;
+            sumPriceOrderLInes = sumPriceOrderLInes + orderLineSumPrice;
+
         });
-        // orderLineIdsM.forEach(function (id, i, orderLineIdsM) {
-        //     ordLine = orderLinesMap.get(id);
-        //     sumPriceOrderLInes = sumPriceOrderLInes + (ordLine.price * ordLine.productAmount);
-        //
-        // });
 
 
-        sumPrice = sumPriceOrderLInes;
+        sumPrice = sumPriceOrderLInes - discount;
 
         sumPricePageFieldP.text(sumPrice);
 
@@ -392,9 +397,12 @@ $(function () {
 
     }
 
-    function addOrderLineInModel(oLineData) {
-        oLineData.productAmount = 1;
-        orderLinesMap.set(oLineData.id, oLineData);
+    function addOrderLineInModel(oLineProductData) {
+        var orderLineMapItem = {};
+        orderLineMapItem.productAmount = 1;
+        orderLineMapItem.orderLineProductItem = oLineProductData;
+        orderLineMapItem.sumOrderLinePrice = oLineProductData.price;
+        orderLinesMap.set(oLineProductData.id, orderLineMapItem);
     }
 
 
