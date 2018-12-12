@@ -25,10 +25,6 @@ public class AdminSettingsSyncController {
     @Autowired
     ProductsTableValidator productsTableValidator;
 
-    @Autowired
-    private AdminSettings adminSettings;
-
-
     @RequestMapping
     public String adminSettingsSync(Model model) {
         return "adminSettingsSync";

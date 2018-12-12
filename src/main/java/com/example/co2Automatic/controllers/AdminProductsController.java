@@ -2,6 +2,7 @@ package com.example.co2Automatic.controllers;
 
 import com.example.co2Automatic.ControllerHelpers.ProductListPageHelper;
 import com.example.co2Automatic.SystemComponents.AdminSettings;
+import com.example.co2Automatic.SystemComponents.ApplicationSettingsData;
 import com.example.co2Automatic.models.MoneyCurrency;
 import com.example.co2Automatic.models.Product;
 import com.example.co2Automatic.models.ProductStock;
@@ -34,10 +35,10 @@ public class AdminProductsController {
     private ProductCategoryService productCategoryService;
 
     @Autowired
-    AdminSettings adminSettings;
+    ApplicationSettingsData applicationSettingsData;
 
-    @Autowired
-    private ProductListPageHelper productListPageHelper;
+//    @Autowired
+//    private ProductListPageHelper productListPageHelper;
 
     @RequestMapping
     public String productsList(Model model,

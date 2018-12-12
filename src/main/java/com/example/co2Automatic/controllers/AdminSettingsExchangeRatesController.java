@@ -1,8 +1,9 @@
 package com.example.co2Automatic.controllers;
 
-import com.example.co2Automatic.SystemComponents.AdminSettings;
-import com.example.co2Automatic.models.SessionModels.AdminModelSettings;
-import com.example.co2Automatic.services.AdminModelSettingsService;
+import com.example.co2Automatic.SystemComponents.ApplicationSettingsData;
+import com.example.co2Automatic.models.SessionModels.AdminSettingsModel;
+import com.example.co2Automatic.models.SessionModels.ApplicationSettingsDataModel;
+import com.example.co2Automatic.services.ApplicationSettingsDataModelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,31 +16,27 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class AdminSettingsExchangeRatesController {
 
     @Autowired
-    private AdminModelSettingsService adminModelSettingsService;
+    private ApplicationSettingsDataModelService applicationSettingsDataModelService;
 
     @Autowired
-    private AdminSettings adminSettings;
+    private ApplicationSettingsData applicationSettingsData;
 
     @RequestMapping
-    public String adminSettingsExchangeRates(Model model){
-        model.addAttribute("adminSettings" , adminSettings);
+    public String adminSettingsExchangeRates(Model model) {
+        model.addAttribute("applicationSettingsData", applicationSettingsData);
         return "adminSettingsExchangeRates";
     }
 
     @PostMapping("submit")
-    public String updateSettings(Model model , @RequestParam(required = false) Double usdCurrency,
-                                 @RequestParam(required = false) Double eurCurrency){
+    public String updateSettings(Model model, @RequestParam(required = false) Double usdCurrency,
+                                 @RequestParam(required = false) Double eurCurrency) {
 
-        AdminModelSettings adminModelSettings = adminModelSettingsService.getSettings();
+        if (usdCurrency != null)
+            applicationSettingsData.setUsd_currency(usdCurrency);
+        if (eurCurrency != null)
+            applicationSettingsData.setEur_currency(eurCurrency);
 
-        if (usdCurrency!=null)
-        adminModelSettings.setUsd_currency(usdCurrency);
-        if (eurCurrency!=null)
-        adminModelSettings.setEur_currency(eurCurrency);
-
-        adminModelSettingsService.updateSettings(adminModelSettings);
-
-        adminSettings.setSettings(adminModelSettingsService.getSettings());
+        applicationSettingsData.saveApplicationSettingsData();
 
         return "redirect:../";
     }

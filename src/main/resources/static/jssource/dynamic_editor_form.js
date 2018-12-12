@@ -1,11 +1,13 @@
 $(function () {
     String.prototype.replaceAll = function (search, replace) {
         return this.split(search).join(replace);
-    }
+    };
 
     var orderLinesMap = new Map();
+
     var discount = 0;
     var sumPrice = 0;
+    var
 
     $('#inputPhoneNumber').intlTelInput({
         preferredCountries: ['ua', 'ru', 'ml'],

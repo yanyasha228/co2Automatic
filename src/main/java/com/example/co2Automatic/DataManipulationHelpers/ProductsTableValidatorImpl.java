@@ -1,6 +1,7 @@
 package com.example.co2Automatic.DataManipulationHelpers;
 
 import com.example.co2Automatic.SystemComponents.AdminSettings;
+import com.example.co2Automatic.SystemComponents.ApplicationSettingsData;
 import com.example.co2Automatic.models.Product;
 import com.example.co2Automatic.models.ProductCategory;
 import com.example.co2Automatic.services.ProductCategoryService;
@@ -21,7 +22,7 @@ public class ProductsTableValidatorImpl implements ProductsTableValidator {
     private ProductCategoryService productCategoryService;
 
     @Autowired
-    AdminSettings adminSettings;
+    ApplicationSettingsData applicationSettingsData;
 
     public ProductsTableValidatorImpl() {
     }

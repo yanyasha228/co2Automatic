@@ -7,9 +7,9 @@ import javax.persistence.*;
 
 @Data
 @Entity
-public class AdminModelSettings {
+public class AdminSettingsModel {
 
-    public AdminModelSettings() {
+    public AdminSettingsModel() {
 
     }
 
@@ -21,5 +21,6 @@ public class AdminModelSettings {
 
     @Column(name = "EUR_CURRENCY")
     private double eur_currency;
+
 
 }

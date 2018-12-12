@@ -24,14 +24,14 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="">$</span>
                             </div>
-                            <input th:value="${adminSettings.getUsd_currency()}" type="text" name="usdCurrency" class="form-control" aria-describedby="inputGroup-sizing-sm" onclick="numValidDouble(this)">
+                            <input th:value="${applicationSettingsData.getUsd_currency()}" type="text" name="usdCurrency" class="form-control" aria-describedby="inputGroup-sizing-sm" onclick="numValidDouble(this)">
                         </div>
 
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">€</span>
                             </div>
-                            <input th:value="${adminSettings.getEur_currency()}" type="text" class="form-control" name="eurCurrency" onclick="numValidDouble(this)">
+                            <input th:value="${applicationSettingsData.getEur_currency()}" type="text" class="form-control" name="eurCurrency" onclick="numValidDouble(this)">
                         </div>
 
                         <div class="form-group">

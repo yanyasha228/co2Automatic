@@ -1,6 +1,6 @@
 package com.example.co2Automatic.SystemComponents;
 
-import com.example.co2Automatic.models.SessionModels.AdminModelSettings;
+import com.example.co2Automatic.models.SessionModels.AdminSettingsModel;
 import lombok.Data;
 
 @Data
@@ -13,9 +13,9 @@ public class AdminSettings {
 
     private double eur_currency;
 
-    public void setSettings(AdminModelSettings adminModelSettings) {
-        this.usd_currency = adminModelSettings.getUsd_currency();
-        this.eur_currency = adminModelSettings.getEur_currency();
+    public void setSettings(AdminSettingsModel adminSettingsModel) {
+        this.usd_currency = adminSettingsModel.getUsd_currency();
+        this.eur_currency = adminSettingsModel.getEur_currency();
     }
 
 }
