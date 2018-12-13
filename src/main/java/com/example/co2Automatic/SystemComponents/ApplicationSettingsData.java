@@ -2,6 +2,7 @@ package com.example.co2Automatic.SystemComponents;
 
 import com.example.co2Automatic.models.SessionModels.ApplicationSettingsDataModel;
 import com.example.co2Automatic.services.ApplicationSettingsDataModelService;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
@@ -20,9 +21,6 @@ public class ApplicationSettingsData {
 
     @Autowired
     private ApplicationSettingsDataModelService applicationSettingsDataModelService;
-
-    public ApplicationSettingsData() {
-    }
 
     private double usd_currency;
 

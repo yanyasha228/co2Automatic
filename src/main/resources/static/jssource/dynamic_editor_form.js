@@ -5,9 +5,20 @@ $(function () {
 
     var orderLinesMap = new Map();
 
+    var appSettings;
+
+    var clientStatus = "USUAL";
+
+
     var discount = 0;
     var sumPrice = 0;
-    var
+
+    $(document).ready(function () {
+        $.getJSON(location.origin + "/AppSettings/getAppSettings", function (settingsData) {
+            appSettings = settingsData;
+        })
+
+    });
 
     $('#inputPhoneNumber').intlTelInput({
         preferredCountries: ['ua', 'ru', 'ml'],
@@ -43,7 +54,7 @@ $(function () {
         }
         entryToRemove.remove();
 
-        validatePrices();
+        validateSumPrice();
         e.preventDefault();
         return false;
     });
@@ -109,7 +120,7 @@ $(function () {
             if (searchField.length > 1) {
                 $.getJSON(location.origin + "/editOrder/getProductsByNonFullName?search_S=" + searchField, function (data) {
                     $.each(data, function (key, value) {
-
+                        validateProductForModel(value);
                         searchList.append('<li class="list-group-item product-search-editor-res-item" tabindex ="' + key + '" id="orderLineItem" data-prodid = "' + value.id + '"><div class="row"' +
                             '><div class="col-4"><img src="' + value.imageUrls[0] + '" height="60" width="80" class="img-thumbnail"></div>' +
                             '<div class="col-8"> <p id="prodNamePar" style="overflow: hidden; text-overflow: ellipsis;">' + value.name + '</p> </div>' +
@@ -153,7 +164,7 @@ $(function () {
         if (orderLinesMap.has(Number(productOrderLineIdInputItemVal))) {
             var her = orderLinesMap.get(Number(productOrderLineIdInputItemVal));
             her.productAmount = inputQuaFieldValue;
-            validatePrices();
+            validateSumPrice();
         }
 
     });
@@ -296,7 +307,6 @@ $(function () {
 
             $.getJSON(location.origin + "/editOrder/getClientsByNoNFullPhoneNumber?search_S=" + dataForSending, function (data) {
                 $.each(data, function (key, value) {
-
                     searchList.append('<li class="list-group-item clients-search-editor-res-item" id="clientItem" data-clientid = "' + value.id + '">' +
                         '<div class="form-row">' +
                         '<div class="form-group col-md-8">' +
@@ -353,7 +363,7 @@ $(function () {
     };
 
     ///////!!!!!!!!!!!!!!!!!!!!!!!!!!!Watch this!!!!!!!!!!!!!!!!!!!!!!!
-    function validatePrices() {
+    function validateSumPrice() {
         var sumPriceOrderLInes = 0;
         // var orderLineIdsM = orderLinesMap.values();
         var sumPricePageFieldP = $('#orderSumPrice');
@@ -379,13 +389,14 @@ $(function () {
         var productOrderLineIdInput = selectedItem.closest("div.form-row").find("input[id='prodOrderLineIdInput']");
         var productOrderLineQua = selectedItem.closest("div.form-row").find("input[id='inputOrderLineProductQua']");
         $.getJSON(location.origin + "/editOrder/getProductById?search_Id=" + productId).done(function (data) {
+            validateProductForModel(data);
             if (!orderLinesMap.has(data.id)) {
                 addOrderLineInModel(data);
                 productOrderLineQua.val(1);
                 searchInput.attr('class', 'form-control is-valid');
                 productOrderLineIdInput.val(productId);
                 searchInput.val(prodName);
-                validatePrices();
+                validateSumPrice();
             } else {
                 searchInput.attr('class', 'form-control is-invalid');
                 searchInput.val('');
@@ -405,6 +416,27 @@ $(function () {
         orderLineMapItem.orderLineProductItem = oLineProductData;
         orderLineMapItem.sumOrderLinePrice = oLineProductData.price;
         orderLinesMap.set(oLineProductData.id, orderLineMapItem);
+    }
+
+
+    function validateProductForModel(productToValidation) {
+        validateProductPricePermissions(productToValidation);
+        validateProductPricesCurrency(productToValidation);
+    }
+
+    function validateProductPricePermissions(prodToVal) {
+        if (clientStatus == "WHOLESALER") {
+            prodToVal.price = prodToVal.wholeSalePrice;
+        }
+    }
+
+    function validateProductPricesCurrency(prod) {
+        if (prod.currency == "USD") {
+            prod.price = prod.price * appSettings.usd_currency;
+        } else if (prod.currency == "EUR") {
+            prod.price = prod.price * appSettings.eur_currency;
+        }
+
     }
 
 

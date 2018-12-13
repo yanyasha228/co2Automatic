@@ -18,7 +18,7 @@ public class ApplicationSettingsDataModelServiceImpl implements ApplicationSetti
 
     @Override
     public ApplicationSettingsDataModel getSettings() {
-        return applicationSettingsDataModelDao.getOne(1L);
+        return applicationSettingsDataModelDao.findById(1L).orElse(null);
     }
 
     @Override

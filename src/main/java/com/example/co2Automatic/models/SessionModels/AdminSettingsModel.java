@@ -7,11 +7,8 @@ import javax.persistence.*;
 
 @Data
 @Entity
+@Table(name = "admin_settings")
 public class AdminSettingsModel {
-
-    public AdminSettingsModel() {
-
-    }
 
     @Id
     private long id = 1L;
