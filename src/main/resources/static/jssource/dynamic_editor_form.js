@@ -120,7 +120,7 @@ $(function () {
             if (searchField.length > 1) {
                 $.getJSON(location.origin + "/editOrder/getProductsByNonFullName?search_S=" + searchField, function (data) {
                     $.each(data, function (key, value) {
-                        validateProductForModel(value);
+                        validateProductForView(value);
                         searchList.append('<li class="list-group-item product-search-editor-res-item" tabindex ="' + key + '" id="orderLineItem" data-prodid = "' + value.id + '"><div class="row"' +
                             '><div class="col-4"><img src="' + value.imageUrls[0] + '" height="60" width="80" class="img-thumbnail"></div>' +
                             '<div class="col-8"> <p id="prodNamePar" style="overflow: hidden; text-overflow: ellipsis;">' + value.name + '</p> </div>' +
@@ -368,7 +368,7 @@ $(function () {
         // var orderLineIdsM = orderLinesMap.values();
         var sumPricePageFieldP = $('#orderSumPrice');
         orderLinesMap.forEach(function (value, key, map) {
-            var orderLineSumPrice = value.orderLineProductItem.price * value.productAmount;
+            var orderLineSumPrice = value.orderLineProductDataItem.price * value.productAmount;
             sumPriceOrderLInes = sumPriceOrderLInes + orderLineSumPrice;
 
         });
@@ -386,12 +386,16 @@ $(function () {
         var productObj;
         var prodName = selectedItem.find('#prodNamePar').text();
         var productId = selectedItem.data('prodid');
+        var entryClass = searchInput.parents('.entry:first');
         var productOrderLineIdInput = selectedItem.closest("div.form-row").find("input[id='prodOrderLineIdInput']");
+        var previousObjectId = productOrderLineIdInput.val();
+        ///Deleting previous object from model
+        orderLinesMap.delete(Number(previousObjectId));
         var productOrderLineQua = selectedItem.closest("div.form-row").find("input[id='inputOrderLineProductQua']");
         $.getJSON(location.origin + "/editOrder/getProductById?search_Id=" + productId).done(function (data) {
-            validateProductForModel(data);
+            validateProductForView(data);
             if (!orderLinesMap.has(data.id)) {
-                addOrderLineInModel(data);
+                addOrderLineInModel(data , entryClass);
                 productOrderLineQua.val(1);
                 searchInput.attr('class', 'form-control is-valid');
                 productOrderLineIdInput.val(productId);
@@ -410,16 +414,17 @@ $(function () {
 
     }
 
-    function addOrderLineInModel(oLineProductData) {
+    function addOrderLineInModel(oLineProductData , domEntryClass) {
         var orderLineMapItem = {};
         orderLineMapItem.productAmount = 1;
-        orderLineMapItem.orderLineProductItem = oLineProductData;
+        orderLineMapItem.orderLineProductDOMItem = domEntryClass;
+        orderLineMapItem.orderLineProductDataItem = oLineProductData;
         orderLineMapItem.sumOrderLinePrice = oLineProductData.price;
         orderLinesMap.set(oLineProductData.id, orderLineMapItem);
     }
 
 
-    function validateProductForModel(productToValidation) {
+    function validateProductForView(productToValidation) {
         validateProductPricePermissions(productToValidation);
         validateProductPricesCurrency(productToValidation);
     }
