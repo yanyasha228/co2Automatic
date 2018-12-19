@@ -37,7 +37,9 @@ $(function () {
             newEntry = $(currentEntry.clone()).appendTo(controlForm);
 
         newEntry.find('input').val('');
+        newEntry.find("p[id='sumOrderLinePrice']").text("0.0");
         newEntry.find('input').attr("class", "form-control");
+
         controlForm.find('.entry:not(:last) .btn-add')
             .removeClass('btn-add').addClass('btn-remove')
             .removeClass('btn-success').addClass('btn-danger')
@@ -152,6 +154,12 @@ $(function () {
         });
     });
 
+    $(document).on('focusout' , '#orderDiscount' , function (e) {
+
+        discount = $(this).val();
+        syncModelAndViewOrderLinesPrices();
+    });
+
     $(document).on('focusout', '#inputOrderLineProductQua', function (eve) {
 
 
@@ -164,7 +172,7 @@ $(function () {
         if (orderLinesMap.has(Number(productOrderLineIdInputItemVal))) {
             var her = orderLinesMap.get(Number(productOrderLineIdInputItemVal));
             her.productAmount = inputQuaFieldValue;
-            validateSumPrice();
+            syncModelAndViewOrderLinesPrices();
         }
 
     });
@@ -248,10 +256,15 @@ $(function () {
                 }
             }
 
+            if (key == 40 || key == 38) {
+                arrowActiveItemHandling(e, $('#searchClientsResult'), $(this));
+            }
             // Allow numeric (and tab, backspace, delete) keys only
             return (key == 8 ||
                 key == 9 ||
                 key == 46 ||
+                key == 40 ||
+                key == 38 ||
                 (key >= 48 && key <= 57) ||
                 (key >= 96 && key <= 105) ||
                 (key == 67 && e.ctrlKey == true) ||
@@ -290,6 +303,7 @@ $(function () {
                 }
             }
         }).keyup(function (event) {
+
 
         $phone = $(this);
 
@@ -368,11 +382,10 @@ $(function () {
         // var orderLineIdsM = orderLinesMap.values();
         var sumPricePageFieldP = $('#orderSumPrice');
         orderLinesMap.forEach(function (value, key, map) {
-            var orderLineSumPrice = value.orderLineProductDataItem.price * value.productAmount;
+            var orderLineSumPrice = value.productValidPrice * value.productAmount;
             sumPriceOrderLInes = sumPriceOrderLInes + orderLineSumPrice;
 
         });
-
 
         sumPrice = sumPriceOrderLInes - discount;
 
@@ -394,13 +407,10 @@ $(function () {
         var productOrderLineQua = selectedItem.closest("div.form-row").find("input[id='inputOrderLineProductQua']");
         $.getJSON(location.origin + "/editOrder/getProductById?search_Id=" + productId).done(function (data) {
             validateProductForView(data);
-            if (!orderLinesMap.has(data.id)) {
-                addOrderLineInModel(data , entryClass);
-                productOrderLineQua.val(1);
+            if (addOrderLineInModel(data, entryClass)) {
+
                 searchInput.attr('class', 'form-control is-valid');
-                productOrderLineIdInput.val(productId);
-                searchInput.val(prodName);
-                validateSumPrice();
+                syncModelAndViewOrderLinesPrices();
             } else {
                 searchInput.attr('class', 'form-control is-invalid');
                 searchInput.val('');
@@ -414,13 +424,60 @@ $(function () {
 
     }
 
-    function addOrderLineInModel(oLineProductData , domEntryClass) {
-        var orderLineMapItem = {};
-        orderLineMapItem.productAmount = 1;
-        orderLineMapItem.orderLineProductDOMItem = domEntryClass;
-        orderLineMapItem.orderLineProductDataItem = oLineProductData;
-        orderLineMapItem.sumOrderLinePrice = oLineProductData.price;
-        orderLinesMap.set(oLineProductData.id, orderLineMapItem);
+    function addOrderLineInModel(oLineProductData, domEntryClass) {
+        if (!orderLinesMap.has(oLineProductData.id)) {
+            var orderLineMapItem = {};
+            orderLineMapItem.productAmount = 1;
+            orderLineMapItem.productValidPrice = 0;
+            orderLineMapItem.sumOrderLinePrice = 0;
+            orderLineMapItem.orderLineProductDOMItem = domEntryClass;
+            orderLineMapItem.orderLineProductDataItem = oLineProductData;
+            validateOrderLineMapItem(orderLineMapItem);
+            orderLinesMap.set(oLineProductData.id, orderLineMapItem);
+            return true;
+        } else return false;
+
+    }
+
+    function validateOrderLineMap() {
+
+        orderLinesMap.forEach(function (value, key, map) {
+            validateOrderLineMapItem(value);
+        });
+
+    }
+
+    function syncModelAndViewOrderLinesPrices() {
+
+        validateOrderLineMap();
+
+
+        orderLinesMap.forEach(function (val, k, m) {
+            val.orderLineProductDOMItem.find("p[id='sumOrderLinePrice']").text(val.sumOrderLinePrice);
+            val.orderLineProductDOMItem.find("input[id='inputOrderLineProductName']").val(encodeRequestReservedSymbols(val.orderLineProductDataItem.name));
+            val.orderLineProductDOMItem.find("input[id='inputOrderLineProductQua']").val(val.productAmount);
+            val.orderLineProductDOMItem.find("input[id='prodOrderLineIdInput']").val(k);
+        });
+
+        validateSumPrice();
+
+    }
+
+    function validateOrderLineMapItem(ordLineMItem) {
+        if (clientStatus == "WHOLESALER") {
+            ordLineMItem.productValidPrice = ordLineMItem.orderLineProductDataItem.wholeSalePrice;
+        } else {
+            ordLineMItem.productValidPrice = ordLineMItem.orderLineProductDataItem.price;
+        }
+
+        if (ordLineMItem.orderLineProductDataItem.currency == "USD") {
+            ordLineMItem.productValidPrice = ordLineMItem.productValidPrice * appSettings.usd_currency;
+        } else if (ordLineMItem.orderLineProductDataItem.currency == "EUR") {
+            ordLineMItem.productValidPrice = ordLineMItem.productValidPrice * appSettings.eur_currency;
+        }
+
+        ordLineMItem.sumOrderLinePrice = ordLineMItem.productValidPrice * ordLineMItem.productAmount;
+
     }
 
 
