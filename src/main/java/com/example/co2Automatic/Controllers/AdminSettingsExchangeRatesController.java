@@ -1,8 +1,6 @@
-package com.example.co2Automatic.controllers;
+package com.example.co2Automatic.Controllers;
 
 import com.example.co2Automatic.SystemComponents.ApplicationSettingsData;
-import com.example.co2Automatic.models.SessionModels.AdminSettingsModel;
-import com.example.co2Automatic.models.SessionModels.ApplicationSettingsDataModel;
 import com.example.co2Automatic.services.ApplicationSettingsDataModelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

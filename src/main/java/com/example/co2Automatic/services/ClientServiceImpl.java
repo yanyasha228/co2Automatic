@@ -1,6 +1,6 @@
 package com.example.co2Automatic.services;
 
-import com.example.co2Automatic.dao.ClientDao;
+import com.example.co2Automatic.Dao.ClientDao;
 import com.example.co2Automatic.models.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

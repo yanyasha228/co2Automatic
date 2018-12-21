@@ -1,8 +1,6 @@
-package com.example.co2Automatic.dao;
+package com.example.co2Automatic.Dao;
 
 import com.example.co2Automatic.models.Client;
-import com.example.co2Automatic.models.Product;
-import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

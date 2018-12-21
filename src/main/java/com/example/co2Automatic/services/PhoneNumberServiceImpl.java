@@ -1,6 +1,6 @@
 package com.example.co2Automatic.services;
 
-import com.example.co2Automatic.dao.PhoneNumberDao;
+import com.example.co2Automatic.Dao.PhoneNumberDao;
 import com.example.co2Automatic.models.PhoneNumber;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

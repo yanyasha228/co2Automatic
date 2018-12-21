@@ -1,14 +1,11 @@
-package com.example.co2Automatic.controllers;
+package com.example.co2Automatic.Controllers;
 
 import com.example.co2Automatic.ControllerHelpers.ProductListPageHelper;
-import com.example.co2Automatic.SystemComponents.AdminSettings;
 import com.example.co2Automatic.SystemComponents.ApplicationSettingsData;
-import com.example.co2Automatic.models.MoneyCurrency;
 import com.example.co2Automatic.models.Product;
 import com.example.co2Automatic.models.ProductStock;
 import com.example.co2Automatic.services.ProductCategoryService;
 import com.example.co2Automatic.services.ProductService;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,8 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.jws.WebParam;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 
@@ -90,12 +85,5 @@ public class AdminProductsController {
         return "redirect:../products";
     }
 
-    @RequestMapping(value ="/getProductsByNonFullName" , method = RequestMethod.GET)
-    @ResponseBody
-    public List<Product> getProductsByNonFullName(@RequestParam(value = "search_S") String nonFullNameString)
-    {
-        return productService.findProductByNonFullProductNameRegardlessOfTheWordsOrder(nonFullNameString);
-
-    }
 
 }

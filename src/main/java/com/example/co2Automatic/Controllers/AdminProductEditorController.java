@@ -1,4 +1,4 @@
-package com.example.co2Automatic.controllers;
+package com.example.co2Automatic.Controllers;
 
 import com.example.co2Automatic.models.MoneyCurrency;
 import com.example.co2Automatic.models.Product;

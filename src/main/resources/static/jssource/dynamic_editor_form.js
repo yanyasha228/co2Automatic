@@ -7,16 +7,23 @@ $(function () {
 
     var appSettings;
 
-    var clientStatus = "USUAL";
+    var client = {
+        clientStatus : "USUAL"
+    };
 
 
     var discount = 0;
     var sumPrice = 0;
 
     $(document).ready(function () {
-        $.getJSON(location.origin + "/AppSettings/getAppSettings", function (settingsData) {
+        var clientDomId = $('#clientId').val();
+        $.getJSON(location.origin + "/restApi/AppSettings/getAppSettings", function (settingsData) {
             appSettings = settingsData;
-        })
+        });
+
+        $.getJSON(location.origin + "/restApi/clients/getClientById?search_Id=" + clientDomId).done( function (clientData) {
+            client = clientData;
+        });
 
     });
 
@@ -34,7 +41,7 @@ $(function () {
 
         var controlForm = $('.controls-1:first'),
             currentEntry = $(this).parents('.entry:first'),
-            newEntry = $(currentEntry.clone()).appendTo(controlForm);
+            newEntry = $(currentEntry.clone()).prependTo(controlForm);
 
         newEntry.find('input').val('');
         newEntry.find("p[id='sumOrderLinePrice']").text("0.0");
@@ -120,7 +127,7 @@ $(function () {
             searchList.html('');
 //////Validirovat searchSend !!!!!!!!!!!!!!!!
             if (searchField.length > 1) {
-                $.getJSON(location.origin + "/editOrder/getProductsByNonFullName?search_S=" + searchField, function (data) {
+                $.getJSON(location.origin + "/restApi/products/getProductsByNonFullName?search_S=" + searchField, function (data) {
                     $.each(data, function (key, value) {
                         validateProductForView(value);
                         searchList.append('<li class="list-group-item product-search-editor-res-item" tabindex ="' + key + '" id="orderLineItem" data-prodid = "' + value.id + '"><div class="row"' +
@@ -145,7 +152,7 @@ $(function () {
 
         searchField = encodeRequestReservedSymbols(searchField);
 
-        $.getJSON(location.origin + "/editOrder/getProductByName?search_S=" + searchField, function (d) {
+        $.getJSON(location.origin + "/restApi/products/getProductByName?search_S=" + searchField, function (d) {
         }).done(function () {
             inputField.attr('class', 'form-control is-valid');
         }).fail(function () {
@@ -188,26 +195,13 @@ $(function () {
     });
 
     $(document).on('click', '#clientItem', function (e) {
-        var searchInput = $('#inputPhoneNumber');
-        var clientNameField = $('#inputName');
-        var clientSurnameField = $('#inputSurname');
 
-        var searchList = $('#searchClientsResult');
-        var clientId = $(this).data('clientid');
+        var searchClientsList = $('#searchClientsResult');
 
+        var activeItem = searchClientsList.children('.active:first');
 
-        $.getJSON(location.origin + "/editOrder/getClientById?search_Id=" + clientId, function (d) {
-        }).done(function (clientData) {
-            searchInput.val(clientData.phoneNumber);
-            clientNameField.val(clientData.name);
-            clientSurnameField.val(clientData.surname);
-            searchInput.attr('class', 'form-control is-valid');
-        }).fail(function () {
-            searchInput.attr('class', 'form-control is-invalid');
-        });
+        validateAndCloseClientList(searchClientsList, $(this), activeItem)
 
-        // searchInput.val(prodName);
-        searchList.empty();
 
 
     });
@@ -224,6 +218,8 @@ $(function () {
         .keydown(function (e) {
             var key = e.which || e.charCode || e.keyCode || 0;
             $phone = $(this);
+
+            var searchClientsList = $('#searchClientsResult');
 
             var tI = "+" + $(this).intlTelInput("getSelectedCountryData").dialCode;
 
@@ -257,10 +253,21 @@ $(function () {
             }
 
             if (key == 40 || key == 38) {
-                arrowActiveItemHandling(e, $('#searchClientsResult'), $(this));
+                arrowActiveItemHandling(e, searchClientsList, $(this));
+            }
+
+            if (key == 13) {
+                e.preventDefault();
+                var activeItem = searchClientsList.children('.active:first');
+                validateAndCloseClientList(searchClientsList, $(this), activeItem);
+                $(this).blur();
+                return;
+
             }
             // Allow numeric (and tab, backspace, delete) keys only
-            return (key == 8 ||
+            if(!(key == 8 ||
+                key == 40 || key == 38 ||
+                key == 13||
                 key == 9 ||
                 key == 46 ||
                 key == 40 ||
@@ -268,7 +275,10 @@ $(function () {
                 (key >= 48 && key <= 57) ||
                 (key >= 96 && key <= 105) ||
                 (key == 67 && e.ctrlKey == true) ||
-                (key == 86 && e.ctrlKey == true));
+                (key == 86 && e.ctrlKey == true))){
+
+                return false;
+            }
         })
 
         .bind('focus click', function () {
@@ -304,41 +314,42 @@ $(function () {
             }
         }).keyup(function (event) {
 
+        if (!(event.keyCode == 40 || event.keyCode == 38)) {
 
-        $phone = $(this);
+            $phone = $(this);
 
-        var DCode = "+" + $phone.intlTelInput("getSelectedCountryData").dialCode;
+            var DCode = "+" + $phone.intlTelInput("getSelectedCountryData").dialCode;
 
-        var searchList = $('#searchClientsResult');
+            var searchList = $('#searchClientsResult');
 
-        searchList.html('');
+            searchList.html('');
 
-        var dataForSending;
+            var dataForSending;
 
-        if ($phone.val().replace(DCode, '').length !== 0) {
+            if ($phone.val().replace(DCode, '').length !== 0) {
 
-            dataForSending = $phone.val().replace(DCode, '').replace(/\s/g, '');
+                dataForSending = $phone.val().replace(DCode, '').replace(/\s/g, '');
 
-            $.getJSON(location.origin + "/editOrder/getClientsByNoNFullPhoneNumber?search_S=" + dataForSending, function (data) {
-                $.each(data, function (key, value) {
-                    searchList.append('<li class="list-group-item clients-search-editor-res-item" id="clientItem" data-clientid = "' + value.id + '">' +
-                        '<div class="form-row">' +
-                        '<div class="form-group col-md-8">' +
-                        '<div class="form-row">' + value.phoneNumber +
-                        '</div>' +
-                        '<div class="form-row">' + '<p id="prodNamePar" style="overflow: hidden; text-overflow: ellipsis;">' + value.name + ' ' + value.surname + '</p> ' +
-                        '</div>' +
-                        '</div>' +
-                        '<div class="form-group col-md-4">' +
-                        '<div class="form-row"> ' + '<p id="prodNamePar" style="overflow: hidden; text-overflow: ellipsis;">' + value.clientStatus + '</p> </div>' +
-                        '</div></div></li>');
+                $.getJSON(location.origin + "/restApi/clients/getClientsByNoNFullPhoneNumber?search_S=" + dataForSending, function (data) {
+                    $.each(data, function (key, value) {
+                        searchList.append('<li class="list-group-item clients-search-editor-res-item" tabindex ="' + key + '" id="clientItem" data-clientid = "' + value.id + '">' +
+                            '<div class="form-row">' +
+                            '<div class="form-group col-md-8">' +
+                            '<div class="form-row">' + value.phoneNumber +
+                            '</div>' +
+                            '<div class="form-row">' + '<p id="prodNamePar" style="overflow: hidden; text-overflow: ellipsis;">' + value.name + ' ' + value.lastName + '</p> ' +
+                            '</div>' +
+                            '</div>' +
+                            '<div class="form-group col-md-4">' +
+                            '<div class="form-row"> ' + '<p id="prodNamePar" style="overflow: hidden; text-overflow: ellipsis;">' + value.clientStatus + '</p> </div>' +
+                            '</div></div></li>');
+
+                    });
 
                 });
+            }
 
-            });
         }
-
-
     });
 
 // function sumDouble(input) {
@@ -393,10 +404,33 @@ $(function () {
 
     };
 
+    function validateAndCloseClientList(searchList, searchInput, selectedItem) {
+        var clientItemId = selectedItem.data('clientid');
+
+        $.getJSON(location.origin + "/restApi/clients/getClientById?search_Id=" + clientItemId).done( function (clientData) {
+            client = clientData;
+            syncModelClientWithView();
+            syncModelAndViewOrderLinesPrices();
+            searchInput.attr('class', 'form-control is-valid');
+        }).fail(function () {
+            searchInput.attr('class', 'form-control is-invalid');
+        });
+
+        searchList.empty();
+    }
+
+    function syncModelClientWithView() {
+        $('#inputPhoneNumber').val(client.phoneNumber);
+        $('#inputEmail').val(client.email);
+        $('#inputName').val(client.name);
+        $('#inputLastName').val(client.lastName);
+        $('#inputMiddleName').val(client.middleName);
+        $('#inputCity').val(client.usualDeliveryPlace);
+        $('#inputWarehouseNumber').val(client.usualWarehouseNumber);
+    }
 
     function validateAndCloseOrderLineList(searchList, searchInput, selectedItem) {
-        var existsInOrderLineList = false;
-        var productObj;
+
         var prodName = selectedItem.find('#prodNamePar').text();
         var productId = selectedItem.data('prodid');
         var entryClass = searchInput.parents('.entry:first');
@@ -405,7 +439,7 @@ $(function () {
         ///Deleting previous object from model
         orderLinesMap.delete(Number(previousObjectId));
         var productOrderLineQua = selectedItem.closest("div.form-row").find("input[id='inputOrderLineProductQua']");
-        $.getJSON(location.origin + "/editOrder/getProductById?search_Id=" + productId).done(function (data) {
+        $.getJSON(location.origin + "/restApi/products/getProductById?search_Id=" + productId).done(function (data) {
             validateProductForView(data);
             if (addOrderLineInModel(data, entryClass)) {
 
@@ -464,7 +498,7 @@ $(function () {
     }
 
     function validateOrderLineMapItem(ordLineMItem) {
-        if (clientStatus == "WHOLESALER") {
+        if (client.clientStatus == "WHOLESALER") {
             ordLineMItem.productValidPrice = ordLineMItem.orderLineProductDataItem.wholeSalePrice;
         } else {
             ordLineMItem.productValidPrice = ordLineMItem.orderLineProductDataItem.price;
@@ -487,7 +521,7 @@ $(function () {
     }
 
     function validateProductPricePermissions(prodToVal) {
-        if (clientStatus == "WHOLESALER") {
+        if (client.clientStatus == "WHOLESALER") {
             prodToVal.price = prodToVal.wholeSalePrice;
         }
     }

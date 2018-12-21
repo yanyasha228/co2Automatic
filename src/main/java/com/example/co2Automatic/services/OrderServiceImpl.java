@@ -1,20 +1,14 @@
 package com.example.co2Automatic.services;
 
-import com.example.co2Automatic.dao.OrderDao;
-import com.example.co2Automatic.dao.PhoneNumberDao;
+import com.example.co2Automatic.Dao.OrderDao;
 import com.example.co2Automatic.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -38,8 +32,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /*
-    * MiddleName ist involved!!!!
-    * */
+     * MiddleName ist involved!!!!
+     * */
 
     @Override
     public void updateOrder(Long id,
@@ -71,7 +65,7 @@ public class OrderServiceImpl implements OrderService {
             newClient = new Client();
             newClient.setPhoneNumber(inputPhoneNumber);
             newClient.setName(inputName);
-            newClient.setSurname(inputSurname);
+            newClient.setLastName(inputSurname);
         } else {
             newClient = clientFromDb.get();
             if (!newClient.getUsualDeliveryPlace().equalsIgnoreCase(inputCity))

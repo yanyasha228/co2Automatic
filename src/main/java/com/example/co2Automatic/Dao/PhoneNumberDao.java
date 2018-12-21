@@ -1,9 +1,7 @@
-package com.example.co2Automatic.dao;
+package com.example.co2Automatic.Dao;
 
 import com.example.co2Automatic.models.PhoneNumber;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;

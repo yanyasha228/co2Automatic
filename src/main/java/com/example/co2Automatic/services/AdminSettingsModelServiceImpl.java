@@ -1,6 +1,6 @@
 package com.example.co2Automatic.services;
 
-import com.example.co2Automatic.dao.AdminModelSettingsDao;
+import com.example.co2Automatic.Dao.AdminModelSettingsDao;
 import com.example.co2Automatic.models.SessionModels.AdminSettingsModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

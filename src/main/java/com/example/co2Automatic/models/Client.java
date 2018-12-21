@@ -21,14 +21,11 @@ public class Client {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "surname")
-    private String surname;
+    @Column(name = "lastName")
+    private String lastName;
 
     @Column(name = "middleName")
     private String middleName;
-
-    @Column(name = "patronymic")
-    private String patronymic;
 
     @Column(name = "phone_number")
     private String phoneNumber;

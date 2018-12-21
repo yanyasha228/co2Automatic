@@ -1,7 +1,6 @@
-package com.example.co2Automatic.controllers;
+package com.example.co2Automatic.Controllers;
 
 import com.example.co2Automatic.models.Client;
-import com.example.co2Automatic.models.Product;
 import com.example.co2Automatic.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

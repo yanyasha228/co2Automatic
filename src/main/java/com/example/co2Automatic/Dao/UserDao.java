@@ -1,4 +1,4 @@
-package com.example.co2Automatic.dao;
+package com.example.co2Automatic.Dao;
 
 
 import com.example.co2Automatic.models.User;

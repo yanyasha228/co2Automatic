@@ -1,7 +1,6 @@
-package com.example.co2Automatic.controllers;
+package com.example.co2Automatic.Controllers;
 
 import com.example.co2Automatic.DataManipulationHelpers.ProductsTableValidator;
-import com.example.co2Automatic.SystemComponents.AdminSettings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;

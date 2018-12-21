@@ -1,15 +1,11 @@
 package com.example.co2Automatic.services;
 
-import com.example.co2Automatic.ControllerHelpers.ProductListPageHelper;
-import com.example.co2Automatic.dao.ProductDao;
+import com.example.co2Automatic.Dao.ProductDao;
 import com.example.co2Automatic.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
