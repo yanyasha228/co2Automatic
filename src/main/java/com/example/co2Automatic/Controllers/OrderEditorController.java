@@ -2,6 +2,7 @@ package com.example.co2Automatic.Controllers;
 
 import com.example.co2Automatic.models.Client;
 import com.example.co2Automatic.models.Order;
+import com.example.co2Automatic.models.PaymentMethod;
 import com.example.co2Automatic.models.Product;
 import com.example.co2Automatic.services.ClientService;
 import com.example.co2Automatic.services.OrderService;
@@ -49,7 +50,7 @@ public class OrderEditorController {
                               @RequestParam(required = false) String inputEmail,
                               @RequestParam(required = false) String inputPhoneNumber,
                               @RequestParam(required = false) String inputDeliveryDate,
-                              @RequestParam(required = false) String inputPaymentMethod,
+                              @RequestParam(required = false) PaymentMethod inputPaymentMethod,
                               @RequestParam(required = false) String inputName,
                               @RequestParam(required = false) String inputLastName,
                               @RequestParam(required = false) String inputMiddleName,
@@ -62,6 +63,8 @@ public class OrderEditorController {
                               @RequestParam(required = false) Double inputVolume) {
 
         orderService.updateOrder(orderId,
+                clientId,
+                inputEmail,
                 inputPhoneNumber,
                 inputDeliveryDate,
                 inputPaymentMethod,
@@ -72,9 +75,7 @@ public class OrderEditorController {
                 inputWarehouseNumber,
                 inputOrderComment,
                 prodOrderLineIdInput,
-                inputOrderLineProductQua,
-                inputWeight,
-                inputVolume);
+                inputOrderLineProductQua);
 
         return "redirect:../";
     }

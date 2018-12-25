@@ -8,7 +8,7 @@ $(function () {
     var appSettings;
 
     var client = {
-        clientStatus : "USUAL"
+        clientStatus: "USUAL"
     };
 
 
@@ -21,7 +21,7 @@ $(function () {
             appSettings = settingsData;
         });
 
-        $.getJSON(location.origin + "/restApi/clients/getClientById?search_Id=" + clientDomId).done( function (clientData) {
+        $.getJSON(location.origin + "/restApi/clients/getClientById?search_Id=" + clientDomId).done(function (clientData) {
             client = clientData;
         });
 
@@ -149,19 +149,32 @@ $(function () {
 
         var searchField = $(this).val();
         var inputField = $(this);
+        var previousItemDomId = inputField.closest("div.form-row").find("input[id='prodOrderLineIdInput']");
 
         searchField = encodeRequestReservedSymbols(searchField);
 
-        $.getJSON(location.origin + "/restApi/products/getProductByName?search_S=" + searchField, function (d) {
-        }).done(function () {
-            inputField.attr('class', 'form-control is-valid');
+        $.getJSON(location.origin + "/restApi/products/getProductByName?search_S=" + searchField).done(function (d) {
+            var inputEntryDom = inputField.parents('.entry:first');
+            if (addOrderLineInModel(d, inputEntryDom)) {
+
+                inputField.attr('class', 'form-control is-valid');
+                syncModelAndViewOrderLinesPrices();
+            } else if (previousItemDomId.val() == d.id) {
+                inputField.attr('class', 'form-control is-valid');
+
+            } else {
+                inputField.attr('class', 'form-control is-invalid');
+                inputField.val('');
+            }
+
         }).fail(function () {
             inputField.attr('class', 'form-control is-invalid');
-
+            deleteOrderLineFromModelAndEmptyViewByProductId(Number(previousItemDomId.val()));
+            syncModelAndViewOrderLinesPrices();
         });
     });
 
-    $(document).on('focusout' , '#orderDiscount' , function (e) {
+    $(document).on('focusout', '#orderDiscount', function (e) {
 
         discount = $(this).val();
         syncModelAndViewOrderLinesPrices();
@@ -201,7 +214,6 @@ $(function () {
         var activeItem = searchClientsList.children('.active:first');
 
         validateAndCloseClientList(searchClientsList, $(this), activeItem)
-
 
 
     });
@@ -265,9 +277,9 @@ $(function () {
 
             }
             // Allow numeric (and tab, backspace, delete) keys only
-            if(!(key == 8 ||
+            if (!(key == 8 ||
                 key == 40 || key == 38 ||
-                key == 13||
+                key == 13 ||
                 key == 9 ||
                 key == 46 ||
                 key == 40 ||
@@ -275,7 +287,7 @@ $(function () {
                 (key >= 48 && key <= 57) ||
                 (key >= 96 && key <= 105) ||
                 (key == 67 && e.ctrlKey == true) ||
-                (key == 86 && e.ctrlKey == true))){
+                (key == 86 && e.ctrlKey == true))) {
 
                 return false;
             }
@@ -407,7 +419,7 @@ $(function () {
     function validateAndCloseClientList(searchList, searchInput, selectedItem) {
         var clientItemId = selectedItem.data('clientid');
 
-        $.getJSON(location.origin + "/restApi/clients/getClientById?search_Id=" + clientItemId).done( function (clientData) {
+        $.getJSON(location.origin + "/restApi/clients/getClientById?search_Id=" + clientItemId).done(function (clientData) {
             client = clientData;
             syncModelClientWithView();
             syncModelAndViewOrderLinesPrices();
@@ -420,6 +432,7 @@ $(function () {
     }
 
     function syncModelClientWithView() {
+        $('#clientId').val(client.id);
         $('#inputPhoneNumber').val(client.phoneNumber);
         $('#inputEmail').val(client.email);
         $('#inputName').val(client.name);
@@ -440,7 +453,6 @@ $(function () {
         orderLinesMap.delete(Number(previousObjectId));
         var productOrderLineQua = selectedItem.closest("div.form-row").find("input[id='inputOrderLineProductQua']");
         $.getJSON(location.origin + "/restApi/products/getProductById?search_Id=" + productId).done(function (data) {
-            validateProductForView(data);
             if (addOrderLineInModel(data, entryClass)) {
 
                 searchInput.attr('class', 'form-control is-valid');
@@ -488,12 +500,24 @@ $(function () {
 
         orderLinesMap.forEach(function (val, k, m) {
             val.orderLineProductDOMItem.find("p[id='sumOrderLinePrice']").text(val.sumOrderLinePrice);
-            val.orderLineProductDOMItem.find("input[id='inputOrderLineProductName']").val(encodeRequestReservedSymbols(val.orderLineProductDataItem.name));
+            val.orderLineProductDOMItem.find("input[id='inputOrderLineProductName']").val(val.orderLineProductDataItem.name);
             val.orderLineProductDOMItem.find("input[id='inputOrderLineProductQua']").val(val.productAmount);
             val.orderLineProductDOMItem.find("input[id='prodOrderLineIdInput']").val(k);
         });
 
         validateSumPrice();
+
+    }
+
+    function deleteOrderLineFromModelAndEmptyViewByProductId(ordLineId) {
+        var itemToRemove = orderLinesMap.get(ordLineId);
+
+        if (itemToRemove !== undefined) {
+            itemToRemove.orderLineProductDOMItem.find("p[id='sumOrderLinePrice']").text(0.00);
+            itemToRemove.orderLineProductDOMItem.find("input[id='inputOrderLineProductQua']").val(0);
+            itemToRemove.orderLineProductDOMItem.find("input[id='prodOrderLineIdInput']").val(0);
+            orderLinesMap.delete(ordLineId);
+        }
 
     }
 
@@ -505,12 +529,12 @@ $(function () {
         }
 
         if (ordLineMItem.orderLineProductDataItem.currency == "USD") {
-            ordLineMItem.productValidPrice = ordLineMItem.productValidPrice * appSettings.usd_currency;
+            ordLineMItem.productValidPrice = (ordLineMItem.productValidPrice * appSettings.usd_currency).toFixed(2);
         } else if (ordLineMItem.orderLineProductDataItem.currency == "EUR") {
-            ordLineMItem.productValidPrice = ordLineMItem.productValidPrice * appSettings.eur_currency;
+            ordLineMItem.productValidPrice = (ordLineMItem.productValidPrice * appSettings.eur_currency).toFixed(2);
         }
 
-        ordLineMItem.sumOrderLinePrice = ordLineMItem.productValidPrice * ordLineMItem.productAmount;
+        ordLineMItem.sumOrderLinePrice = (ordLineMItem.productValidPrice * ordLineMItem.productAmount).toFixed(2);
 
     }
 
@@ -528,9 +552,9 @@ $(function () {
 
     function validateProductPricesCurrency(prod) {
         if (prod.currency == "USD") {
-            prod.price = prod.price * appSettings.usd_currency;
+            prod.price = (prod.price * appSettings.usd_currency).toFixed(2);
         } else if (prod.currency == "EUR") {
-            prod.price = prod.price * appSettings.eur_currency;
+            prod.price = (prod.price * appSettings.eur_currency).toFixed(2);
         }
 
     }

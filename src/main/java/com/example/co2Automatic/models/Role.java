@@ -3,10 +3,13 @@ package com.example.co2Automatic.models;
 import org.springframework.security.core.GrantedAuthority;
 
 public enum Role implements GrantedAuthority {
-    USER, ADMIN;
+
+    SALES_MANAGER, GUNSMITH, ADMIN , SUPER_ADMIN;
 
     @Override
     public String getAuthority() {
         return name();
     }
+
+
 }

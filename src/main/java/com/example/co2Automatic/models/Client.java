@@ -11,7 +11,7 @@ import java.util.*;
 @Data
 @Entity
 @Table(name = "clients")
-@JsonIgnoreProperties(value = { "clientsOrders"})
+@JsonIgnoreProperties(value = {"clientsOrders"})
 public class Client {
 
     @Id
@@ -50,8 +50,14 @@ public class Client {
 //    private boolean wholesaler;
 
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "client")
     private List<Order> clientsOrders = new ArrayList<Order>();
+
+    @PrePersist
+    protected void onCreate() {
+        creationDate = new Date();
+    }
+
 
 //    public void setPhoneNumber(PhoneNumber newPhoneNumber) {
 //        //prevent endless loop

@@ -95,7 +95,7 @@ public class Product {
     @Column(name = "vendor")
     private String vendor;
 
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<OrderLine> orderLines = new ArrayList<OrderLine>();
 
     @Column(name = "available")

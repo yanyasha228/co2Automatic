@@ -7,11 +7,12 @@
     <link rel="stylesheet" th:href="@{/htmlhelpers/intl-tel-input/build/css/intlTelInput.css}">
     <script type="text/javascript" th:src="@{/htmlhelpers/intl-tel-input/build/js/intlTelInput-jquery.js}"></script>
     <script type="text/javascript" th:src="@{/jssource/dynamic_editor_form.js}"></script>
-
+    <link rel="stylesheet" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css"></link>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/locales/bootstrap-datepicker.ru.min.js"></script>
     <script type="text/javascript">
-        $(function () {
+        $(document).ready( function ()
+        {
             $('#inputDeliveryDate').datetimepicker({
-                locale: 'ru'
             });
         });
     </script>
@@ -70,7 +71,7 @@
                                 <div class="form-group col-md-6"><label for="inputDeliveryDate">Дата отправки</label>
                                     <input
                                             th:value="${order.getDeliveryDate()!=null} ? ${#dates.format(order.getDeliveryDate() , 'yyyy-MM-dd')} : ''"
-                                            type="text"
+                                            type="date"
                                             class="form-control"
                                             id="inputDeliveryDate"
                                             name="inputDeliveryDate">
@@ -81,9 +82,9 @@
                                             name="inputPaymentMethod"
                                             class="form-control">
 
-                                        <option selected>Наложка</option>
-                                        <option>Оценка</option>
-                                        <option>Самовывоз</option>
+                                        <option selected value="COD">Наложка</option>
+                                        <option value="BANK_TRANSFER" >Оценка</option>
+                                        <option value="PICKUP">Самовывоз</option>
 
                                     </select></div>
                             </div>

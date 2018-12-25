@@ -17,5 +17,7 @@ public interface ClientService {
 
     Optional<Client> findById(long l);
 
+    Client saveAndReturnEntity(Client client);
+
     List<Client> findAll();
 }

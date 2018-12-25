@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+
 @Data
 @Entity
 @Table(name = "orders")
@@ -15,7 +16,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "client_id", referencedColumnName = "id")
     private Client client;
 
@@ -32,7 +33,7 @@ public class Order {
     @Temporal(TemporalType.TIMESTAMP)
     private Date deliveryDate;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER , cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "manager", referencedColumnName = "id")
     private User manager;
 
@@ -42,6 +43,9 @@ public class Order {
 
     @Column(name = "order_volume_general")
     private double OrderVolumeGeneral;
+
+    @Column(name = "order_summary_price")
+    private double orderSummaryPrice;
 
     @Column(name = "order_weight")
     private double OrderWeight;
@@ -58,15 +62,26 @@ public class Order {
 //    )
 //    private List<Product> products;
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.ALL , orphanRemoval = true)
     private List<OrderLine> orderLines = new ArrayList<OrderLine>();
 
-    @Column(name = "order_creation_ate")
+    public void addOrderLine(OrderLine orderLine){
+        orderLines.add(orderLine);
+        orderLine.setOrder(this);
+    }
+
+    public void deleteOrderLine(OrderLine orderLine){
+        orderLines.remove(orderLine);
+        orderLine.setOrder(null);
+    }
+
+    @Column(name = "order_creation_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date orderCreationDate;
 
     @PrePersist
-    protected void onCreate(){
+    protected void onCreate() {
         orderCreationDate = new Date();
     }
+
 }

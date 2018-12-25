@@ -42,6 +42,11 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    public Client saveAndReturnEntity(Client client) {
+        return clientDao.save(client);
+    }
+
+    @Override
     public List<Client> findAll() {
         return clientDao.findAll();
     }
