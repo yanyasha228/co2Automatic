@@ -3,6 +3,16 @@ $(function () {
         return this.split(search).join(replace);
     };
 
+    var inputPaymentMethodDom;
+    var inputNameDom;
+    var inputLastNameDom;
+    var inputMiddleNameDom;
+    var inputCityDom;
+    var inputWarehouseNumberDom;
+    var inputOrderCommentDom;
+
+    var inputArrayForValidation = [];
+
     var orderLinesMap = new Map();
 
     var appSettings;
@@ -16,6 +26,7 @@ $(function () {
     var sumPrice = 0;
 
     $(document).ready(function () {
+
         var clientDomId = $('#clientId').val();
         $.getJSON(location.origin + "/restApi/AppSettings/getAppSettings", function (settingsData) {
             appSettings = settingsData;
@@ -24,6 +35,22 @@ $(function () {
         $.getJSON(location.origin + "/restApi/clients/getClientById?search_Id=" + clientDomId).done(function (clientData) {
             client = clientData;
         });
+
+        inputPaymentMethodDom = $('#inputPaymentMethod');
+        inputNameDom = $('#inputName');
+        inputLastNameDom = $('#inputLastName');
+        inputMiddleNameDom = $('#inputMiddleName');
+        inputCityDom = $('#inputCity');
+        inputWarehouseNumberDom = $('#inputWarehouseNumber');
+        inputOrderCommentDom = $('#inputOrderComment');
+
+
+        inputArrayForValidation.push(inputNameDom);
+        inputArrayForValidation.push(inputLastNameDom);
+        inputArrayForValidation.push(inputMiddleNameDom);
+        inputArrayForValidation.push(inputCityDom);
+        inputArrayForValidation.push(inputWarehouseNumberDom);
+
 
     });
 
@@ -83,6 +110,14 @@ $(function () {
     //         return false;
     //     }
     // });
+
+    $('#orderForm').submit(function (e) {
+        e.preventDefault();
+        if(validateSubmit()){
+            this.submit();
+        }
+
+    });
 
 
     $(document).on('click', '#orderLineItem', function (e) {
@@ -615,24 +650,34 @@ $(function () {
 
     }
 
+
     function validateSubmit() {
 
+        var formIsValid = true;
 
-        var inputPaymentMethod = $('#inputPaymentMethod');
-        var inputName = $('#inputName');
-        var inputLastName = $('#inputLastName');
-        var inputMiddleName = $('#inputMiddleName');
-        var inputCity = $('#inputCity');
-        var inputWarehouseNumber = $('#inputWarehouseNumber');
-        var inputOrderComment = $('#inputOrderComment');
+        var entryDomItems = $('#orderLines').find('.entry');
 
-        if (inputPaymentMethod.val() == "PICKUP"){
+        entryDomItems.each(function (i , item) {
+            if ($(item).find('#inputOrderLineProductName:first').hasClass("is-invalid") ||
+                $(item).find('#inputOrderLineProductQua:first').hasClass("is-invalid")) {
 
-        }else {
-
-        }
+                formIsValid = false;
 
             }
+
+        });
+
+        if (!($(inputPaymentMethod).val() === "PICKUP")) {
+            $(inputArrayForValidation).each(function (iK , itemV) {
+                if ($(itemV).hasClass("is-invalid")) formIsValid = false;
+
+            });
+        }
+
+        return formIsValid;
+
+    }
+
 
     function numValid(input) {
         $(input).keydown(function (event) {
