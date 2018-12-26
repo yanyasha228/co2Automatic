@@ -116,7 +116,7 @@ public class OrderServiceImpl implements OrderService {
 
         List<OrderLine> orderLines = new ArrayList<>();
 
-        order.deleteOrderLines();
+
 
         for (int i = 0; i < prodOrderLineIdInput.length; i++) {
             OrderLine newOrderLine = new OrderLine();

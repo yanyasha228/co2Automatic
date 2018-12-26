@@ -45,7 +45,7 @@ $(function () {
 
         newEntry.find('input').val('');
         newEntry.find("p[id='sumOrderLinePrice']").text("0.0");
-        newEntry.find('input').attr("class", "form-control");
+        newEntry.find('input').attr("class", "form-control is-invalid");
 
         controlForm.find('.entry:not(:last) .btn-add')
             .removeClass('btn-add').addClass('btn-remove')
@@ -485,6 +485,7 @@ $(function () {
 
     }
 
+
     function validateOrderLineMap() {
 
         orderLinesMap.forEach(function (value, key, map) {
@@ -613,6 +614,25 @@ $(function () {
         }
 
     }
+
+    function validateSubmit() {
+
+
+        var inputPaymentMethod = $('#inputPaymentMethod');
+        var inputName = $('#inputName');
+        var inputLastName = $('#inputLastName');
+        var inputMiddleName = $('#inputMiddleName');
+        var inputCity = $('#inputCity');
+        var inputWarehouseNumber = $('#inputWarehouseNumber');
+        var inputOrderComment = $('#inputOrderComment');
+
+        if (inputPaymentMethod.val() == "PICKUP"){
+
+        }else {
+
+        }
+
+            }
 
     function numValid(input) {
         $(input).keydown(function (event) {
