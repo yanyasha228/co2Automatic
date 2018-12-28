@@ -65,22 +65,28 @@ public class Order {
     @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.ALL , orphanRemoval = true)
     private List<OrderLine> orderLines = new ArrayList<OrderLine>();
 
-    public void addOrderLine(OrderLine orderLine){
-        orderLines.add(orderLine);
-        orderLine.setOrder(this);
-    }
-
-    public void deleteOrderLine(OrderLine orderLine){
-        orderLines.remove(orderLine);
-        orderLine.setOrder(null);
-    }
+//    public void addOrderLine(OrderLine orderLine){
+//        orderLines.add(orderLine);
+//        orderLine.setOrder(this);
+//    }
+//
+//    public void deleteOrderLine(OrderLine orderLine){
+//        orderLines.remove(orderLine);
+//        orderLine.setOrder(null);
+//    }
+//
+//    public void deleteAllOrderLines(){
+//        for(OrderLine tOrdLine : orderLines){
+//            deleteOrderLine(tOrdLine);
+//        }
+//    }
 
     @Column(name = "order_creation_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date orderCreationDate;
 
     @PrePersist
-    protected void onCreate() {
+    protected void onPersist() {
         orderCreationDate = new Date();
     }
 

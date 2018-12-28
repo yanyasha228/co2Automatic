@@ -101,6 +101,14 @@ public class Product {
     @Column(name = "available")
     private boolean available;
 
+    public void increaseAmount(int quantity){
+        this.quantity += quantity;
+    }
+
+    public void decreaseAmount(int quantity){
+        this.quantity -= quantity;
+    }
+
     //    @ManyToMany(mappedBy = "products")
 //    private List<Order> ordersList;
     @PreUpdate
@@ -112,4 +120,25 @@ public class Product {
         lastUpdatingDate = new Date();
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return id == product.id &&
+                Objects.equals(name, product.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
+    }
+
+    public void deleteOrderLine(OrderLine orderLine) {
+        orderLines.remove(orderLine);
+    }
+    public void addOrderLine(OrderLine orderLine){
+        orderLines.add(orderLine);
+    }
 }
