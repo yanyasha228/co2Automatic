@@ -10,6 +10,7 @@ import java.util.Optional;
 
 @Service
 public class PhoneNumberServiceImpl implements PhoneNumberService {
+
     @Autowired
     PhoneNumberDao phoneNumberDao;
 
@@ -27,4 +28,5 @@ public class PhoneNumberServiceImpl implements PhoneNumberService {
     public List<PhoneNumber> getPhoneNumbersByNoNFullPhoneNumber(String nonFullPhoneNumber) {
         return phoneNumberDao.findPhoneNumbersByPhoneNumber(nonFullPhoneNumber);
     }
+
 }

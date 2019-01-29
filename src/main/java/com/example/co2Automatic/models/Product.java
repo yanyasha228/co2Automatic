@@ -1,9 +1,14 @@
 package com.example.co2Automatic.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import java.io.Serializable;
 import java.util.*;
 
 @Data
@@ -19,7 +24,7 @@ import java.util.*;
         "vendor",
         "orderLines"
 })
-public class Product {
+public class Product implements Serializable {
 
     public Product() {
         creationDate = new Date();
@@ -34,10 +39,14 @@ public class Product {
     private String name;
 
 
+    @OneToMany(mappedBy = "parent" , cascade = {CascadeType.REFRESH , CascadeType.REFRESH})
+    private Set<Product> subProducts;
+
     @Column(name = "product_url_from_external_resource")
     private String productUrlFromExternalResource;
 
     @Column(name = "quantity")
+    @Min(0)
     private int quantity;
 
     @Column(name = "moneyCurrency")
@@ -46,7 +55,8 @@ public class Product {
 
     //    @Lob
 //    @Basic(fetch = FetchType.LAZY)
-    @Column(name = "description" , length = 20000)
+
+    @Column(name = "description", length = 20000)
     private String description;
 
     @Transient
@@ -91,21 +101,26 @@ public class Product {
     @Column(name = "image_urls")
     private Set<String> imageUrls = new HashSet<>();
 
-
     @Column(name = "vendor")
     private String vendor;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
-    private List<OrderLine> orderLines = new ArrayList<OrderLine>();
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private Set<OrderLine> orderLines = new LinkedHashSet<>();
 
     @Column(name = "available")
     private boolean available;
 
-    public void increaseAmount(int quantity){
+    private Set<OrderLine> getOrderLines() {
+        return Collections.unmodifiableSet(orderLines);
+    }
+
+    public void increaseAmount(int quantity) {
         this.quantity += quantity;
     }
 
-    public void decreaseAmount(int quantity){
+    public void decreaseAmount(int quantity) {
         this.quantity -= quantity;
     }
 
@@ -135,10 +150,14 @@ public class Product {
         return Objects.hash(id, name);
     }
 
-    public void deleteOrderLine(OrderLine orderLine) {
+    public void removeOrderLine(OrderLine orderLine) {
+        this.quantity += orderLine.getAmount();
         orderLines.remove(orderLine);
     }
-    public void addOrderLine(OrderLine orderLine){
+
+    public void addOrderLine(OrderLine orderLine) {
+        this.quantity -= orderLine.getAmount();
         orderLines.add(orderLine);
     }
+
 }

@@ -1,14 +1,19 @@
 package com.example.co2Automatic.models;
 
+import com.example.co2Automatic.CustomExceptions.InsufficientAmountException;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Data
 @Entity
 @Table(name = "order_line")
-public class OrderLine {
+public class OrderLine implements Serializable {
 
     public OrderLine() {
     }
@@ -18,29 +23,22 @@ public class OrderLine {
     private long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @NotNull
     @JoinColumn(name = "order_id", referencedColumnName = "id", nullable = false)
     private Order order;
 
-    @ManyToOne(fetch = FetchType.EAGER , cascade = {CascadeType.PERSIST , CascadeType.REFRESH , CascadeType.MERGE})
+    @ManyToOne(fetch = FetchType.EAGER , cascade = {CascadeType.PERSIST , CascadeType.REFRESH , CascadeType.MERGE })
     @JoinColumn(name = "product_id", referencedColumnName = "id", nullable = false)
+    @NotNull
+    @Setter(AccessLevel.NONE)
     private Product product;
 
-    public void deleteOrderLine(){
-        product.increaseAmount(amount);
-        product.deleteOrderLine(this);
-        order = null;
-        product = null;
-    }
-
-    public void createOrderLine(Product product , Order order){
-        product.decreaseAmount(amount);
-        product.addOrderLine(this);
-    }
 
     @Column(name = "amount")
+    @Setter(AccessLevel.NONE)
     private int amount;
 
-    @Column(name = "purchase_price")
+    @Column(name = "purchase_price" , nullable = false)
     private double purchasePrice;
 
     @Override
@@ -56,15 +54,29 @@ public class OrderLine {
         return Objects.hash(id);
     }
 
-    @PrePersist
-    protected void addReservedAmountOfProducts(){
-        product.decreaseAmount(amount);
-        product.addOrderLine(this);
+    public void setProductWithAmount(Product product , int amount) throws InsufficientAmountException {
+
+        if(this.product!= null){
+            this.product.removeOrderLine(this);
+            this.product = null;
+        }
+        if(product.getQuantity()< amount){
+            throw new InsufficientAmountException("Product:"+
+                    product.getName()
+                    + " With id:" +
+                    product.getId()
+                    + " has insufficient quantity");
+        }else{
+            this.amount = amount;
+            this.product = product;
+            product.addOrderLine(this);
+        }
+
     }
 
     @PreRemove
     protected void removeReservedAmountOfProducts(){
-        product.increaseAmount(amount);
-        product.deleteOrderLine(this);
+        product.removeOrderLine(this);
+        this.order.getOrderLines().remove(this);
     }
 }

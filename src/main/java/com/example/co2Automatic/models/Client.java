@@ -6,13 +6,14 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.*;
 
 @Data
 @Entity
 @Table(name = "clients")
 @JsonIgnoreProperties(value = {"clientsOrders"})
-public class Client {
+public class Client implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

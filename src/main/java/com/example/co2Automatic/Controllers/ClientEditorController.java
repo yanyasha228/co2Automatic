@@ -25,4 +25,5 @@ public class ClientEditorController {
 
         return "editProduct";
     }
+
 }

@@ -1,17 +1,21 @@
 package com.example.co2Automatic.models;
 
+import com.example.co2Automatic.CustomExceptions.ImpossibleSettingException;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.io.Serializable;
+import java.util.*;
 
 @Data
 @Entity
 @Table(name = "orders")
-public class Order {
+public class Order implements Serializable {
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -33,7 +37,7 @@ public class Order {
     @Temporal(TemporalType.TIMESTAMP)
     private Date deliveryDate;
 
-    @ManyToOne(fetch = FetchType.EAGER , cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "manager", referencedColumnName = "id")
     private User manager;
 
@@ -54,32 +58,49 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
 
+
 //    @ManyToMany
 //    @JoinTable(
 //            name = "products_in_order",
 //            joinColumns = {@JoinColumn(name = "order_id")},
 //            inverseJoinColumns = {@JoinColumn(name = "product_id")}
 //    )
-//    private List<Product> products;
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.ALL , orphanRemoval = true)
-    private List<OrderLine> orderLines = new ArrayList<OrderLine>();
+//    private List<Product> products;    public void addOrderLine(OrderLine orderLine){
+////        orderLines.add(orderLine);
+////        orderLine.setOrder(this);
+////    }
+////
+////    public void removeOrderLine(OrderLine orderLine){
+////        orderLines.remove(orderLine);
+////        orderLine.setOrder(null);
+////    }
+////
+////    public void deleteAllOrderLines(){
+////        for(OrderLine tOrdLine : orderLines){
+////            removeOrderLine(tOrdLine);
+////        }
+////    }
 
-//    public void addOrderLine(OrderLine orderLine){
-//        orderLines.add(orderLine);
-//        orderLine.setOrder(this);
-//    }
+    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @Setter(AccessLevel.NONE)
+    @Getter(AccessLevel.PROTECTED)
+    private Set<OrderLine> orderLines = new HashSet<>();
+
+    public Set<OrderLine> getOrderLinesImmutable(){
+        return Collections.unmodifiableSet(orderLines);
+    }
+
+    public void setOrderLines(Set<OrderLine> orderLines) throws ImpossibleSettingException {
+        if (this.orderLines.isEmpty()) {
+            orderLines.forEach(orderLine -> orderLine.setOrder(this));
+            this.orderLines.addAll(orderLines);
+        } else {
+            throw new ImpossibleSettingException("Orderlines Set is't empty! " +
+                    "You have to empty it using one of the removal methods provided by OrderLineService!");
+        }
+    }
 //
-//    public void deleteOrderLine(OrderLine orderLine){
-//        orderLines.remove(orderLine);
-//        orderLine.setOrder(null);
-//    }
-//
-//    public void deleteAllOrderLines(){
-//        for(OrderLine tOrdLine : orderLines){
-//            deleteOrderLine(tOrdLine);
-//        }
-//    }
 
     @Column(name = "order_creation_date")
     @Temporal(TemporalType.TIMESTAMP)

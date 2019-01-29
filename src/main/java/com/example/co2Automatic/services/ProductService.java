@@ -56,6 +56,7 @@ public interface ProductService {
 
     void deleteById(Long id);
 
+    Product saveAndReturnEntity(Product product);
 
     void updateProduct(Integer productId, String inputProductName, String inputProductVendor, String inputProductCountryOfOrigin, ProductStock inputProductStock, String inputProductCategory, Double inputProductPrice, Double inputProductWholeSalePrice, MoneyCurrency inputProductMoneyCurrency, String inputProductDescription, String[] inputProductParamName, String[] inputProductParamValue);
 

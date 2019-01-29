@@ -12,8 +12,9 @@ import java.util.Optional;
 
 @Service
 public class ClientServiceImpl implements ClientService {
+
     @Autowired
-    ClientDao clientDao;
+    private ClientDao clientDao;
 
     @Override
     public void save(Client client) {
@@ -50,4 +51,10 @@ public class ClientServiceImpl implements ClientService {
     public List<Client> findAll() {
         return clientDao.findAll();
     }
+
+    @Override
+    public void deleteById(Long id) {
+        clientDao.deleteById(id);
+    }
+
 }

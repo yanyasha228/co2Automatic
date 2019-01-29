@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @SpringBootApplication
 public class Co2AutomaticApplication {
@@ -23,15 +24,27 @@ public class Co2AutomaticApplication {
     }
 
     @Bean("CRunner")
-    public CommandLineRunner testDataProd(ClientService clientService) {
+    public CommandLineRunner testDataProd(ClientService clientService,
+                                          ProductService productService,
+                                          OrderService orderService) {
         return (args) -> {
             // save a couple of customers
+
+//            List<Product> productList = productService.findAll();
+//
+//            for (Product pr: productList) {
+//                pr.setQuantity(10);
+//            }
+//
+//          productService.saveAll(productList);
 
             List<Client> clientListFromDao = clientService.findAll();
 
             List<PhoneNumber> phoneNumberList = new ArrayList<>();
 
             List<Client> clientList = new ArrayList<>();
+
+
 
 
 
@@ -199,6 +212,9 @@ public class Co2AutomaticApplication {
                 testClient13.setUsualWarehouseNumber(1);
                 testClient13.setClientStatus(ClientStatus.BAN);
                 clientList.add(testClient13);
+
+                Order order = new Order();
+                order.setClient(testClient);
 
 //            for(PhoneNumber phoneNumberFS : phoneNumberList){
 //                phoneNumberService.save(phoneNumberFS);

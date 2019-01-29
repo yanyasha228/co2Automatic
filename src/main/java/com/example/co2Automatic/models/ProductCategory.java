@@ -4,21 +4,24 @@ import lombok.Data;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.*;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
 @Data
 @Entity
 @Table(name = "product_category")
-public class ProductCategory {
+public class ProductCategory implements Serializable {
 
     public ProductCategory() {
 
     }
 
     public ProductCategory(Integer id, String name) {
+
         this.id = id;
         this.name = name;
+
     }
 
 

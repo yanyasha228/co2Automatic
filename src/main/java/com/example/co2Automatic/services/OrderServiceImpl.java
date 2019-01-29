@@ -1,5 +1,7 @@
 package com.example.co2Automatic.services;
 
+import com.example.co2Automatic.CustomExceptions.ImpossibleSettingException;
+import com.example.co2Automatic.CustomExceptions.InsufficientAmountException;
 import com.example.co2Automatic.Dao.OrderDao;
 import com.example.co2Automatic.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,16 +20,13 @@ public class OrderServiceImpl implements OrderService {
     private OrderDao orderDao;
 
     @Autowired
-    private PhoneNumberService phoneNumberService;
-
-    @Autowired
     private ProductService productService;
 
     @Autowired
-    ClientService clientService;
+    private ClientService clientService;
 
     @Autowired
-    OrderLineService orderLineService;
+    private OrderLineService orderLineService;
 
 
     @Override
@@ -66,14 +65,12 @@ public class OrderServiceImpl implements OrderService {
                             Integer inputWarehouseNumber,
                             String inputOrderComment,
                             Integer[] prodOrderLineIdInput,
-                            Integer[] productQuaInput) {
+                            Integer[] productQuaInput) throws InsufficientAmountException, ImpossibleSettingException {
 
-        Optional<Order> orderOpt = findById(clientId);
 
         Optional<Client> clientFromDb = clientService.findById(clientId);
 
-        List<OrderLine> orderLineList = new ArrayList<>();
-
+        Optional<Order> orderOpt = findById(id);
 
         Order order;
 
@@ -114,31 +111,27 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderComment(inputOrderComment);
 
 
-        List<OrderLine> orderLines = new ArrayList<>();
-
+        Set<OrderLine> orderLines = new HashSet<OrderLine>();
 
 
         for (int i = 0; i < prodOrderLineIdInput.length; i++) {
             OrderLine newOrderLine = new OrderLine();
             Product prodForOrderLine = productService.findById(prodOrderLineIdInput[i]).orElse(null);
             if (prodForOrderLine != null) {
-                newOrderLine.setProduct(prodForOrderLine);
-                newOrderLine.setAmount(productQuaInput[i]);
+                newOrderLine.setProductWithAmount(prodForOrderLine, productQuaInput[i]);
 
                 if (orderClient.getClientStatus() == ClientStatus.WHOLESALER) {
                     newOrderLine.setPurchasePrice(newOrderLine.getProduct().getWholeSalePrice() * newOrderLine.getAmount());
                 } else {
                     newOrderLine.setPurchasePrice(newOrderLine.getProduct().getPrice() * newOrderLine.getAmount());
                 }
-
-                prodForOrderLine.getOrderLines().add(newOrderLine);
-                newOrderLine.setOrder(order);
                 orderLines.add(newOrderLine);
 
             }
 
 
         }
+
 
         order.setOrderLines(orderLines);
 
@@ -215,5 +208,10 @@ public class OrderServiceImpl implements OrderService {
 //                        Spliterators.spliteratorUnknownSize(orderDao.findAll().iterator(), Spliterator.NONNULL),
 //                        false)
 //                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        orderDao.deleteById(id);
     }
 }

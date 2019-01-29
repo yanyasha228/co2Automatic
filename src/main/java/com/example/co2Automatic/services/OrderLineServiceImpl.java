@@ -5,6 +5,7 @@ import com.example.co2Automatic.models.OrderLine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,7 +25,22 @@ public class OrderLineServiceImpl implements OrderLineService {
     }
 
     @Override
+    public List<OrderLine> findAll() {
+        return orderLineDao.findAll();
+    }
+
+    @Override
     public void deleteById(Long id) {
         orderLineDao.deleteById(id);
+    }
+
+    @Override
+    public void delete(OrderLine orderLine) {
+        orderLineDao.delete(orderLine);
+    }
+
+    @Override
+    public void deleteAll(Iterable<OrderLine> orderLines) {
+        orderLineDao.deleteAll(orderLines);
     }
 }

@@ -157,6 +157,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Product saveAndReturnEntity(Product product) {
+        return productDao.save(product);
+    }
+
+    @Override
     public void updateProduct(Integer productId,
                               String inputProductName,
                               String inputProductVendor,

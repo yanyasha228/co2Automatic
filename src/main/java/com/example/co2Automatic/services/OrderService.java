@@ -1,5 +1,7 @@
 package com.example.co2Automatic.services;
 
+import com.example.co2Automatic.CustomExceptions.ImpossibleSettingException;
+import com.example.co2Automatic.CustomExceptions.InsufficientAmountException;
 import com.example.co2Automatic.models.Order;
 import com.example.co2Automatic.models.OrderLine;
 import com.example.co2Automatic.models.PaymentMethod;
@@ -27,7 +29,9 @@ public interface OrderService {
                      Integer inputWarehouseNumber,
                      String inputOrderComment,
                      Integer[] prodOrderLineIdInput,
-                     Integer[] productQuaInput);
+                     Integer[] productQuaInput) throws InsufficientAmountException, ImpossibleSettingException;
 
     List<Order> getAllOrders();
+
+    void deleteById(Long id);
 }

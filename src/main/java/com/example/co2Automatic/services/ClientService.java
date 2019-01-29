@@ -20,4 +20,6 @@ public interface ClientService {
     Client saveAndReturnEntity(Client client);
 
     List<Client> findAll();
+
+    void deleteById(Long id);
 }

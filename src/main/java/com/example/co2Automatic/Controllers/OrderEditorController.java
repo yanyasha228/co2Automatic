@@ -1,5 +1,7 @@
 package com.example.co2Automatic.Controllers;
 
+import com.example.co2Automatic.CustomExceptions.ImpossibleSettingException;
+import com.example.co2Automatic.CustomExceptions.InsufficientAmountException;
 import com.example.co2Automatic.models.Client;
 import com.example.co2Automatic.models.Order;
 import com.example.co2Automatic.models.PaymentMethod;
@@ -7,7 +9,9 @@ import com.example.co2Automatic.models.Product;
 import com.example.co2Automatic.services.ClientService;
 import com.example.co2Automatic.services.OrderService;
 import com.example.co2Automatic.services.ProductService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +22,8 @@ import java.util.List;
 @Controller
 @RequestMapping("/editOrder")
 public class OrderEditorController {
+
+    private static final Logger logger = Logger.getLogger(OrderEditorController.class);
 
     @Autowired
     OrderService orderService;
@@ -60,7 +66,8 @@ public class OrderEditorController {
                               @RequestParam(required = false) Integer[] prodOrderLineIdInput,
                               @RequestParam(required = false) Integer[] inputOrderLineProductQua,
                               @RequestParam(required = false) Double inputWeight,
-                              @RequestParam(required = false) Double inputVolume) {
+                              @RequestParam(required = false) Double inputVolume) throws ImpossibleSettingException, InsufficientAmountException {
+
 
         orderService.updateOrder(orderId,
                 clientId,
@@ -78,6 +85,16 @@ public class OrderEditorController {
                 inputOrderLineProductQua);
 
         return "redirect:../";
+    }
+
+
+    @ExceptionHandler({ImpossibleSettingException.class, InsufficientAmountException.class})
+    public String handleOrderManipulationException(Model model ,Exception ex) {
+        logger.error(ex.toString());
+
+        model.addAttribute("error" , ex.getClass().getName());
+
+        return "error";
     }
 
 

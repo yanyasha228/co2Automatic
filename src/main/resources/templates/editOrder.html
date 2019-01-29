@@ -159,7 +159,7 @@
                             <label for="orderLines">Позиции заказа:</label>
                             <div class="controls-1">
 
-                                <div id="orderLine" class="entry" th:each="orderLine : ${order.getOrderLines()}">
+                                <div id="orderLine" class="entry" th:each="orderLine : ${order.getOrderLinesImmutable()}">
                                     <div class="form-row">
 
                                         <div class="form-group col-md-7" id="inputOrdProdNameDiv">
@@ -198,7 +198,7 @@
                                     </div>
                                 </div>
 
-                                <div id="orderLine" class="entry" th:if="${order.getOrderLines().size()==0}">
+                                <div id="orderLine" class="entry" th:if="${order.getOrderLinesImmutable().size()==0}">
                                     <div class="form-row">
 
                                         <div class="form-group col-md-7" id="inputOrdProdNameDiv">
