@@ -1,12 +1,11 @@
 package com.example.co2Automatic.services;
 
+import com.example.co2Automatic.CustomExceptions.ImpossibleSettingException;
+import com.example.co2Automatic.CustomExceptions.InsufficientAmountException;
 import com.example.co2Automatic.Dao.OrderDao;
 import com.example.co2Automatic.Dao.OrderLineDao;
 import com.example.co2Automatic.Dao.ProductDao;
-import com.example.co2Automatic.models.Client;
-import com.example.co2Automatic.models.ClientStatus;
-import com.example.co2Automatic.models.MoneyCurrency;
-import com.example.co2Automatic.models.Product;
+import com.example.co2Automatic.models.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,6 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -34,8 +37,8 @@ public class OrderServiceImplTest {
     @Autowired
     private OrderLineService orderLineService;
 
-    private Long prodId;
-    private Long clientId;
+    private List<Long> prodId = new ArrayList<>();
+    private List<Long> clientId = new ArrayList<>();
 
     @Before
     public void setTestData(){
@@ -44,9 +47,17 @@ public class OrderServiceImplTest {
         newProd.setCurrency(MoneyCurrency.UAH);
         newProd.setCountryOfOrigin("USA");
         newProd.setDescription("ProdDescription");
+        newProd.setQuantity(10);
 
-        prodId = productService.saveAndReturnEntity(newProd).getId();
+        Product newProd1 = new Product();
+        newProd1.setName("ProdName");
+        newProd1.setCurrency(MoneyCurrency.UAH);
+        newProd1.setCountryOfOrigin("USA");
+        newProd1.setDescription("ProdDescription");
+        newProd1.setQuantity(10);
 
+        prodId.add(productService.saveAndReturnEntity(newProd).getId());
+        prodId.add(productService.saveAndReturnEntity(newProd1).getId());
 
         Client newClient = new Client();
         newClient.setPhoneNumber("+380665025671");
@@ -58,13 +69,45 @@ public class OrderServiceImplTest {
         newClient.setUsualWarehouseNumber(87);
         newClient.setClientStatus(ClientStatus.CONSTANT);
 
-        clientId = clientService.saveAndReturnEntity(newClient).getId();
+        Client orderClient = new Client();
+        orderClient.setEmail("igor777@gmail.com");
+        orderClient.setPhoneNumber("380660001507");
+        orderClient.setName("Igor");
+        orderClient.setLastName("Seleverstov");
+        orderClient.setMiddleName("Vasilevich");
+        orderClient.setUsualDeliveryPlace("Kiev");
+        orderClient.setUsualWarehouseNumber(25);
+        orderClient.setClientStatus(ClientStatus.USUAL);
+
+        clientId.add(clientService.saveAndReturnEntity(newClient).getId());
+        clientId.add(clientService.saveAndReturnEntity(orderClient).getId());
 
     }
 
-    @Test
-    public void addOrder() {
 
+    @Test
+    public void addOrder() throws ImpossibleSettingException, InsufficientAmountException {
+
+        Long[] iarr = new Long[prodId.size()];
+        iarr = prodId.toArray(iarr);
+        orderService.updateOrder(0L,
+                0L,
+                "igor777@gmail.com",
+                "380660001507",
+                "2019-02-05",
+                PaymentMethod.COD,
+                "Igor",
+                "Seleverstov",
+                "Vasilevich",
+                "Kiev",
+                57,"Pervii Zakaz",
+                 iarr,
+                new Integer[]{2,3});
+
+        List<Order> ordFrDb = orderService.getAllOrders();
+
+        assertTrue(ordFrDb.stream()
+                .anyMatch(order -> order.getOrderComment().equalsIgnoreCase("Pervii Zakaz")));
 
     }
 

@@ -60,6 +60,18 @@ $(function () {
         utilsScript: "static/htmlhelpers/intl-tel-input/build/js/utils.js"
     });
 
+    $('#inputPaymentMethod').on('change', function (e) {
+        if ($(this).val() === "PICKUP") {
+            $(inputArrayForValidation).each(function (iK, itemV) {
+                itemV.attr('class', 'form-control is-valid');
+            });
+        } else {
+            $(inputArrayForValidation).each(function (iK, itemV) {
+                if ($(itemV).val().replace(/\s/g, '') === "") itemV.attr('class', 'form-control is-invalid');
+
+            });
+        }
+    });
 
     $(document).on('click', '.btn-add', function (e) {
         e.preventDefault();
@@ -113,7 +125,7 @@ $(function () {
 
     $('#orderForm').submit(function (e) {
         e.preventDefault();
-        if(validateSubmit()){
+        if (validateSubmit()) {
             this.submit();
         }
 
@@ -180,6 +192,30 @@ $(function () {
     });
 
 //FOCUSOUT_EVENT
+
+    $(document).on('focusout', '#inputName', function (e) {
+
+        checkEmptinessInputFieldDependentOnPaymentMethodAndSetValidClassStatus($(this));
+    });
+
+    $(document).on('focusout', '#inputLastName', function (e) {
+        checkEmptinessInputFieldDependentOnPaymentMethodAndSetValidClassStatus($(this));
+    });
+
+    $(document).on('focusout', '#inputMiddleName', function (e) {
+        checkEmptinessInputFieldDependentOnPaymentMethodAndSetValidClassStatus($(this));
+    });
+
+    $(document).on('focusout', '#inputCity', function (e) {
+        checkEmptinessInputFieldDependentOnPaymentMethodAndSetValidClassStatus($(this));
+    });
+
+    $(document).on('focusout', '#inputWarehouseNumber', function (e) {
+        checkEmptinessInputFieldDependentOnPaymentMethodAndSetValidClassStatus($(this));
+    });
+
+    /////////////////////////
+
     $(document).on('focusout', '#inputOrderLineProductName', function (e) {
 
         var searchField = $(this).val();
@@ -215,6 +251,27 @@ $(function () {
         syncModelAndViewOrderLinesPrices();
     });
 
+    $(document).on('change', '#inputOrderLineProductQua', function (event) {
+
+        var inputQuaFieldValue = Number($(this).val());
+        var productOrderLineIdInputItem = $(this).closest("div.form-row").find("input[id='prodOrderLineIdInput']");
+        var productOrderLineIdInputItemVal = productOrderLineIdInputItem.val();
+
+        if (orderLinesMap.has(Number(productOrderLineIdInputItemVal))) {
+            var her = orderLinesMap.get(Number(productOrderLineIdInputItemVal));
+            if ((Number(her.orderLineProductDataItem.quantity) < inputQuaFieldValue) ||
+                (inputQuaFieldValue < 1)) {
+                $(this).attr('class', 'form-control is-invalid');
+            } else {
+                $(this).attr('class', 'form-control is-valid');
+                her.productAmount = inputQuaFieldValue;
+                syncModelAndViewOrderLinesPrices();
+            }
+
+        }
+
+    });
+
     $(document).on('focusout', '#inputOrderLineProductQua', function (eve) {
 
 
@@ -246,9 +303,11 @@ $(function () {
 
         var searchClientsList = $('#searchClientsResult');
 
-        var activeItem = searchClientsList.children('.active:first');
+        var searchPhoneInput = $('#inputPhoneNumber');
 
-        validateAndCloseClientList(searchClientsList, $(this), activeItem)
+        var activeItem = $(this);
+
+        validateAndCloseClientList(searchClientsList, searchPhoneInput, activeItem)
 
 
     });
@@ -459,6 +518,7 @@ $(function () {
             syncModelClientWithView();
             syncModelAndViewOrderLinesPrices();
             searchInput.attr('class', 'form-control is-valid');
+            validateRequiredFieldsAfterAutoInserting();
         }).fail(function () {
             searchInput.attr('class', 'form-control is-invalid');
         });
@@ -595,6 +655,13 @@ $(function () {
 
     }
 
+    function checkEmptinessInputFieldDependentOnPaymentMethodAndSetValidClassStatus(inputFieldForValidation) {
+        if (inputFieldForValidation.val().replace(/\s/g, '') === "" && !($(inputPaymentMethod).val() === "PICKUP")) {
+            inputFieldForValidation.attr('class', 'form-control is-invalid');
+        } else {
+            inputFieldForValidation.attr('class', 'form-control is-valid');
+        }
+    }
 
     function arrowActiveItemHandling(e, htmlItemList, searchInputField) {
         var searchListLiElFirst = htmlItemList.children('.list-group-item:first');
@@ -651,13 +718,20 @@ $(function () {
     }
 
 
+    function validateRequiredFieldsAfterAutoInserting() {
+        $(inputArrayForValidation).each(function (iK, itemV) {
+            if ($(itemV).val().replace(/\s/g, '') !== "") itemV.attr('class', 'form-control is-valid');
+
+        });
+    }
+
     function validateSubmit() {
 
         var formIsValid = true;
 
         var entryDomItems = $('#orderLines').find('.entry');
 
-        entryDomItems.each(function (i , item) {
+        entryDomItems.each(function (i, item) {
             if ($(item).find('#inputOrderLineProductName:first').hasClass("is-invalid") ||
                 $(item).find('#inputOrderLineProductQua:first').hasClass("is-invalid")) {
 
@@ -668,7 +742,7 @@ $(function () {
         });
 
         if (!($(inputPaymentMethod).val() === "PICKUP")) {
-            $(inputArrayForValidation).each(function (iK , itemV) {
+            $(inputArrayForValidation).each(function (iK, itemV) {
                 if ($(itemV).hasClass("is-invalid")) formIsValid = false;
 
             });

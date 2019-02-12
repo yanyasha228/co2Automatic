@@ -6,6 +6,7 @@ import com.example.co2Automatic.models.ProductStock;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 
 import java.util.List;
@@ -43,6 +44,9 @@ public interface ProductDao extends JpaRepository<Product, Long> {
     Optional<Product> findById(long id);
 
     List<Product> findProductsByNameIgnoreCaseContaining(String nonFullName);
+
+    @Query(nativeQuery = true)
+    List<Product> findProductsByNameIgnoreCaseContainingAndAvailableIsTrue(String nonFullName);
 
 //    Product findProductsByNameLike(String productName);
 

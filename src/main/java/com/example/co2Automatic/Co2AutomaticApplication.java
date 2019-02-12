@@ -30,13 +30,13 @@ public class Co2AutomaticApplication {
         return (args) -> {
             // save a couple of customers
 
-//            List<Product> productList = productService.findAll();
-//
-//            for (Product pr: productList) {
-//                pr.setQuantity(10);
-//            }
-//
-//          productService.saveAll(productList);
+            List<Product> productList = productService.findAll();
+
+            for (Product pr: productList) {
+                pr.setProductStock(ProductStock.CO2_STOCK);
+            }
+
+          productService.saveAll(productList);
 
             List<Client> clientListFromDao = clientService.findAll();
 

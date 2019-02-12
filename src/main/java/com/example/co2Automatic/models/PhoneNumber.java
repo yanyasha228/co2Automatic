@@ -12,11 +12,11 @@ import java.util.Objects;
 public class PhoneNumber implements Serializable {
 
     public PhoneNumber() {
+
+
     }
 
-    public PhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
+    public PhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

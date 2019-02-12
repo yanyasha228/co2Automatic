@@ -44,6 +44,7 @@ public class ClientsController {
         Page<Client> clientsPage = clientService.findAllWithPagination(pageable);
 
 
+
 //        model.addAttribute("productStockSorting" , productStockSorting.orElse(null));
 //
 //        model.addAttribute("productCategorySortingId" , productCategorySortingId.orElse(0));

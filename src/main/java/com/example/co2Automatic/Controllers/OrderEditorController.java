@@ -63,7 +63,7 @@ public class OrderEditorController {
                               @RequestParam(required = false) String inputCity,
                               @RequestParam(required = false) Integer inputWarehouseNumber,
                               @RequestParam(required = false) String inputOrderComment,
-                              @RequestParam(required = false) Integer[] prodOrderLineIdInput,
+                              @RequestParam(required = false) Long[] prodOrderLineIdInput,
                               @RequestParam(required = false) Integer[] inputOrderLineProductQua,
                               @RequestParam(required = false) Double inputWeight,
                               @RequestParam(required = false) Double inputVolume) throws ImpossibleSettingException, InsufficientAmountException {

@@ -61,7 +61,6 @@ public class AdminProductsController {
 
         model.addAttribute("productNameSearchInput" , productNameSearchInput.orElse(""));
 
-
         model.addAttribute("productsPage",
                 productsPage);
 //            model.addAttribute("productsList",

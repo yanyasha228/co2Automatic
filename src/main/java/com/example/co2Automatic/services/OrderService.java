@@ -28,7 +28,7 @@ public interface OrderService {
                      String inputCity,
                      Integer inputWarehouseNumber,
                      String inputOrderComment,
-                     Integer[] prodOrderLineIdInput,
+                     Long[] prodOrderLineIdInput,
                      Integer[] productQuaInput) throws InsufficientAmountException, ImpossibleSettingException;
 
     List<Order> getAllOrders();

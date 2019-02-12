@@ -66,7 +66,7 @@ public class Order implements Serializable {
 //            inverseJoinColumns = {@JoinColumn(name = "product_id")}
 //    )
 
-//    private List<Product> products;    public void addOrderLine(OrderLine orderLine){
+////    private List<Product> products;    public void addOrderLine(OrderLine orderLine){
 ////        orderLines.add(orderLine);
 ////        orderLine.setOrder(this);
 ////    }

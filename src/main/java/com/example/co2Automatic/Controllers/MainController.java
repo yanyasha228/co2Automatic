@@ -13,6 +13,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/")
 public class MainController {
+
     @Autowired
     private UserService userService;
 
@@ -31,4 +32,5 @@ public class MainController {
     public String loginPage() {
         return "login";
     }
+
 }

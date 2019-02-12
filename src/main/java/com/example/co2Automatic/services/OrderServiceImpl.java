@@ -28,7 +28,6 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderLineService orderLineService;
 
-
     @Override
     public void save(Order order) {
         orderDao.save(order);
@@ -48,7 +47,8 @@ public class OrderServiceImpl implements OrderService {
 
     /*
      * MiddleName ist involved!!!!
-     * */
+     *
+     */
 
     @Transactional
     @Override
@@ -64,7 +64,7 @@ public class OrderServiceImpl implements OrderService {
                             String inputCity,
                             Integer inputWarehouseNumber,
                             String inputOrderComment,
-                            Integer[] prodOrderLineIdInput,
+                            Long[] prodOrderLineIdInput,
                             Integer[] productQuaInput) throws InsufficientAmountException, ImpossibleSettingException {
 
 
@@ -97,7 +97,6 @@ public class OrderServiceImpl implements OrderService {
             orderClient.setUsualDeliveryPlace(inputCity);
             orderClient.setUsualWarehouseNumber(inputWarehouseNumber);
             orderClient.setClientStatus(ClientStatus.USUAL);
-
             orderClient = clientService.saveAndReturnEntity(orderClient);
 
         }
@@ -137,67 +136,11 @@ public class OrderServiceImpl implements OrderService {
 
         order.setClient(orderClient);
 
-        order = saveEndReturnEntity(order);
+        save(order);
 
-        int i = 7;
 
-//        Client newClient;
-//        Date orderDate = null;
-//
-//        try {
-//            orderDate = new SimpleDateFormat("yyyy-MM-dd").parse(inputDeliveryDate);
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//
-//        Optional<Client> clientFromDb = clientService.findById(clientId);
-//
-//        if (!clientFromDb.isPresent()) {
-//            newClient = new Client();
-//            newClient.setPhoneNumber(inputPhoneNumber);
-//            newClient.setName(inputName);
-//            newClient.setLastName(inputSurname);
-//        } else {
-//            newClient = clientFromDb.get();
-//            if (!newClient.getUsualDeliveryPlace().equalsIgnoreCase(inputCity))
-//                newClient.setUsualDeliveryPlace(inputCity);
-//            if (newClient.getUsualWarehouseNumber() == inputWarehouseNumber) {
-//            } else newClient.setUsualWarehouseNumber(inputWarehouseNumber);
-//        }
-//
-//        Order newOrder = new Order();
-//        newOrder.setClient(newClient);
-//        newOrder.setDeliveryDate(orderDate);
-//
-//        if (inputPaymentMethod.equalsIgnoreCase("наложка")) newOrder.setPaymentMethod(PaymentMethod.COD);
-//        if (inputPaymentMethod.equalsIgnoreCase("оценка")) newOrder.setPaymentMethod(PaymentMethod.BANK_TRANSFER);
-//        if (inputPaymentMethod.equalsIgnoreCase("самовывоз")) newOrder.setPaymentMethod(PaymentMethod.PICKUP);
-//
-//        if (inputOrderComment != null) newOrder.setOrderComment(inputOrderComment);
-//
-//        newOrder.setDeliveryPlace(inputCity);
-//
-//        newOrder.setDeliveryPlaceWarehouseNumber(inputWarehouseNumber);
-//
-//        newOrder.setOrderWeight(inputWeight);
-//
-//        newOrder.setOrderVolumeGeneral(inputVolume);
-//
-//        for (int i = 0; i < prodOrderLineIdInput.length; i++) {
-//            OrderLine newOrderLine = new OrderLine();
-//            Product prodForOrderLine = productService.findById(prodOrderLineIdInput[i]).orElse(null);
-//            if (prodForOrderLine != null) {
-//                newOrderLine.setProduct(prodForOrderLine);
-//                newOrderLine.setAmount(productQuaInput[i]);
-//                newOrderLine.setPurchasePrice(newOrderLine.getProduct().getPrice() * newOrderLine.getAmount());
-//                newOrderLine.setOrder(newOrder);
-//                newOrder.getOrderLines().add(newOrderLine);
-//            }
-//
-//
-//        }
-//
-//        save(newOrder);
+
+
     }
 
     @Override

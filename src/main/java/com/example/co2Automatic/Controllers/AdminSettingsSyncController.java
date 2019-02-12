@@ -31,6 +31,7 @@ public class AdminSettingsSyncController {
 
     @PostMapping("submit")
     public String validateProductsTable(Model model, @RequestParam String syncUrl) throws JAXBException {
+
         RestTemplate restTemplate = new RestTemplate();
 
         restTemplate.getMessageConverters()

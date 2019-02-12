@@ -5,7 +5,6 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import java.io.Serializable;
@@ -34,13 +33,8 @@ public class Product implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-
     @Column(name = "name")
     private String name;
-
-
-    @OneToMany(mappedBy = "parent" , cascade = {CascadeType.REFRESH , CascadeType.REFRESH})
-    private Set<Product> subProducts;
 
     @Column(name = "product_url_from_external_resource")
     private String productUrlFromExternalResource;
@@ -55,7 +49,6 @@ public class Product implements Serializable {
 
     //    @Lob
 //    @Basic(fetch = FetchType.LAZY)
-
     @Column(name = "description", length = 20000)
     private String description;
 
@@ -68,7 +61,6 @@ public class Product implements Serializable {
     @Column(name = "params")
     private Map<String, String> params = new HashMap<>();
 
-
     @Column(name = "price")
     private double price;
 
@@ -79,10 +71,8 @@ public class Product implements Serializable {
     @JoinColumn(name = "category_id")
     private ProductCategory productCategory;
 
-
     @Column(name = "country_of_origin")
     private String countryOfOrigin;
-
 
     @Column(name = "product_stock")
     @Enumerated(EnumType.STRING)
