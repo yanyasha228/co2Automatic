@@ -177,10 +177,20 @@ $(function () {
                 $.getJSON(location.origin + "/restApi/products/getProductsByNonFullName?search_S=" + searchField, function (data) {
                     $.each(data, function (key, value) {
                         validateProductForView(value);
-                        searchList.append('<li class="list-group-item product-search-editor-res-item" tabindex ="' + key + '" id="orderLineItem" data-prodid = "' + value.id + '"><div class="row"' +
-                            '><div class="col-4"><img src="' + value.imageUrls[0] + '" height="60" width="80" class="img-thumbnail"></div>' +
-                            '<div class="col-8"> <p id="prodNamePar" style="overflow: hidden; text-overflow: ellipsis;">' + value.name + '</p> </div>' +
-                            '</div></li>');
+                        searchList.append('<li class="list-group-item product-search-editor-res-item" tabindex ="' + key + '" id="orderLineItem" data-prodid = "' + value.id + '">' +
+                            '<div class="form-group col-md-3">' +
+                            '<div class="input-row">' +
+                            '<div class="col-4">' +
+                            '<img src="' + value.imageUrls[0] + '" height="60" width="80" class="img-thumbnail">' +
+                            '</div>' +
+                            '</div>' +
+                            '<div class="input-row">' +
+                            '<div class="col-8">' +
+                            '<p id="prodNamePar" style="overflow: hidden; text-overflow: ellipsis;">' + value.name + '</p> ' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>' +
+                            '</li>');
 
 
                     });

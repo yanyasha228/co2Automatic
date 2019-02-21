@@ -34,6 +34,7 @@ public class Co2AutomaticApplication {
 
             for (Product pr: productList) {
                 pr.setProductStock(ProductStock.CO2_STOCK);
+                pr.setQuantity(10);
             }
 
           productService.saveAll(productList);
