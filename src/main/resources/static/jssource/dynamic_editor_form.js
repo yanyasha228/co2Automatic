@@ -627,6 +627,7 @@ $(function () {
 
     }
 
+    //validating price depending on userStatus and currency
     function validateOrderLineMapItem(ordLineMItem) {
         if (client.clientStatus == "WHOLESALER") {
             ordLineMItem.productValidPrice = ordLineMItem.orderLineProductDataItem.wholeSalePrice;
@@ -650,6 +651,7 @@ $(function () {
         validateProductPricesCurrency(productToValidation);
     }
 
+    //Validate main price for subsequent calculation depending on clientStatus
     function validateProductPricePermissions(prodToVal) {
         if (client.clientStatus == "WHOLESALER") {
             prodToVal.price = prodToVal.wholeSalePrice;
@@ -665,6 +667,8 @@ $(function () {
 
     }
 
+    ///Method check if field has empty value when PaymentMethod isn't PICKUP amd set appendedClass "is-valid" when hasn't
+    //and vice versa
     function checkEmptinessInputFieldDependentOnPaymentMethodAndSetValidClassStatus(inputFieldForValidation) {
         if (inputFieldForValidation.val().replace(/\s/g, '') === "" && !($(inputPaymentMethod).val() === "PICKUP")) {
             inputFieldForValidation.attr('class', 'form-control is-invalid');

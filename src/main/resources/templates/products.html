@@ -138,6 +138,7 @@
         </tr>
         </thead>
         <tbody th:each="product : ${productsPage}">
+
         <tr>
             <td th:text="${product.getId()}"></td>
             <td><img th:src="@{${product.getImageUrls().iterator().next()}}" width="70" height="70" class="avatar"
@@ -160,6 +161,7 @@
                    th:data-product-name="${product.getName()}">
                 <i class="material-icons">&#xe5cd;</i></a>
             </td>
+
         </tr>
 
         </tbody>

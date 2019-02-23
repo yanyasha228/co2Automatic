@@ -14,11 +14,14 @@ import java.util.List;
 @RequestMapping("/")
 public class MainController {
 
+
     @Autowired
     private UserService userService;
 
+
     @Autowired
     private OrderService orderService;
+
 
     @RequestMapping
     public String mainPage(Model model) {
@@ -28,9 +31,11 @@ public class MainController {
         return "main";
     }
 
+
     @RequestMapping(value = "/login")
     public String loginPage() {
         return "login";
     }
+
 
 }

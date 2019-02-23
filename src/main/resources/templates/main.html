@@ -86,78 +86,81 @@
                 <th>Удалить</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody th:each="order : ${orders}">
+
             <tr>
-                <td>1</td>
-                <td><a href="#">Иван Быков</a></td>
-                <td>Киев 55</td>
-                <td>Jun 15, 2017</td>
-                <td><span class="status text-success">&bull;</span> Выполнен</td>
+                <td th:text="${order.getId()}"></td>
+                <td><a th:href="@{'/clients/editClient' + '?id=' + ${order.getClient().getId()}}"
+                th:text="${order.getClient().getName() + order.getClient().getLastName()}"></a></td>
+                <td th:text="${order.getDeliveryPlace() + ' ' + order.getDeliveryPlaceWarehouseNumber()}"></td>
+                <td th:text="${order.getDeliveryDate()}"></td>
+                <td><span class="status text-success">&bull;</span>Выполнен</td>
                 <td>$254</td>
-                <td><a href="#" class="view" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE5C8;</i></a>
+                <td><a th:href="#" class="view" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE5C8;</i></a>
                 </td>
                 <td><a href="#" class="delete" title="Delete Order" data-toggle="tooltip"><i class="material-icons">&#xe5cd;</i></a>
                 </td>
             </tr>
-            <tr>
-                <td>2</td>
-                <td><a href="#">Василий Селевер</a></td>
-                <td>Одесса 1</td>
-                <td>Jun 21, 2017</td>
-                <td>
-                    <div id="tdStatus">
-                    <span class="status text-info"
-                        >&bull;</span>
-                    <a href="#"
-                       id="orderStatus"
-                       data-toggle="modal"
-                       data-target="#changeOrderStatusModal">
-                        Упакован
-                    </a>
-                    </div>
-                </td>
-                <td>$1,260</td>
-                <td><a href="#" class="view" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE5C8;</i></a>
-                </td>
-                <td><a href="#" class="delete" title="Delete Order" data-toggle="tooltip"><i class="material-icons">&#xe5cd;</i></a>
-                </td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td><a href="#">Антон Пахомов</a></td>
-                <td>Харьков 3</td>
-                <td>Jul 04, 2017</td>
-                <td><span class="status text-danger">&bull;</span> Ждет оплаты</td>
-                <td>$350</td>
-                <td><a href="#" class="view" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE5C8;</i></a>
-                </td>
-                <td><a href="#" class="delete" title="Delete Order" data-toggle="tooltip"><i class="material-icons">&#xe5cd;</i></a>
-                </td>
-            </tr>
-            <tr>
-                <td>4</td>
-                <td><a href="#">Степан Бендера</a></td>
-                <td>Калиновка 1</td>
-                <td>Jul 16, 2017</td>
-                <td><span class="status text-warning">&bull;</span> Подтвержден</td>
-                <td>$1,572</td>
-                <td><a href="#" class="view" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE5C8;</i></a>
-                </td>
-                <td><a href="#" class="delete" title="Delete Order" data-toggle="tooltip"><i class="material-icons">&#xe5cd;</i></a>
-                </td>
-            </tr>
-            <tr>
-                <td>5</td>
-                <td><a href="#">Андрей Зоров</a></td>
-                <td>Измаил 8</td>
-                <td>Aug 04, 2017</td>
-                <td><span class="status text-success">&bull;</span> Выполнен</td>
-                <td>$580</td>
-                <td><a href="#" class="view" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE5C8;</i></a>
-                </td>
-                <td><a href="#" class="delete" title="Delete Order" data-toggle="tooltip"><i class="material-icons">&#xe5cd;</i></a>
-                </td>
-            </tr>
+
+            <!--<tr>-->
+                <!--<td>2</td>-->
+                <!--<td><a href="#">Василий Селевер</a></td>-->
+                <!--<td>Одесса 1</td>-->
+                <!--<td>Jun 21, 2017</td>-->
+                <!--<td>-->
+                    <!--<div id="tdStatus">-->
+                    <!--<span class="status text-info"-->
+                        <!--&gt;&bull;</span>-->
+                    <!--<a href="#"-->
+                       <!--id="orderStatus"-->
+                       <!--data-toggle="modal"-->
+                       <!--data-target="#changeOrderStatusModal">-->
+                        <!--Упакован-->
+                    <!--</a>-->
+                    <!--</div>-->
+                <!--</td>-->
+                <!--<td>$1,260</td>-->
+                <!--<td><a href="#" class="view" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE5C8;</i></a>-->
+                <!--</td>-->
+                <!--<td><a href="#" class="delete" title="Delete Order" data-toggle="tooltip"><i class="material-icons">&#xe5cd;</i></a>-->
+                <!--</td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+                <!--<td>3</td>-->
+                <!--<td><a href="#">Антон Пахомов</a></td>-->
+                <!--<td>Харьков 3</td>-->
+                <!--<td>Jul 04, 2017</td>-->
+                <!--<td><span class="status text-danger">&bull;</span> Ждет оплаты</td>-->
+                <!--<td>$350</td>-->
+                <!--<td><a href="#" class="view" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE5C8;</i></a>-->
+                <!--</td>-->
+                <!--<td><a href="#" class="delete" title="Delete Order" data-toggle="tooltip"><i class="material-icons">&#xe5cd;</i></a>-->
+                <!--</td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+                <!--<td>4</td>-->
+                <!--<td><a href="#">Степан Бендера</a></td>-->
+                <!--<td>Калиновка 1</td>-->
+                <!--<td>Jul 16, 2017</td>-->
+                <!--<td><span class="status text-warning">&bull;</span> Подтвержден</td>-->
+                <!--<td>$1,572</td>-->
+                <!--<td><a href="#" class="view" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE5C8;</i></a>-->
+                <!--</td>-->
+                <!--<td><a href="#" class="delete" title="Delete Order" data-toggle="tooltip"><i class="material-icons">&#xe5cd;</i></a>-->
+                <!--</td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+                <!--<td>5</td>-->
+                <!--<td><a href="#">Андрей Зоров</a></td>-->
+                <!--<td>Измаил 8</td>-->
+                <!--<td>Aug 04, 2017</td>-->
+                <!--<td><span class="status text-success">&bull;</span> Выполнен</td>-->
+                <!--<td>$580</td>-->
+                <!--<td><a href="#" class="view" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE5C8;</i></a>-->
+                <!--</td>-->
+                <!--<td><a href="#" class="delete" title="Delete Order" data-toggle="tooltip"><i class="material-icons">&#xe5cd;</i></a>-->
+                <!--</td>-->
+            <!--</tr>-->
             </tbody>
         </table>
 
