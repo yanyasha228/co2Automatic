@@ -4,8 +4,8 @@
 <head>
     <div th:replace="allPagesTemplates :: all_pages_head_data"></div>
     <link rel="stylesheet" th:href="@{/csssource/item_list_stylesheet.css}">
-    <script th:src="@{/jssource/item_list_js.js}"></script>
-
+    <script th:src="@{/jssource/product_items_list_js.js}"></script>
+    <script th:src="@{/jssource/utils.js}"></script>
 </head>
 
 
@@ -71,7 +71,7 @@
                     <div class="filter-group">
                         <label>Имя</label>
                         <input th:value="${productNameSearchInput}" type="text" name="productNameSearchInput"
-                               class="form-control" id="productNameSearchInput">
+                               class="form-control product-dropdown-search-input" id="productNameSearchInput">
                         <ul class="list-group product-search-res" id="searchProductResult"></ul>
                     </div>
                 </form>

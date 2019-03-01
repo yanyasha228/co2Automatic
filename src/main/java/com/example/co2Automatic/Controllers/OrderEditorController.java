@@ -88,7 +88,8 @@ public class OrderEditorController {
     }
 
 
-    @ExceptionHandler({ImpossibleSettingException.class, InsufficientAmountException.class})
+    @ExceptionHandler({ImpossibleSettingException.class,
+            InsufficientAmountException.class})
     public String handleOrderManipulationException(Model model ,Exception ex) {
         logger.error(ex.toString());
 

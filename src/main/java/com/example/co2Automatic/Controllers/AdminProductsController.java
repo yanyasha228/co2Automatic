@@ -74,7 +74,7 @@ public class AdminProductsController {
         return "products";
     }
 
-    @GetMapping("delete")
+    @PostMapping("delete")
     String deleteProduct(Model model, @RequestParam Long id){
 
         if(productService.findById(id).isPresent()){

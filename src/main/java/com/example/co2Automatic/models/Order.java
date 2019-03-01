@@ -31,7 +31,7 @@ public class Order implements Serializable {
     private String deliveryPlace;
 
     @Column(name = "delivery_place_warehouse_number")
-    private int deliveryPlaceWarehouseNumber;
+    private Integer deliveryPlaceWarehouseNumber;
 
     @Column(name = "delivery_date")
     @Temporal(TemporalType.TIMESTAMP)
@@ -87,7 +87,7 @@ public class Order implements Serializable {
     @Getter(AccessLevel.PROTECTED)
     private Set<OrderLine> orderLines = new HashSet<>();
 
-    public Set<OrderLine> getOrderLinesImmutable(){
+    public Set<OrderLine> getOrderLinesImmutable() {
         return Collections.unmodifiableSet(orderLines);
     }
 
@@ -98,6 +98,13 @@ public class Order implements Serializable {
         } else {
             throw new ImpossibleSettingException("Orderlines Set is't empty! " +
                     "You have to empty it using one of the removal methods provided by OrderLineService!");
+        }
+    }
+
+    public void setClient(Client client) {
+        if (client != null && !client.equals(this.client)) {
+          this.client = client;
+          client.getClientsOrders().add(this);
         }
     }
 //

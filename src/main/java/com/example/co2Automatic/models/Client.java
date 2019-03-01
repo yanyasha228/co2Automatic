@@ -41,7 +41,7 @@ public class Client implements Serializable {
     private ClientStatus clientStatus;
 
     @Column(name = "usual_warehouse_number")
-    private int usualWarehouseNumber;
+    private Integer usualWarehouseNumber;
 
     @Column(name = "creation_date")
     @Temporal(TemporalType.TIMESTAMP)
@@ -51,7 +51,7 @@ public class Client implements Serializable {
 //    private boolean wholesaler;
 
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(mappedBy = "client")
+    @OneToMany(mappedBy = "client" , cascade = CascadeType.ALL)
     private List<Order> clientsOrders = new ArrayList<Order>();
 
     @PrePersist
