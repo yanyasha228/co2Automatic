@@ -94,7 +94,20 @@
                 th:text="${order.getClient().getName() + order.getClient().getLastName()}"></a></td>
                 <td th:text="${order.getDeliveryPlace() + ' ' + order.getDeliveryPlaceWarehouseNumber()}"></td>
                 <td th:text="${#dates.format(order.getDeliveryDate(), 'yyyy-MM-dd')}"></td>
-                <td><span class="status text-success">&bull;</span>Выполнен</td>
+                <td>
+                    <div id="tdStatus">
+                    <span class="status text-info"
+                    >&bull;</span>
+                        <a href="#"
+                           th:data-orderId="${order.getId()}"
+                           th:data-previousStatus="${order.getOrderStatus()}"
+                           id="orderStatus"
+                           data-toggle="modal"
+                           data-target="#changeOrderStatusModal">
+                            Упакован
+                        </a>
+                    </div>
+                </td>
                 <td>$254</td>
                 <td><a href="#" class="view" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE5C8;</i></a>
                 </td>

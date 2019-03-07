@@ -1,4 +1,5 @@
 package com.example.co2Automatic.configs;
+
 import com.example.co2Automatic.services.UserService;
 import com.example.co2Automatic.services.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+        http.csrf().disable()
                 .authorizeRequests().anyRequest().permitAll();
 //                .antMatchers("/**").permitAll();
 //                .anyRequest().authenticated()

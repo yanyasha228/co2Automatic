@@ -687,4 +687,17 @@ $(function () {
 
     }
 
+
+    $(document).on('show.bs.modal', '#changeOrderStatusModal', function (event) {
+        var referrerItem = $(event.relatedTarget); // Button that triggered the modal
+
+        var productId = referrerItem.data('product-id');
+        var productName = referrerItem.data('product-name');// Extract productId from data-* attributes
+
+        var deleteProductLink = location.origin + "/admin/products/delete?id=" + productId;
+
+        var modal = $(this);
+        modal.find('#deleteProductNameModalLabel').text(productName);
+        modal.find('#deleteProductLink').attr("data-prodIdToDelete", productId)
+    });
 });

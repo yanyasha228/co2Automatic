@@ -108,6 +108,7 @@ public class OrderServiceImpl implements OrderService {
         order.setDeliveryPlaceWarehouseNumber(inputWarehouseNumber);
         order.setPaymentMethod(inputPaymentMethod);
         order.setOrderComment(inputOrderComment);
+        order.setOrderStatus(OrderStatus.CONFIRMED);
 
 
         Set<OrderLine> orderLines = new HashSet<OrderLine>();

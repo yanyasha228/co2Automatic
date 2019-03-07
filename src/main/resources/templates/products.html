@@ -4,7 +4,7 @@
 <head>
     <div th:replace="allPagesTemplates :: all_pages_head_data"></div>
     <link rel="stylesheet" th:href="@{/csssource/item_list_stylesheet.css}">
-    <script th:src="@{/jssource/product_items_list_js.js}"></script>
+    <script th:src="@{/jssource/products_page.js}"></script>
     <script th:src="@{/jssource/utils.js}"></script>
 </head>
 
@@ -223,7 +223,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">Нет</button>
-                <a href="#" id="deleteProductLink" class="btn btn-secondary">Да</a>
+                <button type="button" id="deleteProductLink" data-prod-id="" class="btn btn-secondary">Да</button>
 
             </div>
         </div>

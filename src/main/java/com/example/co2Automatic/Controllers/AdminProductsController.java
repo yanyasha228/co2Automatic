@@ -74,15 +74,6 @@ public class AdminProductsController {
         return "products";
     }
 
-    @PostMapping("delete")
-    String deleteProduct(Model model, @RequestParam Long id){
-
-        if(productService.findById(id).isPresent()){
-            productService.deleteById(id);
-        }
-
-        return "redirect:../products";
-    }
 
 
 }
