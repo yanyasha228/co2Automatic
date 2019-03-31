@@ -19,8 +19,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/admin/products")
-public class AdminProductsController {
+@RequestMapping("/products")
+public class ProductsController {
 
 
     @Autowired
@@ -35,7 +35,7 @@ public class AdminProductsController {
 //    @Autowired
 //    private ProductListPageHelper productListPageHelper;
 
-    @RequestMapping
+    @GetMapping
     public String productsList(Model model,
                                @PageableDefault(sort = {"id"} , direction = Sort.Direction.ASC ,size = 5) Pageable pageable,
                                @RequestParam Optional<ProductStock> productStockSorting,

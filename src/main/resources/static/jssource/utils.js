@@ -110,7 +110,7 @@
         var searchField = $(this).val();
 
         if (searchField.length > 1) {
-            $.getJSON(location.origin + "/admin/products/getProductsByNonFullName?search_S=" + searchField, function (data) {
+            $.getJSON(location.origin + "/restApi/products/?nonFullProductName=" + searchField, function (data) {
                 $.each(data, function (key, value) {
 
                     searchList.append('<li class="list-group-item product-search-res-item" data-prodid = "' + value.id + '"><div class="row"' +

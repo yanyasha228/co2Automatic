@@ -11,8 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/admin/products/editProduct")
-public class AdminProductEditorController {
+@RequestMapping("products/{id}/edit")
+public class ProductEditorController {
 
     @Autowired
     ProductService productService;
@@ -21,13 +21,13 @@ public class AdminProductEditorController {
     ProductCategoryService productCategoryService;
 
     @GetMapping
-    public String editProduct(Model model, @RequestParam(required = false , defaultValue = "0") Long id) {
+    public String editProduct(Model model, @PathVariable Long id) {
 
         Product productToEdit = productService.findById(id).orElse(new Product());
 
-            model.addAttribute("product", productToEdit);
-            model.addAttribute("productCategories", productCategoryService.findAll());
-            return "editProduct";
+        model.addAttribute("product", productToEdit);
+        model.addAttribute("productCategories", productCategoryService.findAll());
+        return "editProduct";
     }
 
     @PostMapping("submit")

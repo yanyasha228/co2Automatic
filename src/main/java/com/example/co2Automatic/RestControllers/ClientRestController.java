@@ -15,15 +15,18 @@ public class ClientRestController {
     @Autowired
     ClientService clientService;
 
-    @RequestMapping(value = "/getClientsByNoNFullPhoneNumber", method = RequestMethod.GET)
-    public List<Client> getClientsByNoNFullPhoneNumber(@RequestParam(value = "search_S") String nonFullPhoneNUmber) {
-
+    @GetMapping(params = "notFullClientPhoneNumber")
+    public List<Client> getClientsByNoNFullPhoneNumber(@RequestParam(value = "notFullClientPhoneNumber") String nonFullPhoneNUmber) {
         return clientService.findClientsByNoNFullPhoneNumber(nonFullPhoneNUmber);
-
     }
 
-    @RequestMapping(value = "/getClientById", method = RequestMethod.GET)
-    public Client getClientById(@RequestParam(value = "search_Id") Long id) {
+    @GetMapping(params = "clientPhoneNumber")
+    public List<Client> getClientByPhoneNumber(@RequestParam(value = "clientPhoneNumber") String nonFullPhoneNUmber) {
+        return clientService.findClientsByNoNFullPhoneNumber(nonFullPhoneNUmber);
+    }
+
+    @GetMapping(value = "/{id}")
+    public Client getClientById(@PathVariable Long id) {
 
         return clientService.findById(id).orElse(null);
     }

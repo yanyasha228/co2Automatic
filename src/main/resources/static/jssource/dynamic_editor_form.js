@@ -28,11 +28,11 @@ $(function () {
     $(document).ready(function () {
 
         var clientDomId = $('#clientId').val();
-        $.getJSON(location.origin + "/restApi/AppSettings/getAppSettings", function (settingsData) {
+        $.getJSON(location.origin + "/restApi/AppSettings", function (settingsData) {
             appSettings = settingsData;
         });
 
-        $.getJSON(location.origin + "/restApi/clients/getClientById?search_Id=" + clientDomId).done(function (clientData) {
+        $.getJSON(location.origin + "/restApi/clients/" + clientDomId).done(function (clientData) {
             client = clientData;
         });
 
@@ -174,7 +174,7 @@ $(function () {
             searchList.html('');
 //////Validirovat searchSend !!!!!!!!!!!!!!!!
             if (searchField.length > 1) {
-                $.getJSON(location.origin + "/restApi/products/getProductsByNonFullName?search_S=" + searchField, function (data) {
+                $.getJSON(location.origin + "/restApi/products/?nonFullProductName=" + searchField, function (data) {
                     $.each(data, function (key, value) {
                         validateProductForView(value);
                         searchList.append('<li class="list-group-item product-search-editor-res-item" tabindex ="' + key + '" id="orderLineItem" data-prodid = "' + value.id + '">' +
@@ -234,7 +234,7 @@ $(function () {
 
         searchField = encodeRequestReservedSymbols(searchField);
 
-        $.getJSON(location.origin + "/restApi/products/getProductByName?search_S=" + searchField).done(function (d) {
+        $.getJSON(location.origin + "/restApi/products?productName=" + searchField).done(function (d) {
             var inputEntryDom = inputField.parents('.entry:first');
             if (addOrderLineInModel(d, inputEntryDom)) {
 
@@ -446,7 +446,7 @@ $(function () {
 
                 dataForSending = $phone.val().replace(DCode, '').replace(/\s/g, '');
 
-                $.getJSON(location.origin + "/restApi/clients/getClientsByNoNFullPhoneNumber?search_S=" + dataForSending, function (data) {
+                $.getJSON(location.origin + "/restApi/clients?notFullClientPhoneNumber=" + dataForSending, function (data) {
                     $.each(data, function (key, value) {
                         searchList.append('<li class="list-group-item clients-search-editor-res-item" tabindex ="' + key + '" id="clientItem" data-clientid = "' + value.id + '">' +
                             '<div class="form-row">' +
@@ -497,7 +497,7 @@ $(function () {
     function validateAndCloseClientList(searchList, searchInput, selectedItem) {
         var clientItemId = selectedItem.data('clientid');
 
-        $.getJSON(location.origin + "/restApi/clients/getClientById?search_Id=" + clientItemId).done(function (clientData) {
+        $.getJSON(location.origin + "/restApi/clients/" + clientItemId).done(function (clientData) {
             client = clientData;
             syncModelClientWithView();
             syncModelAndViewOrderLinesPrices();

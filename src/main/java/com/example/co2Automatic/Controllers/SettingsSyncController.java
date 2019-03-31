@@ -18,8 +18,8 @@ import javax.xml.bind.JAXBException;
 import java.nio.charset.Charset;
 
 @Controller
-@RequestMapping("admin/settings/sync")
-public class AdminSettingsSyncController {
+@RequestMapping("settings/sync")
+public class SettingsSyncController {
 
     @Autowired
     ProductsTableValidator productsTableValidator;

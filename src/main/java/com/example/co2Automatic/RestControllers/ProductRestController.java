@@ -17,27 +17,27 @@ public class ProductRestController {
     @Autowired
     ProductService productService;
 
-    @RequestMapping(value = "/getProductsByNonFullName", method = RequestMethod.GET)
-    public List<Product> getProductsByNonFullName(@RequestParam(value = "search_S") String nonFullNameString) {
+    @GetMapping(params = "nonFullProductName")
+    public List<Product> getProductsByNonFullName(@RequestParam(value = "nonFullProductName") String nonFullNameString) {
         return productService.findProductByNonFullProductNameRegardlessOfTheWordsOrder(nonFullNameString);
 
     }
 
-    @RequestMapping(value = "/getProductByName", method = RequestMethod.GET)
-    public Product getProductByName(@RequestParam(value = "search_S") String productName) {
+    @GetMapping(params = "productName")
+    public Product getProductByName(@RequestParam(value = "productName") String productName) {
 
         return productService.findByProductName(productName).orElse(null);
     }
 
 
-    @RequestMapping(value = "/getProductById", method = RequestMethod.GET)
-    public Product getProductById(@RequestParam(value = "search_Id") Long id) {
+    @GetMapping(value = "/{id}")
+    public Product getProductById(@PathVariable Long id) {
 
         return productService.findById(id).orElse(null);
     }
 
-    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
-    public Product deleteProduct(@RequestParam Long id) {
+    @DeleteMapping(value = "/{id}")
+    public Product deleteProduct(@PathVariable Long id) {
         Optional<Product> productForDel = productService.findById(id);
         if (productForDel.isPresent()) {
             productService.deleteById(id);
@@ -45,4 +45,5 @@ public class ProductRestController {
 
         return productForDel.orElse(null);
     }
+
 }

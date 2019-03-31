@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("admin/settings/exchangeRates")
-public class AdminSettingsExchangeRatesController {
+@RequestMapping("settings/exchangeRates")
+public class SettingsExchangeRatesController {
 
     @Autowired
     private ApplicationSettingsDataModelService applicationSettingsDataModelService;
