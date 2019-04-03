@@ -5,22 +5,19 @@ import com.example.co2Automatic.CustomExceptions.InsufficientAmountException;
 import com.example.co2Automatic.models.Client;
 import com.example.co2Automatic.models.Order;
 import com.example.co2Automatic.models.PaymentMethod;
-import com.example.co2Automatic.models.Product;
 import com.example.co2Automatic.services.ClientService;
 import com.example.co2Automatic.services.OrderService;
 import com.example.co2Automatic.services.ProductService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
-import java.util.List;
 
 @Controller
-@RequestMapping("/editOrder")
+@RequestMapping("order/{id}/edit")
 public class OrderEditorController {
 
     private static final Logger logger = Logger.getLogger(OrderEditorController.class);
@@ -35,7 +32,7 @@ public class OrderEditorController {
     ClientService clientService;
 
     @RequestMapping
-    public String editorPage(Model model, @RequestParam(required = false) Long orderId) {
+    public String editorPage(Model model, @PathVariable Long orderId) {
 
         if (orderId != null) {
             Order order = orderService.findById(orderId).orElse(new Order());
@@ -47,7 +44,7 @@ public class OrderEditorController {
         model.addAttribute("order", ord);
         model.addAttribute("client", new Client());
 
-        return "editOrder";
+        return "editOrCreateOrder";
     }
 
     @RequestMapping(value = "/submit", method = RequestMethod.GET)

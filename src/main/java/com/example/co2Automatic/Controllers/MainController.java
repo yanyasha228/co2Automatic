@@ -18,17 +18,10 @@ public class MainController {
     @Autowired
     private UserService userService;
 
-
-    @Autowired
-    private OrderService orderService;
-
-
     @RequestMapping
     public String mainPage(Model model) {
-        List<Order> orderList = orderService.getAllOrders();
-        model.addAttribute("orders", orderList);
 
-        return "main";
+        return "redirect:/orders";
     }
 
 

@@ -74,6 +74,13 @@ public class ProductsController {
         return "products";
     }
 
+    @GetMapping
+    public String createProduct(){
+
+        return "createProduct";
+
+    }
+
 
 
 }

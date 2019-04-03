@@ -21,7 +21,7 @@
                 <h2>Co2 <b>Товары</b></h2>
             </div>
             <div class="col-sm-8">
-                <a th:href="@{editProduct}" class="btn btn-add"><i class="material-icons">&#xe147;</i>
+                <a th:href="@{products/create}" class="btn btn-add"><i class="material-icons">&#xe147;</i>
                     <span>Добавить</span></a>
                 <a th:href="@{${#httpServletRequest.requestURI}}" class="btn btn-primary"><i class="material-icons">&#xE863;</i>
                     <span>Обновить</span></a>
@@ -36,25 +36,25 @@
                 <div class="show-entries">
                     <span>Кол-во</span>
                     <select id="selectPageSize" class="form-control" onchange="location = this.value;">
-                        <option th:value="@{/admin/products(
+                        <option th:value="@{/products(
                         productStockSorting = ${productStockSorting != null ? productStockSorting.name() : ''},
                              productCategorySortingId = ${productCategorySortingId} ,
                              productNameSearchInput = ${productNameSearchInput})}"
                                 th:selected="${productsPage.getSize() == 5}">5
                         </option>
-                        <option th:value="@{/admin/products(size=10 ,
+                        <option th:value="@{/products(size=10 ,
                              productStockSorting = ${productStockSorting != null ? productStockSorting.name() : ''},
                              productCategorySortingId = ${productCategorySortingId} ,
                              productNameSearchInput = ${productNameSearchInput})}"
                                 th:selected="${productsPage.getSize() == 10}">10
                         </option>
-                        <option th:value="@{/admin/products(size=15 ,
+                        <option th:value="@{/products(size=15 ,
                              productStockSorting = ${productStockSorting != null ? productStockSorting.name() : ''},
                              productCategorySortingId = ${productCategorySortingId} ,
                              productNameSearchInput = ${productNameSearchInput})}"
                                 th:selected="${productsPage.getSize() == 15}">15
                         </option>
-                        <option th:value="@{/admin/products(size=20 ,
+                        <option th:value="@{/products(size=20 ,
                              productStockSorting = ${productStockSorting != null ? productStockSorting.name() : ''},
                              productCategorySortingId = ${productCategorySortingId} ,
                              productNameSearchInput = ${productNameSearchInput})}"
@@ -65,7 +65,7 @@
                 </div>
             </div>
             <div class="col-sm-9">
-                <form th:action="@{/admin/products}" method="get" role="form" autocomplete="off">
+                <form th:action="@{/products}" method="get" role="form" autocomplete="off">
                     <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i>
                     </button>
                     <div class="filter-group">
@@ -80,14 +80,14 @@
                     <label>Категория</label>
                     <select id="selectProductsCategory" class="form-control" onchange="location = this.value;">
                         <option
-                                th:value="@{/admin/products(size=${productsPage.getSize()} ,
+                                th:value="@{/products(size=${productsPage.getSize()} ,
                              productStockSorting = ${productStockSorting != null ? productStockSorting.name() : ''},
                              productCategorySortingId = 0,
                              productNameSearchInput = ${productNameSearchInput})}"
                                 th:selected="${productCategorySortingId == 0}">Все
                         </option>
                         <option th:each="productCategory : ${productCategories}"
-                                th:value="@{/admin/products(
+                                th:value="@{/products(
                                         size=${productsPage.getSize()} ,
                              productStockSorting = ${productStockSorting != null ? productStockSorting.name() : ''},
                              productCategorySortingId = ${productCategory.getId()},
@@ -102,7 +102,7 @@
                     <label>Склад</label>
                     <select id="selectProductStockSorting" class="form-control"
                             onchange="location = this.value;">
-                        <option th:value="@{/admin/products(
+                        <option th:value="@{/products(
                                         size=${productsPage.getSize()} ,
                              productStockSorting = '',
                              productCategorySortingId = ${productCategorySortingId} ,
@@ -110,7 +110,7 @@
                                 th:selected="${productStockSorting == null}">Все
                         </option>
                         <option th:each="productStock : ${T(com.example.co2Automatic.models.ProductStock).values()}"
-                                th:value="@{/admin/products(
+                                th:value="@{/products(
                                         size=${productsPage.getSize()} ,
                              productStockSorting = ${productStock},
                              productCategorySortingId = ${productCategorySortingId} ,
@@ -143,13 +143,13 @@
             <td th:text="${product.getId()}"></td>
             <td><img th:src="@{${product.getImageUrls().iterator().next()}}" width="70" height="70" class="avatar"
                      alt="Avatar"><br><a
-                    th:href="@{'/admin/products/editProduct' + '?id=' + ${product.getId()}}"
+                    th:href="@{'/products/editProduct' + '?id=' + ${product.getId()}}"
                     th:text="${product.getName()}"></a></td>
             <td th:text="${product.getQuantity()}">-</td>
             <td th:text="${#dates.format(product.getLastUpdatingDate(), 'yyyy-MM-dd')}"></td>
             <td th:text="${product.getPrice() + ' ' + product.getCurrency().getCurrencySymbol()}">-</td>
             <td th:text="${product.getWholeSalePrice() + ' ' + product.getCurrency().getCurrencySymbol()}">-</td>
-            <td><a th:href="@{'/admin/products/editProduct' + '?id=' + ${product.getId()}}" class="view"
+            <td><a th:href="@{'/products/editProduct' + '?id=' + ${product.getId()}}" class="view"
                    title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE5C8;</i></a>
             </td>
 
@@ -170,13 +170,13 @@
         <div class="hint-text">Показано <b>5</b> из <b>25</b> заказов</div>
         <ul class="pagination">
             <li class="page-item"><a
-                    th:href="@{/admin/products(size=${productsPage.getSize()} ,
+                    th:href="@{/products(size=${productsPage.getSize()} ,
                              productStockSorting = ${productStockSorting != null ? productStockSorting.name() : ''},
                              productCategorySortingId = ${productCategorySortingId} ,
                              productNameSearchInput = ${productNameSearchInput})}"
                     class="page-link"> << </a></li>
             <li class="page-item"><a
-                    th:href="@{/admin/products(page = ${productsPage.getNumber() - 1},
+                    th:href="@{/products(page = ${productsPage.getNumber() - 1},
                                         size=${productsPage.getSize()} ,
                              productStockSorting = ${productStockSorting != null ? productStockSorting.name() : ''},
                              productCategorySortingId = ${productCategorySortingId},
@@ -186,7 +186,7 @@
             <li class="page-item active"><a class="page-link"
                                             th:text="${productsPage.getNumber()}"></a></li>
             <li class="page-item"><a
-                    th:href="@{/admin/products(page = ${productsPage.getNumber() + 1},
+                    th:href="@{/products(page = ${productsPage.getNumber() + 1},
                                         size=${productsPage.getSize()} ,
                              productStockSorting = ${productStockSorting != null ? productStockSorting.name() : ''},
                              productCategorySortingId = ${productCategorySortingId},
@@ -195,7 +195,7 @@
                     class="page-link"> > </a></li>
 
             <li class="page-item"><a
-                    th:href="@{/admin/products(page = ${productsPage.getTotalPages() - 1},
+                    th:href="@{/products(page = ${productsPage.getTotalPages() - 1},
                                         size=${productsPage.getSize()} ,
                              productStockSorting = ${productStockSorting != null ? productStockSorting.name() : ''},
                              productCategorySortingId = ${productCategorySortingId},
