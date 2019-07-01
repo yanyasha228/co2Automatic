@@ -2,7 +2,7 @@ package com.example.co2Automatic.Dao;
 
 import com.example.co2Automatic.models.Product;
 import com.example.co2Automatic.models.ProductCategory;
-import com.example.co2Automatic.models.ProductStock;
+import com.example.co2Automatic.models.ModelEnums.ProductStock;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -38,6 +38,11 @@ body {
     font-size: 20px;
 }
 
+.carousel-item img{
+    width: auto;
+    height: auto;
+}
+
 .order-edit-group {
     position: absolute;
     width: 100%;
@@ -81,13 +86,13 @@ body {
 /*border-color: #ebebeb;*/
 /*}*/
 
-/*.selected-list-item{*/
-/*background: #c9cccf;*/
-/*cursor: pointer;*/
-/*border-radius:3px;*/
-/*-moz-border-radius:3px;*/
-/*-webkit-border-radius:3px;*/
-/*}*/
+.selected-list-item{
+background: #c9cccf;
+cursor: pointer;
+border-radius:3px;
+-moz-border-radius:3px;
+-webkit-border-radius:3px;
+}
 
 
 .product-search-editor-res-item:hover {

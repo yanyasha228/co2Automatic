@@ -1,13 +1,18 @@
 package com.example.co2Automatic.models;
 
-import com.example.co2Automatic.CustomExceptions.ImpossibleSettingException;
+import com.example.co2Automatic.HelpUtils.CustomExceptions.ImpossibleSettingException;
+import com.example.co2Automatic.models.ModelEnums.OrderStatus;
+import com.example.co2Automatic.models.ModelEnums.PaymentMethod;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 
 @Data
@@ -15,13 +20,20 @@ import java.util.*;
 @Table(name = "orders")
 public class Order implements Serializable {
 
+    public Order(){
+
+        this.client = new Client();
+        this.deliveryDate = LocalDate.now();
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "client_id", referencedColumnName = "id")
+
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
+    @JoinColumn(name = "client_id", referencedColumnName = "id" , updatable = false)
     private Client client;
 
     @Column(name = "order_comment")
@@ -34,8 +46,13 @@ public class Order implements Serializable {
     private Integer deliveryPlaceWarehouseNumber;
 
     @Column(name = "delivery_date")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date deliveryDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate deliveryDate;
+
+    @Column(name = "order_creation_date" , updatable = false)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate orderCreationDate;
+
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "manager", referencedColumnName = "id")
@@ -48,15 +65,17 @@ public class Order implements Serializable {
     @Column(name = "order_volume_general")
     private double OrderVolumeGeneral;
 
-    @Column(name = "order_summary_price")
-    private double orderSummaryPrice;
+    @Column(name = "summary_price")
+    private double summaryPrice;
 
     @Column(name = "order_weight")
-    private double OrderWeight;
+    private double orderWeight;
+
+    private double discount;
 
     @Column(name = "payment_method")
     @Enumerated(EnumType.STRING)
-    private PaymentMethod paymentMethod;
+    private PaymentMethod paymentMethod = PaymentMethod.COD;
 
 
 //    @ManyToMany
@@ -85,12 +104,15 @@ public class Order implements Serializable {
     @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @Setter(AccessLevel.NONE)
     @Getter(AccessLevel.PROTECTED)
-    private Set<OrderLine> orderLines = new HashSet<>();
+    private List<OrderLine> orderLines = new ArrayList<>();
 
-    public Set<OrderLine> getOrderLinesImmutable() {
-        return Collections.unmodifiableSet(orderLines);
+    public List<OrderLine> getOrderLinesImmutable() {
+        return Collections.unmodifiableList(orderLines);
     }
 
+    public List<OrderLine> getOrderLines(){
+        return orderLines;
+    }
     public void setOrderLines(Set<OrderLine> orderLines) throws ImpossibleSettingException {
         if (this.orderLines.isEmpty()) {
             orderLines.forEach(orderLine -> orderLine.setOrder(this));
@@ -109,13 +131,9 @@ public class Order implements Serializable {
     }
 //
 
-    @Column(name = "order_creation_date")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date orderCreationDate;
-
     @PrePersist
     protected void onPersist() {
-        orderCreationDate = new Date();
+        orderCreationDate = LocalDate.now();
     }
 
 }

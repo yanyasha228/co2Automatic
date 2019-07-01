@@ -1,9 +1,8 @@
 package com.example.co2Automatic.Controllers;
 
-import com.example.co2Automatic.ControllerHelpers.ProductListPageHelper;
-import com.example.co2Automatic.SystemComponents.ApplicationSettingsData;
 import com.example.co2Automatic.models.Product;
-import com.example.co2Automatic.models.ProductStock;
+import com.example.co2Automatic.models.ModelEnums.ProductStock;
+import com.example.co2Automatic.services.AppSettingsModelService;
 import com.example.co2Automatic.services.ProductCategoryService;
 import com.example.co2Automatic.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +12,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -30,7 +30,7 @@ public class ProductsController {
     private ProductCategoryService productCategoryService;
 
     @Autowired
-    ApplicationSettingsData applicationSettingsData;
+    private AppSettingsModelService appSettingsModelService;
 
 //    @Autowired
 //    private ProductListPageHelper productListPageHelper;
@@ -52,8 +52,8 @@ public class ProductsController {
                 productCategoryService.findById(productCategorySortingId.orElse(0)).orElse(null),
                 productNameSearchInput.orElse(""));
 
-//        Double eurCurrency = adminSettings.getEur_currency();
-//        Double usdCurrency = adminSettings.getUsd_currency();
+//        Double eurCurrency = adminSettings.getEurCurrency();
+//        Double usdCurrency = adminSettings.getUsdCurrency();
 
         model.addAttribute("productStockSorting" , productStockSorting.orElse(null));
 
@@ -72,13 +72,6 @@ public class ProductsController {
         model.addAttribute("productCategories" , productCategoryService.findAll());
 
         return "products";
-    }
-
-    @GetMapping
-    public String createProduct(){
-
-        return "createProduct";
-
     }
 
 

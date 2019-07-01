@@ -1,5 +1,4 @@
 
-
     function numValidDouble(input) {
         $(input).keydown(function (event) {
             // Разрешаем: backspace, delete, tab, escape , "."

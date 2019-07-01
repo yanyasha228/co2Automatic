@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+
+<head>
+    <div th:replace="allPagesTemplates :: all_pages_head_data"></div>
+
+    <link rel="stylesheet" th:href="@{/htmlhelpers/intl-tel-input/build/css/intlTelInput.css}">
+    <script type="text/javascript" th:src="@{/htmlhelpers/intl-tel-input/build/js/intlTelInput-jquery.js}"></script>
+    <script type="text/javascript" th:src="@{/jssource/utils.js}"></script>
+    <script type="text/javascript" th:src="@{/jssource/create_order.js}"></script>
+
+
+</head>
+<body>
+<div th:replace="allPagesTemplates :: navBar"></div>
+
+
+<div class="container">
+    <div class="row">
+        <div class="control-group order-edit-group" id="fields">
+            <div class="controls">
+                <form id="orderForm" th:action="@{create/submit}" th:object="${order}" method="get" role="form"
+                      autocomplete="off">
+
+                    <input hidden
+                           th:field="*{id}">
+
+                    <input hidden
+                           th:id="clientId"
+                           th:field="${client.id}">
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <div class="form-row">
+                                <div class="form-group col-md-6" id="copyNumberDiv">
+                                    <div class="form-row">
+
+                                        <div class="col-sm">
+                                            <label th:for="clientPhoneNumber">Номер телефона:</label>
+
+                                        </div>
+
+                                        <div class="col-sm align-self-right">
+                                            <button id="copyNumberButton" class="btn btn-fail" type="button">
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <input
+                                            type="text"
+                                            class="form-control is-invalid"
+                                            th:name="client.phoneNumber"
+                                            th:id="clientPhoneNumber"
+                                            th:filed="${client.phoneNumber}">
+
+                                    <ul class="list-group clients-search-editor-res" id="searchClientsResult"></ul>
+                                </div>
+
+
+                                <div class="form-group col-md-5">
+                                    <div class="form-row">
+
+                                        <div class="col-sm">
+                                            <label th:for="clientEmail">Email:</label>
+
+                                        </div>
+
+                                        <div class="col-sm align-self-right">
+
+                                        </div>
+                                    </div>
+                                    <input
+                                            type="email"
+                                            class="form-control"
+                                            th:id="clientEmail"
+                                            th:field="${client.email}">
+                                </div>
+
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-6"><label th:for="deliveryDate">Дата отправки</label>
+                                    <input
+                                            type="date"
+                                            class="form-control"
+                                            th:field="*{deliveryDate}">
+                                </div>
+                                <div class="form-group col-md-6"><label th:for="*{paymentMethod}">Способ оплаты</label>
+                                    <select
+                                            th:field="*{paymentMethod}"
+                                            class="form-control">
+
+                                        <option th:each="paymMeth : ${T(com.example.co2Automatic.models.ModelEnums.PaymentMethod).values()}"
+                                                th:value="${paymMeth}"
+                                                th:text="${paymMeth}"
+                                                th:selected="${order.getPaymentMethod().name().equalsIgnoreCase(paymMeth)}">
+                                        </option>
+
+                                    </select></div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-4"><label th:for="${client.name}">Имя</label> <input
+                                        type="text"
+                                        class="form-control is-invalid"
+                                        th:id="clientName"
+                                        th:field="${client.name}"
+                                        placeholder="Имя">
+                                </div>
+                                <div class="form-group col-md-4"><label th:for="${client.lastName}">Фамилия</label>
+                                    <input th:id="clientLastName"
+                                           type="text" class="form-control is-invalid" th:field="${client.lastName}"
+                                           placeholder="Фамилия"></div>
+
+                                <div class="form-group col-md-4"><label th:for="${client.middleName}">Отчество</label>
+                                    <input th:id="clientMiddleName"
+                                           type="text" class="form-control is-invalid" th:field="${client.middleName}"
+                                           placeholder="Отчество"></div>
+                            </div>
+
+
+                            <div class="form-row">
+                                <div class="form-group col-md-8"><label th:for="*{deliveryPlace}">Населенный
+                                    пункт</label> <input
+                                        type="text"
+                                        class="form-control is-invalid"
+                                        th:field="*{deliveryPlace}">
+                                </div>
+                                <!--!!!!!!!!!!!!!!!!!!!!Dont forget trans field to the ClientModel!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
+                                <div class="form-group col-md-2">
+                                    <label th:for="*{deliveryPlaceWarehouseNumber}">№</label>
+                                    <input type="number" class="form-control is-invalid"
+                                           th:field="*{deliveryPlaceWarehouseNumber}"
+                                           onclick="numValid(this)">
+                                </div>
+
+                                <div class="form-group col-md-2">
+                                    <label th:for="*{orderWeight}">Вес</label>
+                                    <input type="number" class="form-control is-invalid"
+                                           th:field="*{orderWeight}"
+                                           onclick="numValidDouble(this)">
+                                </div>
+                            </div>
+                            <!--<div class="form-row">-->
+                            <!--&lt;!&ndash;<div class="form-group col-md-1">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<label for="inputWidth">Ширина:</label>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<input type="text" class="form-control" id="inputWidth" onclick="numValidDouble(this)">&ndash;&gt;-->
+                            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<div class="form-group col-md-1">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<label for="inputLength">Длина:</label>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<input type="text" class="form-control" id="inputLength" onclick="numValidDouble(this)">&ndash;&gt;-->
+                            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<div class="form-group col-md-1">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<label for="inputHeight">Высота:</label>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<input type="text" class="form-control" id="inputHeight" onclick="numValidDouble(this)">&ndash;&gt;-->
+                            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                            <!--<div class="form-group col-md-3">-->
+                            <!--<label for="inputWeight">Вес:</label>-->
+                            <!--<input type="text" class="form-control" name="inputWeight" id="inputWeight"-->
+                            <!--onclick="numValidDouble(this)">-->
+                            <!--</div>-->
+                            <!--<div class="form-group col-md-3">-->
+                            <!--<label for="inputVolume">Обьем:</label>-->
+                            <!--<input type="text" class="form-control" name="inputVolume" id="inputVolume">-->
+                            <!--</div>-->
+                            <!--</div>-->
+                            <div class="form-row">
+                                <div class="form-group col-md-12"><label th:for="*{orderComment}">Коментарий к
+                                    заказу:</label>
+                                    <input
+                                            type="text"
+                                            class="form-control"
+                                            th:field="*{orderComment}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-outline-success my-2 my-sm-0" id="submitButton" type="submit">
+                                    Добавить заказ
+                                </button>
+                            </div>
+                        </div>
+                        <div id="orderLines" class="form-group col-md-6">
+                            <label for="orderLines">Позиции заказа:</label>
+                            <div class="controls-1">
+
+                                <!--                                <div id="orderLine" class="entry" th:each="orderLine : ${order.getOrderLinesImmutable()}">-->
+                                <!--                                    <div class="form-row">-->
+
+                                <!--                                        <div class="form-group col-md-7" id="inputOrdProdNameDiv">-->
+                                <!--                                            <input hidden-->
+                                <!--                                                   type="number"-->
+                                <!--                                                   class="form-control"-->
+                                <!--                                                   id="prodOrderLineIdInput"-->
+                                <!--                                                   name="prodOrderLineIdInput"-->
+                                <!--                                            >-->
+                                <!--                                            <label for="inputOrderLineProductName">Товар</label>-->
+                                <!--                                            <input th:value="${orderLine.getProduct().getName()}" class="form-control is-valid"-->
+                                <!--                                                   id="inputOrderLineProductName" type="text"/>-->
+                                <!--                                            <div id="searchOrderLineProductsList">-->
+                                <!--                                                <ul class="list-group product-search-editor-res" tabindex="-1"-->
+                                <!--                                                    id="searchProductResult"></ul>-->
+                                <!--                                            </div>-->
+                                <!--                                        </div>-->
+                                <!--                                        <div class="form-group col-md-2">-->
+                                <!--                                            <label for="inputOrderLineProductQua">Кол-во</label>-->
+                                <!--                                            <input th:value="${orderLine.getAmount()}" class="form-control is-valid"-->
+                                <!--                                                   name="inputOrderLineProductQua"-->
+                                <!--                                                   id="inputOrderLineProductQua" type="number"/>-->
+                                <!--                                        </div>-->
+
+                                <!--                                        <div class="form-group col-md-1">-->
+                                <!--                            <span class="input-group-btn">-->
+                                <!--                            <button class="btn btn-success btn-add" type="button">-->
+                                <!--                                <span class="glyphicon glyphicon-plus"></span>-->
+                                <!--                            </button>-->
+                                <!--                        </span>-->
+                                <!--                                        </div>-->
+
+                                <!--                                <div class="form-group col-md-2">-->
+                                <!--                                    <p class="order-price" id="sumOrderLinePrice"><b>0.0</b></p>-->
+                                <!--                                </div>-->
+                                <!--                            </div>-->
+                                <!--                        </div>-->
+                                <div id="orderLine" class="entry">
+                                    <div class="form-row">
+
+                                        <div class="form-group col-md-7" id="inputOrdProdNameDiv">
+
+                                            <input hidden
+                                                   type="number"
+                                                   class="form-control"
+                                                   id="prodOrderLineIdInput"
+                                                   name="prodOrderLineIdInput">
+
+                                            <label for="inputOrderLineProductName">Товар</label>
+                                            <input class="form-control is-invalid"
+                                                   id="inputOrderLineProductName" type="text"/>
+                                            <div id="searchOrderLineProductsList">
+                                                <ul class="list-group product-search-editor-res"
+                                                    id="searchProductResult"></ul>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-md-2">
+                                            <label for="inputOrderLineProductQua">Кол-во</label>
+                                            <input class="form-control is-invalid"
+                                                   name="inputOrderLineProductQua"
+                                                   id="inputOrderLineProductQua" type="number"/>
+                                        </div>
+
+                                        <div class="form-group col-md-1">
+                                                            <span class="input-group-btn">
+                                                            <button class="btn btn-success btn-add" type="button">
+                                                                <span class="glyphicon glyphicon-plus"></span>
+                                                            </button>
+                                                        </span>
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            <p class="order-price" id="sumOrderLinePrice"><b>0.0</b></p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--                                <div id="orderLine" class="entry" th:each="ordLine , ordLineStat : *{orderLines}">-->
+                                <!--                                    <div class="form-row">-->
+                                <!--                                        <div class="form-group col-md-7" id="inputOrdProdNameDiv">-->
+                                <!--                                            <input hidden-->
+                                <!--                                                   type="number"-->
+                                <!--                                                   class="form-control"-->
+                                <!--                                                   th:field="*{orderLines[__${ordLineStat.index}__].id}"-->
+                                <!--                                                   th:id="${'id-' + ordLineStat.index}">-->
+
+                                <!--                                            <label >Товар</label>-->
+                                <!--                                            <input class="form-control is-invalid"-->
+                                <!--                                                   th:field="*{orderLines[__${ordLineStat.index}__].product.name}"-->
+                                <!--                                                   th:id="${'id-' + ordLineStat.index}"-->
+                                <!--                                            type="text"/>-->
+
+                                <!--                                            <div id="searchOrderLineProductsList">-->
+                                <!--                                                <ul class="list-group product-search-editor-res"-->
+                                <!--                                                    id="searchProductResult"></ul>-->
+                                <!--                                            </div>-->
+                                <!--                                        </div>-->
+
+                                <!--                                        <div class="form-group col-md-2">-->
+                                <!--                                            <label th:for="${'id-' + ordLineStat.index}">Кол-во</label>-->
+                                <!--                                            <input class="form-control is-invalid"-->
+                                <!--                                                   th:field="*{orderLines[__${ordLineStat.index}__].amount}"-->
+                                <!--                                                   th:id="${'id-' + ordLineStat.index}" type="number"/>-->
+                                <!--                                        </div>-->
+
+                                <!--                                        <div class="form-group col-md-1">-->
+                                <!--                            <span class="input-group-btn">-->
+                                <!--                            <button class="btn btn-success btn-add" type="button">-->
+                                <!--                                <span class="glyphicon glyphicon-plus"></span>-->
+                                <!--                            </button>-->
+                                <!--                        </span>-->
+                                <!--                                        </div>-->
+                                <!--                                        <div class="form-group col-md-2">-->
+                                <!--                                            <p class="order-price" id="sumOrderLinePrice"><b>0.0</b></p>-->
+                                <!--                                        </div>-->
+                                <!--                                    </div>-->
+                                <!--                                </div>-->
+
+                            </div>
+
+                            <div class="orderLinesFooter">
+                                <div class="form-row">
+                                    <div class="form-group col-md-10">
+                                        <h5 class="orderLinesFooterTextLine">Скидка:</h5>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <input type="number" th:field="*{discount}" class="form-control">
+                                    </div>
+
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-8">
+                                        <h5 class="orderLinesFooterTextLine">Сумма заказа:</h5>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <p class="order-price" id="orderSumPrice">0.0</p>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

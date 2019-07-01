@@ -1,6 +1,6 @@
 package com.example.co2Automatic.Controllers;
 
-import com.example.co2Automatic.DataManipulationHelpers.ProductsTableValidator;
+import com.example.co2Automatic.HelpUtils.DataManipulationHelpers.ProductsTableValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -26,12 +26,18 @@ public class SettingsSyncController {
 
     @RequestMapping
     public String adminSettingsSync(Model model) {
-        return "adminSettingsSync";
+        return "settingsSync";
     }
 
     @PostMapping("submit")
     public String validateProductsTable(Model model, @RequestParam String syncUrl) throws JAXBException {
 
+        syncProductsTable(syncUrl);
+
+        return "redirect:../";
+    }
+
+    private void syncProductsTable(final String syncUrl){
         RestTemplate restTemplate = new RestTemplate();
 
         restTemplate.getMessageConverters()
@@ -50,9 +56,6 @@ public class SettingsSyncController {
                     .getBody().replaceAll("<!DOCTYPE yml_catalog SYSTEM \"shops.dtd\">", ""));
 
         }
-
-        return "redirect:../";
     }
-
 
 }

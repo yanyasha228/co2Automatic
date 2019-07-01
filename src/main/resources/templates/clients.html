@@ -20,7 +20,7 @@
                 <h2>Co2 <b>Товары</b></h2>
             </div>
             <div class="col-sm-8">
-                <a th:href="@{editProduct}" class="btn btn-add"><i class="material-icons">&#xe147;</i>
+                <a th:href="@{/product/0/edit}" class="btn btn-add"><i class="material-icons">&#xe147;</i>
                     <span>Добавить</span></a>
                 <a th:href="@{${#httpServletRequest.requestURI}}" class="btn btn-primary"><i class="material-icons">&#xE863;</i>
                     <span>Обновить</span></a>
@@ -108,7 +108,7 @@
                              <!--productNameSearchInput = ${productNameSearchInput})}"-->
                                 <!--th:selected="${productStockSorting == null}">Все-->
                         <!--</option>-->
-                        <!--<option th:each="productStock : ${T(com.example.co2Automatic.models.ProductStock).values()}"-->
+                        <!--<option th:each="productStock : ${T(com.example.co2Automatic.models.ModelEnums.ProductStock).values()}"-->
                                 <!--th:value="@{/admin/products(-->
                                         <!--size=${productsPage.getSize()} ,-->
                              <!--productStockSorting = ${productStock},-->
@@ -144,7 +144,7 @@
             <td th:text="${client.getEmail()}">-</td>
             <td th:text="${client.getClientStatus().name()}">-</td>
             <td th:text="${#dates.format(client.getCreationDate(), 'yyyy-MM-dd')}"></td>
-            <td><a th:href="@{'/admin/products/editProduct' + '?id=' + ${client.getId()}}" class="view"
+            <td><a th:href="@{'/products/'+ ${client.getId()} +'/edit'}" class="view"
                    title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE5C8;</i></a>
             </td>
 

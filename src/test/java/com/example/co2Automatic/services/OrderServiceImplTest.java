@@ -1,22 +1,19 @@
 package com.example.co2Automatic.services;
 
-import com.example.co2Automatic.CustomExceptions.ImpossibleSettingException;
-import com.example.co2Automatic.CustomExceptions.InsufficientAmountException;
-import com.example.co2Automatic.Dao.OrderDao;
-import com.example.co2Automatic.Dao.OrderLineDao;
-import com.example.co2Automatic.Dao.ProductDao;
+import com.example.co2Automatic.HelpUtils.CustomExceptions.ImpossibleSettingException;
+import com.example.co2Automatic.HelpUtils.CustomExceptions.InsufficientAmountException;
 import com.example.co2Automatic.models.*;
-import org.junit.Assert;
+import com.example.co2Automatic.models.ModelEnums.ClientStatus;
+import com.example.co2Automatic.models.ModelEnums.MoneyCurrency;
+import com.example.co2Automatic.models.ModelEnums.PaymentMethod;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -56,8 +53,8 @@ public class OrderServiceImplTest {
         newProd1.setDescription("ProdDescription");
         newProd1.setQuantity(10);
 
-        prodId.add(productService.saveAndReturnEntity(newProd).getId());
-        prodId.add(productService.saveAndReturnEntity(newProd1).getId());
+        prodId.add(productService.save(newProd).getId());
+        prodId.add(productService.save(newProd1).getId());
 
         Client newClient = new Client();
         newClient.setPhoneNumber("+380665025671");
@@ -79,8 +76,8 @@ public class OrderServiceImplTest {
         orderClient.setUsualWarehouseNumber(25);
         orderClient.setClientStatus(ClientStatus.USUAL);
 
-        clientId.add(clientService.saveAndReturnEntity(newClient).getId());
-        clientId.add(clientService.saveAndReturnEntity(orderClient).getId());
+        clientId.add(clientService.save(newClient).getId());
+        clientId.add(clientService.save(orderClient).getId());
 
     }
 
@@ -104,7 +101,7 @@ public class OrderServiceImplTest {
                  iarr,
                 new Integer[]{2,3});
 
-        List<Order> ordFrDb = orderService.getAllOrders();
+        List<Order> ordFrDb = orderService.findAll();
 
         assertTrue(ordFrDb.stream()
                 .anyMatch(order -> order.getOrderComment().equalsIgnoreCase("Pervii Zakaz")));

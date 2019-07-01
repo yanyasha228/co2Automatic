@@ -1,9 +1,8 @@
 package com.example.co2Automatic.Controllers;
 
 
-import com.example.co2Automatic.ControllerHelpers.ProductListPageHelper;
 import com.example.co2Automatic.models.Client;
-import com.example.co2Automatic.models.ProductStock;
+import com.example.co2Automatic.models.ModelEnums.ProductStock;
 import com.example.co2Automatic.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

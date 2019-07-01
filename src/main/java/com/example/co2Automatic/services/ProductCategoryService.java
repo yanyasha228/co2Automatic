@@ -1,6 +1,7 @@
 package com.example.co2Automatic.services;
 
 
+import com.example.co2Automatic.HelpUtils.CustomExceptions.ImpossibleEntityUpdatingException;
 import com.example.co2Automatic.models.ProductCategory;
 
 import java.util.List;
@@ -8,17 +9,29 @@ import java.util.Optional;
 
 public interface ProductCategoryService {
 
-    void save(ProductCategory productCategory);
+    ProductCategory save(ProductCategory productCategory);
 
-    ProductCategory getOne(Integer id);
+    List<ProductCategory> save(List<ProductCategory> productCategories);
 
-    void deleteById(Integer id);
+    ProductCategory update(ProductCategory productCategory) throws ImpossibleEntityUpdatingException;
 
-    boolean existById(Integer id);
+    List<ProductCategory> update(List<ProductCategory> productCategories) throws ImpossibleEntityUpdatingException;
+
+
+
+
+
+    void delete(Integer id);
+
+    void delete(ProductCategory productCategory);
+
+    void delete(List<ProductCategory> productCategories);
+
+    boolean exist(Integer id);
+
 
     List<ProductCategory> findAll();
 
-    void saveAll(List<ProductCategory> productCategoryList);
 
     Optional<ProductCategory> findById(Integer id);
 

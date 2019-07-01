@@ -3,8 +3,6 @@ package com.example.co2Automatic.RestControllers;
 import com.example.co2Automatic.models.Product;
 import com.example.co2Automatic.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,7 +38,7 @@ public class ProductRestController {
     public Product deleteProduct(@PathVariable Long id) {
         Optional<Product> productForDel = productService.findById(id);
         if (productForDel.isPresent()) {
-            productService.deleteById(id);
+            productService.delete(id);
         }
 
         return productForDel.orElse(null);

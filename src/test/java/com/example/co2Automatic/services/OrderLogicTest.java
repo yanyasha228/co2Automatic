@@ -1,8 +1,11 @@
 package com.example.co2Automatic.services;
 
-import com.example.co2Automatic.CustomExceptions.ImpossibleSettingException;
-import com.example.co2Automatic.CustomExceptions.InsufficientAmountException;
+import com.example.co2Automatic.HelpUtils.CustomExceptions.ImpossibleSettingException;
+import com.example.co2Automatic.HelpUtils.CustomExceptions.InsufficientAmountException;
 import com.example.co2Automatic.models.*;
+import com.example.co2Automatic.models.ModelEnums.ClientStatus;
+import com.example.co2Automatic.models.ModelEnums.MoneyCurrency;
+import com.example.co2Automatic.models.ModelEnums.PaymentMethod;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -42,7 +46,7 @@ public class OrderLogicTest {
 
     public static class OrderEx extends Order{
 
-        public Set<OrderLine> orderLinesPO;
+        public List<OrderLine> orderLinesPO;
 
         public OrderEx(){
             super();
@@ -54,7 +58,7 @@ public class OrderLogicTest {
     }
 
     @Before
-    public void addTestData() {
+    public void addTestData() throws ImpossibleSettingException, InsufficientAmountException {
         Product newProd = new Product();
         newProd.setName("ProdName");
         newProd.setCurrency(MoneyCurrency.UAH);
@@ -64,7 +68,7 @@ public class OrderLogicTest {
 
         Order newOrder = new Order();
         newOrder.setDeliveryPlace("Kiev");
-        newOrder.setDeliveryDate(new Date());
+        newOrder.setDeliveryDate(LocalDate.now());
         newOrder.setDeliveryPlaceWarehouseNumber(78);
         newOrder.setPaymentMethod(PaymentMethod.BANK_TRANSFER);
         newOrder.setOrderComment("That seems good");
@@ -84,10 +88,10 @@ public class OrderLogicTest {
         newOrder.setClient(orderClient);
 
 
-        orderTestId = orderService.saveEndReturnEntity(newOrder).getId();
-        clientTestId = clientService.saveAndReturnEntity(orderClient).getId();
+        orderTestId = orderService.save(newOrder).getId();
+        clientTestId = clientService.save(orderClient).getId();
 
-        prodTestId = productService.saveAndReturnEntity(newProd).getId();
+        prodTestId = productService.save(newProd).getId();
     }
 
 
@@ -148,7 +152,7 @@ public class OrderLogicTest {
 
         Assert.assertEquals(8, productService.findById(prodTestId).get().getQuantity());
 
-        orderService.deleteById(orderTestId);
+        orderService.delete(orderTestId);
 
         Assert.assertEquals(10, productService.findById(prodTestId).get().getQuantity());
 
@@ -178,7 +182,7 @@ public class OrderLogicTest {
 
         orderLinesSet2.add(newOrdLine2);
 
-        orderLineService.deleteAll(orderFromDb.getOrderLinesImmutable());
+        orderLineService.delete(orderFromDb.getOrderLinesImmutable());
 
         orderFromDb.setOrderLines(orderLinesSet2);
 

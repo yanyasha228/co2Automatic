@@ -19,7 +19,7 @@
                     <h2>Мои <b>Заказы</b></h2>
                 </div>
                 <div class="col-sm-8">
-                    <a href="/editOrder" class="btn btn-add"><i class="material-icons">&#xe147;</i>
+                    <a th:href="@{/orders/create}" class="btn btn-add"><i class="material-icons">&#xe147;</i>
                         <span>Добавить</span></a>
                     <a href="#" class="btn btn-primary"><i class="material-icons">&#xE863;</i> <span>Обновить</span></a>
                     <a href="#" class="btn btn-info"><i class="material-icons">&#xE24D;</i> <span>Создать реестр</span></a>
@@ -90,10 +90,10 @@
 
             <tr>
                 <td th:text="${order.getId()}"></td>
-                <td><a th:href="@{'/clients/editClient' + '?id=' + ${order.getClient().getId()}}"
+                <td><a th:href="@{/clients/{id}/edit(id=${order.getClient().getId()})}"
                 th:text="${order.getClient().getName() + order.getClient().getLastName()}"></a></td>
                 <td th:text="${order.getDeliveryPlace() + ' ' + order.getDeliveryPlaceWarehouseNumber()}"></td>
-                <td th:text="${#dates.format(order.getDeliveryDate(), 'yyyy-MM-dd')}"></td>
+                <td th:text="${order.getDeliveryDate()}"></td>
                 <td>
                     <div id="tdStatus">
                     <span class="status text-info"

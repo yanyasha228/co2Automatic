@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Data
 @Entity
-@Table(name = "product_category")
+@Table(name = "product_categories")
 public class ProductCategory implements Serializable {
 
     public ProductCategory() {

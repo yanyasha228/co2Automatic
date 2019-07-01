@@ -1,13 +1,17 @@
 package com.example.co2Automatic.models;
 
+import com.example.co2Automatic.models.ModelEnums.ClientStatus;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -17,7 +21,7 @@ public class Client implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @Column(name = "name")
     private String name;
@@ -44,8 +48,8 @@ public class Client implements Serializable {
     private Integer usualWarehouseNumber;
 
     @Column(name = "creation_date")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date creationDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate creationDate;
 
 //    @Column(name = "wholesaler")
 //    private boolean wholesaler;
@@ -56,7 +60,7 @@ public class Client implements Serializable {
 
     @PrePersist
     protected void onCreate() {
-        creationDate = new Date();
+        creationDate = LocalDate.now();
     }
 
 

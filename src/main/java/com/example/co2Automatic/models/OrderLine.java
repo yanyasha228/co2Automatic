@@ -1,6 +1,6 @@
 package com.example.co2Automatic.models;
 
-import com.example.co2Automatic.CustomExceptions.InsufficientAmountException;
+import com.example.co2Automatic.HelpUtils.CustomExceptions.InsufficientAmountException;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
@@ -12,7 +12,7 @@ import java.util.Objects;
 
 @Data
 @Entity
-@Table(name = "order_line")
+@Table(name = "order_lines")
 public class OrderLine implements Serializable {
 
     public OrderLine() {
@@ -40,6 +40,9 @@ public class OrderLine implements Serializable {
 
     @Column(name = "purchase_price" , nullable = false)
     private double purchasePrice;
+
+    @Column(name = "discount")
+    private double discount;
 
     @Override
     public boolean equals(Object o) {

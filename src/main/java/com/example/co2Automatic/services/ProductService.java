@@ -1,9 +1,9 @@
 package com.example.co2Automatic.services;
 
-import com.example.co2Automatic.models.MoneyCurrency;
+import com.example.co2Automatic.HelpUtils.CustomExceptions.ImpossibleEntityUpdatingException;
 import com.example.co2Automatic.models.Product;
 import com.example.co2Automatic.models.ProductCategory;
-import com.example.co2Automatic.models.ProductStock;
+import com.example.co2Automatic.models.ModelEnums.ProductStock;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -11,7 +11,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProductService {
-    void save(Product product);
+
+    Product save(Product product);
 
 
     Page<Product> findAllWithPagination(Pageable pageable);
@@ -25,6 +26,7 @@ public interface ProductService {
     Page<Product> findProductsByCategoryWithPagination(ProductCategory productCategory, Pageable pageable);
 
     //////////////////////////////////////////////////////////
+
 //Filtering methods with search//////////////////////////////////
     Page<Product> findProductsByNameLikeAndProductStockAndProductCategoryWithPagination(String productNameSearchInput,
                                                                                         ProductStock productStock,
@@ -46,19 +48,21 @@ public interface ProductService {
 
     Optional<Product> findByProductName(String productName);
 
-    Optional<Product> findById(long id);
+    Optional<Product> findById(Long id);
 
     List<Product> findProductByNonFullProductName(String nonFullProductName);
 
     List<Product> findProductByNonFullProductNameRegardlessOfTheWordsOrder(String nonFullProductName);
 
-    void saveAll(List<Product> newProductList);
+    List<Product> save(List<Product> newProductList);
 
-    void deleteById(Long id);
+    void delete(Long id);
 
-    Product saveAndReturnEntity(Product product);
+    void delete(List<Product> productList);
 
-    void updateProduct(Integer productId, String inputProductName, String inputProductVendor, String inputProductCountryOfOrigin, ProductStock inputProductStock, String inputProductCategory, Double inputProductPrice, Double inputProductWholeSalePrice, MoneyCurrency inputProductMoneyCurrency, String inputProductDescription, String[] inputProductParamName, String[] inputProductParamValue);
+    Product update(Product product) throws ImpossibleEntityUpdatingException;
+
+    List<Product> update(List<Product> productList) throws ImpossibleEntityUpdatingException;
 
     Page<Product> findProductsWithPagination(Pageable pageable,
                                              ProductStock productStock,

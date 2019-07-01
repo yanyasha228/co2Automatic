@@ -1,18 +1,26 @@
 package com.example.co2Automatic.models;
 
+import com.example.co2Automatic.HelpUtils.CustomExceptions.ImpossibleAmountDecreasingException;
+import com.example.co2Automatic.models.HelpModels.Image;
+import com.example.co2Automatic.models.ModelEnums.MoneyCurrency;
+import com.example.co2Automatic.models.HelpModels.ProductParam;
+import com.example.co2Automatic.models.ModelEnums.ProductStock;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.*;
 
 @Data
 @Entity
-@Table(name = "product")
+@Table(name = "products")
 @JsonIgnoreProperties(value = {"productUrlFromExternalResource",
         "description",
         "params",
@@ -26,7 +34,9 @@ import java.util.*;
 public class Product implements Serializable {
 
     public Product() {
-        creationDate = new Date();
+
+        creationDate = LocalDate.now();
+
     }
 
     @Id
@@ -41,7 +51,7 @@ public class Product implements Serializable {
 
     @Column(name = "quantity")
     @Min(0)
-    private int quantity;
+    private int quantity ;
 
     @Column(name = "moneyCurrency")
     @Enumerated(EnumType.STRING)
@@ -55,11 +65,16 @@ public class Product implements Serializable {
     @Transient
     private int categoryXmlId;
 
-    @ElementCollection(targetClass = String.class)
-    @CollectionTable(name = "product_params")
-    @MapKeyColumn(name = "product_param_name")
-    @Column(name = "params")
-    private Map<String, String> params = new HashMap<>();
+//    @ElementCollection(targetClass = String.class)
+//    @CollectionTable(name = "product_params")
+//    @MapKeyColumn(name = "product_param_name")
+//    @Column(name = "params")
+//    private Map<String, String> params = new HashMap<>();
+
+    @OneToMany(cascade = CascadeType.ALL,
+    orphanRemoval = true)
+    @Column(name = "product_params")
+    private List<ProductParam> params = new ArrayList<>();
 
     @Column(name = "price")
     private double price;
@@ -79,17 +94,18 @@ public class Product implements Serializable {
     private ProductStock productStock = ProductStock.NO_STOCK;
 
     @Column(name = "creation_date")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date creationDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate creationDate;
 
     @Column(name = "last_updating_date")
-    @Temporal(TemporalType.TIMESTAMP)
+//    @Temporal(TemporalType.TIMESTAMP)
     private Date lastUpdatingDate;
 
-    @ElementCollection
-    @CollectionTable(name = "urls")
+//    @ElementCollection
+//    @CollectionTable(name = "urls")
     @Column(name = "image_urls")
-    private Set<String> imageUrls = new HashSet<>();
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Image> images = new ArrayList<>();
 
     @Column(name = "vendor")
     private String vendor;
@@ -110,8 +126,14 @@ public class Product implements Serializable {
         this.quantity += quantity;
     }
 
-    public void decreaseAmount(int quantity) {
-        this.quantity -= quantity;
+    public void decreaseAmount(int quantity) throws ImpossibleAmountDecreasingException {
+
+        if(this.quantity-quantity<0){
+            throw new ImpossibleAmountDecreasingException("");
+        }
+            else {
+                this.quantity -= quantity;
+        }
     }
 
     //    @ManyToMany(mappedBy = "products")

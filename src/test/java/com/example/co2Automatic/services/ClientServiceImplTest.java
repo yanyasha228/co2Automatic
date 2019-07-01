@@ -1,7 +1,7 @@
 package com.example.co2Automatic.services;
 
 import com.example.co2Automatic.models.Client;
-import com.example.co2Automatic.models.ClientStatus;
+import com.example.co2Automatic.models.ModelEnums.ClientStatus;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,7 +32,7 @@ public class ClientServiceImplTest {
         testClient13.setClientStatus(ClientStatus.CONSTANT);
 
        clientService.save(testClient13);
-//        Client clientFromDb = clientService.saveAndReturnEntity(testClient13);
+//        Client clientFromDb = clientService.save(testClient13);
 
         Client clientFromDb = clientService.findClientByPhoneNumber(newClientPhoneNumber).orElse(null);
         Assert.assertNotNull(clientFromDb);

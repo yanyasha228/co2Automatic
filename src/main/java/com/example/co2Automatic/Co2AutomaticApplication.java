@@ -1,18 +1,19 @@
 package com.example.co2Automatic;
 
 import com.example.co2Automatic.models.*;
+import com.example.co2Automatic.models.ModelEnums.ClientStatus;
+import com.example.co2Automatic.models.ModelEnums.ProductStock;
+import com.example.co2Automatic.models.SessionModels.AppSettingsModel;
 import com.example.co2Automatic.services.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @SpringBootApplication
 public class Co2AutomaticApplication {
@@ -26,6 +27,7 @@ public class Co2AutomaticApplication {
     @Bean("CRunner")
     public CommandLineRunner testDataProd(ClientService clientService,
                                           ProductService productService,
+                                          AppSettingsModelService appSettingsModelService,
                                           OrderService orderService) {
         return (args) -> {
             // save a couple of customers
@@ -37,13 +39,24 @@ public class Co2AutomaticApplication {
                 pr.setQuantity(10);
             }
 
-          productService.saveAll(productList);
+          productService.save(productList);
 
             List<Client> clientListFromDao = clientService.findAll();
 
             List<PhoneNumber> phoneNumberList = new ArrayList<>();
 
             List<Client> clientList = new ArrayList<>();
+
+
+            if(!appSettingsModelService.getSettings().isPresent()){
+                AppSettingsModel appSettingsModel = new AppSettingsModel();
+
+                appSettingsModel.setId(1L);
+                appSettingsModel.setEurCurrency(31.5);
+                appSettingsModel.setUsdCurrency(26.4);
+
+                appSettingsModelService.update(appSettingsModel);
+            }
 
 
 

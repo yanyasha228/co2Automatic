@@ -1,7 +1,11 @@
 package com.example.co2Automatic.services;
 
 import com.example.co2Automatic.Dao.ProductDao;
+import com.example.co2Automatic.HelpUtils.CustomExceptions.ImpossibleEntityUpdatingException;
 import com.example.co2Automatic.models.*;
+import com.example.co2Automatic.models.ModelEnums.MoneyCurrency;
+import com.example.co2Automatic.models.HelpModels.ProductParam;
+import com.example.co2Automatic.models.ModelEnums.ProductStock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,11 +20,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductCategoryService productCategoryService;
-
-    @Override
-    public void save(Product product) {
-        productDao.save(product);
-    }
 
     @Override
     public Page<Product> findAllWithPagination(Pageable pageable) {
@@ -106,8 +105,10 @@ public class ProductServiceImpl implements ProductService {
 
     }
 
+
+
     @Override
-    public Optional<Product> findById(long id) {
+    public Optional<Product> findById(Long id) {
         return productDao.findById(id);
     }
 
@@ -145,23 +146,45 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void saveAll(List<Product> newProductList) {
+    public List<Product> save(List<Product> newProductList) {
 
-        productDao.saveAll(newProductList);
+        return productDao.saveAll(newProductList);
 
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void delete(Long id) {
         productDao.deleteById(id);
     }
 
     @Override
-    public Product saveAndReturnEntity(Product product) {
+    public void delete(List<Product> productList) {
+        productDao.deleteAll(productList);
+    }
+
+    @Override
+    public Product save(Product product) {
         return productDao.save(product);
     }
 
     @Override
+    public Product update(Product product) throws ImpossibleEntityUpdatingException {
+        if (product.getId() == 0)
+            throw new ImpossibleEntityUpdatingException("Attempt to update entity without ID!!!");
+
+            return productDao.save(product);
+
+    }
+
+    @Override
+    public List<Product> update(List<Product> productList) throws ImpossibleEntityUpdatingException {
+        for ( Product oneOf : productList ) {
+            if (oneOf.getId() <= 0)
+                throw new ImpossibleEntityUpdatingException("Attempt to update entity without ID!!!");
+        }
+        return productDao.saveAll(productList);
+    }
+
     public void updateProduct(Integer productId,
                               String inputProductName,
                               String inputProductVendor,
@@ -188,11 +211,11 @@ public class ProductServiceImpl implements ProductService {
         productForUpdating.setDescription(inputProductDescription);
 
 
-        Map<String, String> newProdParams = new HashMap<>();
+        List<ProductParam> newProdParams = new ArrayList<>();
         for (int i = 0; i < inputProductParamName.length; i++) {
             if (!inputProductParamName[i].replaceAll(" ", "").isEmpty()
                     || !inputProductParamValue[i].replaceAll(" ", "").isEmpty()) {
-                newProdParams.put(inputProductParamName[i], inputProductParamValue[i]);
+                newProdParams.add(new ProductParam(inputProductParamName[i], inputProductParamValue[i]));
             }
         }
         productForUpdating.setParams(newProdParams);

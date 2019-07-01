@@ -109,7 +109,7 @@
                              productNameSearchInput = ${productNameSearchInput})}"
                                 th:selected="${productStockSorting == null}">Все
                         </option>
-                        <option th:each="productStock : ${T(com.example.co2Automatic.models.ProductStock).values()}"
+                        <option th:each="productStock : ${T(com.example.co2Automatic.models.ModelEnums.ProductStock).values()}"
                                 th:value="@{/products(
                                         size=${productsPage.getSize()} ,
                              productStockSorting = ${productStock},
@@ -141,15 +141,15 @@
 
         <tr>
             <td th:text="${product.getId()}"></td>
-            <td><img th:src="@{${product.getImageUrls().iterator().next()}}" width="70" height="70" class="avatar"
+            <td><img th:if="${product.getImages().size()!=0}" th:src="@{${product.getImages().get(0).getUrl()}}" width="70" height="70" class="avatar"
                      alt="Avatar"><br><a
-                    th:href="@{'/products/editProduct' + '?id=' + ${product.getId()}}"
+                    th:href="@{/products/{id}/edit(id=${product.getId()})}"
                     th:text="${product.getName()}"></a></td>
             <td th:text="${product.getQuantity()}">-</td>
             <td th:text="${#dates.format(product.getLastUpdatingDate(), 'yyyy-MM-dd')}"></td>
             <td th:text="${product.getPrice() + ' ' + product.getCurrency().getCurrencySymbol()}">-</td>
             <td th:text="${product.getWholeSalePrice() + ' ' + product.getCurrency().getCurrencySymbol()}">-</td>
-            <td><a th:href="@{'/products/editProduct' + '?id=' + ${product.getId()}}" class="view"
+            <td><a th:href="@{'/products/' + ${product.getId()} + '/edit'}" class="view"
                    title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE5C8;</i></a>
             </td>
 

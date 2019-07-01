@@ -1,5 +1,6 @@
 package com.example.co2Automatic.models;
 
+import com.example.co2Automatic.models.ModelEnums.Role;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

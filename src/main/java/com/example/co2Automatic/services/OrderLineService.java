@@ -1,5 +1,6 @@
 package com.example.co2Automatic.services;
 
+import com.example.co2Automatic.HelpUtils.CustomExceptions.ImpossibleEntityUpdatingException;
 import com.example.co2Automatic.models.OrderLine;
 
 import java.util.List;
@@ -9,14 +10,21 @@ public interface OrderLineService {
 
     Optional<OrderLine> findById(Long id);
 
-    OrderLine saveAndReturnEntity(OrderLine orderLine);
+    OrderLine save(OrderLine orderLine);
+
+    List<OrderLine> save(List<OrderLine> orderLines);
+
+    OrderLine update(OrderLine orderLine) throws ImpossibleEntityUpdatingException;
+
+    List<OrderLine> update(List<OrderLine> orderLines) throws ImpossibleEntityUpdatingException;
+
 
     List<OrderLine> findAll();
 
-    void deleteById(Long id);
+    void delete(Long id);
 
     void delete(OrderLine orderLine);
 
-    void deleteAll(Iterable<OrderLine> orderLines);
+    void delete(Iterable<OrderLine> orderLines);
 
 }

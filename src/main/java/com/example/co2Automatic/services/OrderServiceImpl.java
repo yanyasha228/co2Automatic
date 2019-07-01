@@ -1,9 +1,13 @@
 package com.example.co2Automatic.services;
 
-import com.example.co2Automatic.CustomExceptions.ImpossibleSettingException;
-import com.example.co2Automatic.CustomExceptions.InsufficientAmountException;
+import com.example.co2Automatic.HelpUtils.CustomExceptions.ImpossibleEntityUpdatingException;
+import com.example.co2Automatic.HelpUtils.CustomExceptions.ImpossibleSettingException;
+import com.example.co2Automatic.HelpUtils.CustomExceptions.InsufficientAmountException;
 import com.example.co2Automatic.Dao.OrderDao;
 import com.example.co2Automatic.models.*;
+import com.example.co2Automatic.models.ModelEnums.ClientStatus;
+import com.example.co2Automatic.models.ModelEnums.OrderStatus;
+import com.example.co2Automatic.models.ModelEnums.PaymentMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -28,16 +33,6 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderLineService orderLineService;
 
-    @Override
-    public void save(Order order) {
-        orderDao.save(order);
-    }
-
-    @Override
-    public Order saveEndReturnEntity(Order order) {
-        return orderDao.save(order);
-    }
-
 
     @Override
     public Optional<Order> findById(Long id) {
@@ -45,13 +40,48 @@ public class OrderServiceImpl implements OrderService {
         return orderDao.findById(id);
     }
 
+    @Transactional
+    @Override
+    public Order save(Order order) throws InsufficientAmountException, ImpossibleSettingException {
+
+        if (!clientService.exists(order.getClient())){
+            clientService.save(order.getClient());
+        }
+            return orderDao.save(order);
+    }
+
+    @Override
+    public List<Order> save(List<Order> orders) throws InsufficientAmountException, ImpossibleSettingException, ImpossibleEntityUpdatingException {
+        return orderDao.saveAll(orders);
+    }
+
+    @Override
+    public List<Order> update(List<Order> orders) throws InsufficientAmountException, ImpossibleSettingException, ImpossibleEntityUpdatingException {
+        for (Order oneOf : orders) {
+            if (oneOf.getId() <= 0)
+                throw new ImpossibleEntityUpdatingException("Attempt to update entity without ID!!!");
+        }
+        return orderDao.saveAll(orders);
+    }
+
+
+    public Order update(Order order) throws InsufficientAmountException,
+            ImpossibleSettingException,
+            ImpossibleEntityUpdatingException {
+        if (order.getId() == 0)
+            throw new ImpossibleEntityUpdatingException("Attempt to update entity without ID!!!");
+
+        return orderDao.save(order);
+
+    }
+
+
     /*
      * MiddleName ist involved!!!!
      *
      */
-
+    //    Transactional ???????????????????????????????
     @Transactional
-    @Override
     public void updateOrder(Long id,
                             Long clientId,
                             String inputEmail,
@@ -76,13 +106,11 @@ public class OrderServiceImpl implements OrderService {
 
         Client orderClient;
 
-        Date orderDate = null;
+        LocalDate orderDate = null;
 
-        try {
-            orderDate = new SimpleDateFormat("yyyy-MM-dd").parse(inputDeliveryDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+
+        orderDate = LocalDate.parse(inputDeliveryDate);
+//                    new SimpleDateFormat("yyyy-MM-dd").parse(inputDeliveryDate);
 
 
         if (clientFromDb.isPresent()) {
@@ -97,7 +125,7 @@ public class OrderServiceImpl implements OrderService {
             orderClient.setUsualDeliveryPlace(inputCity);
             orderClient.setUsualWarehouseNumber(inputWarehouseNumber);
             orderClient.setClientStatus(ClientStatus.USUAL);
-            orderClient = clientService.saveAndReturnEntity(orderClient);
+            orderClient = clientService.save(orderClient);
 
         }
 
@@ -143,7 +171,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getAllOrders() {
+    public List<Order> findAll() {
         return orderDao.findAll();
 //        return StreamSupport
 //                .stream(
@@ -153,7 +181,18 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void delete(Long id) {
         orderDao.deleteById(id);
+    }
+
+    @Override
+    public void delete(Order order) {
+        orderDao.delete(order);
+    }
+
+    @Override
+    public void delete(List<Order> orders) {
+
+        orderDao.deleteAll(orders);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.co2Automatic.services;
 
 import com.example.co2Automatic.Dao.OrderLineDao;
+import com.example.co2Automatic.HelpUtils.CustomExceptions.ImpossibleEntityUpdatingException;
 import com.example.co2Automatic.models.OrderLine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ import java.util.Optional;
 public class OrderLineServiceImpl implements OrderLineService {
 
     @Autowired
-    OrderLineDao orderLineDao;
+     private OrderLineDao orderLineDao;
 
     @Override
     public Optional<OrderLine> findById(Long id) {
@@ -20,8 +21,32 @@ public class OrderLineServiceImpl implements OrderLineService {
     }
 
     @Override
-    public OrderLine saveAndReturnEntity(OrderLine orderLine) {
+    public OrderLine save(OrderLine orderLine) {
         return orderLineDao.save(orderLine);
+    }
+
+    @Override
+    public List<OrderLine> save(List<OrderLine> orderLines) {
+        return orderLineDao.saveAll(orderLines);
+    }
+
+    @Override
+    public OrderLine update(OrderLine orderLine) throws ImpossibleEntityUpdatingException {
+
+        if (orderLine.getId() <= 0)
+            throw new ImpossibleEntityUpdatingException("Attempt to update entity without ID!!!");
+
+            return orderLineDao.save(orderLine);
+
+    }
+///////////////////////
+    @Override
+    public List<OrderLine> update(List<OrderLine> orderLines) throws ImpossibleEntityUpdatingException {
+        for (OrderLine oneOf : orderLines) {
+            if (oneOf.getId() <= 0)
+                throw new ImpossibleEntityUpdatingException("Attempt to update entity without ID!!!");
+        }
+        return orderLineDao.saveAll(orderLines);
     }
 
     @Override
@@ -30,7 +55,7 @@ public class OrderLineServiceImpl implements OrderLineService {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void delete(Long id) {
         orderLineDao.deleteById(id);
     }
 
@@ -40,7 +65,7 @@ public class OrderLineServiceImpl implements OrderLineService {
     }
 
     @Override
-    public void deleteAll(Iterable<OrderLine> orderLines) {
+    public void delete(Iterable<OrderLine> orderLines) {
         orderLineDao.deleteAll(orderLines);
     }
 }
