@@ -5,7 +5,10 @@ import com.example.co2Automatic.models.HelpModels.Image;
 import com.example.co2Automatic.models.ModelEnums.MoneyCurrency;
 import com.example.co2Automatic.models.HelpModels.ProductParam;
 import com.example.co2Automatic.models.ModelEnums.ProductStock;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
@@ -23,12 +26,12 @@ import java.util.*;
 @Table(name = "products")
 @JsonIgnoreProperties(value = {"productUrlFromExternalResource",
         "description",
-        "params",
+//        "params",
         "productCategory",
-        "countryOfOrigin",
-        "creationDate",
-        "lastUpdatingDate",
-        "vendor",
+//        "countryOfOrigin",
+//        "creationDate",
+//        "lastUpdatingDate",
+//        "vendor",
         "orderLines"
 })
 public class Product implements Serializable {
@@ -43,17 +46,20 @@ public class Product implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @JsonProperty("NAME")
     @Column(name = "name")
     private String name;
 
     @Column(name = "product_url_from_external_resource")
     private String productUrlFromExternalResource;
 
+    @JsonProperty("SORT")
     @Column(name = "quantity")
     @Min(0)
     private int quantity ;
 
     @Column(name = "moneyCurrency")
+    @JsonProperty("CURRENCY_ID")
     @Enumerated(EnumType.STRING)
     private MoneyCurrency currency;
 
@@ -76,6 +82,7 @@ public class Product implements Serializable {
     @Column(name = "product_params")
     private List<ProductParam> params = new ArrayList<>();
 
+    @JsonProperty("PRICE")
     @Column(name = "price")
     private double price;
 

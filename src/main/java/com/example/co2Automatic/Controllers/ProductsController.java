@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -34,6 +35,7 @@ public class ProductsController {
 
 //    @Autowired
 //    private ProductListPageHelper productListPageHelper;
+
 
     @GetMapping
     public String productsList(Model model,

@@ -15,6 +15,11 @@ public class ProductRestController {
     @Autowired
     ProductService productService;
 
+    @GetMapping("all")
+    public List<Product> productList(){
+        return productService.findAll();
+    }
+
     @GetMapping(params = "nonFullProductName")
     public List<Product> getProductsByNonFullName(@RequestParam(value = "nonFullProductName") String nonFullNameString) {
         return productService.findProductByNonFullProductNameRegardlessOfTheWordsOrder(nonFullNameString);
